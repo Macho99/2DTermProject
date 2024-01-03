@@ -24,7 +24,10 @@ public class PlayerIdle : PlayerState
 
     public override void Update()
     {
-        
+        if(Mathf.Abs(player.inputVec.x) > 0.01f)
+        {
+            player.ChangeState(PlayerStateType.Walk);
+        }
     }
 
     public override void Exit()

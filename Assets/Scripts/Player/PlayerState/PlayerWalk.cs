@@ -28,7 +28,14 @@ public class PlayerWalk : PlayerState
 
     public override void Update()
     {
+        float inputX = player.inputVec.x;
+        if (Mathf.Abs(inputX) < 0.01f)
+        {
+            player.ChangeState(PlayerStateType.Idle); 
+            return;
+        }
 
+        player.HorizonMove(player.inputVec.x);
     }
 
     public override void Exit()

@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] string curStateStr;
-
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float maxSpeed = 3f;
+    [SerializeField] private float jumpForce = 3f;
 
     public Vector2 inputVec;
-
-    PlayerMove playerMove;
 
     PlayerState curState;
     Rigidbody2D rb;
@@ -19,10 +20,16 @@ public class Player : MonoBehaviour
 
     Collider2D col;
 
+    public bool isGrounded;
+    public bool IsGrounded
+    {
+        get { return isGrounded; }
+        private set { isGrounded = value; }
+    }
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        playerMove = GetComponent<PlayerMove>();
         col = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
 
@@ -52,11 +59,6 @@ public class Player : MonoBehaviour
         curState.Enter();
     }
 
-    public PlayerMove GetMove()
-    {
-        return playerMove;
-    }
-
     private void Update()
     {
         curState.Update();
@@ -74,6 +76,37 @@ public class Player : MonoBehaviour
     private void OnMove(InputValue value)
     {
         inputVec = value.Get<Vector2>();
+    }
+
+    public void HorizonMove(float value)
+    {
+        if(rb.velocity.x < -maxSpeed || rb.velocity.x > maxSpeed)
+        {
+            return;
+        }
+
+        rb.AddForce(Vector2.right * value * moveSpeed, ForceMode2D.Force);
+    }
+
+    public void Jump()
+    {
+        rb.velocity = new Vector2(rb.velocity.x, 0f);
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
+
+    public void Down()
+    {
+        ContactPoint2D[] contactPoints = new ContactPoint2D[10];
+        int num = col.GetContacts(contactPoints);
+        for (int i = 0; i < num; i++)
+        {
+            if (contactPoints[i].collider.gameObject.layer == LayerMask.NameToLayer("Platform"))
+            {
+                IsGrounded = false;
+                SetTriggerTrue();
+                break;
+            }
+        }
     }
 
     public void SetTriggerTrue()
@@ -100,4 +133,5 @@ public class Player : MonoBehaviour
             col.isTrigger = false;
         }
     }
+
 }
