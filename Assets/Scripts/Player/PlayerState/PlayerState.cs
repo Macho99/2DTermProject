@@ -8,10 +8,12 @@ public enum PlayerStateType
     Idle = 0,
     Walk,
     Duck,
+    Jump,
     OnAir,
-    OneJump,
     DoubleJump,
+    Land,
     Hurt,
+    Block,
     Attack,
 
     Size

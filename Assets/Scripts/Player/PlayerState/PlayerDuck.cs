@@ -21,16 +21,21 @@ public class PlayerDuck : PlayerState
 
     public override void Jump(InputValue value)
     {
-
+        player.Down();
+        player.ChangeState(PlayerStateType.OnAir);
     }
 
     public override void Update()
     {
-
+        if(player.inputVec.y > -0.9f)
+        {
+            player.ChangeState(PlayerStateType.Idle);
+        }
     }
 
     public override void Exit()
     {
 
     }
+
 }

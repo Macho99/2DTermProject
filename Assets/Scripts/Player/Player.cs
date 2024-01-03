@@ -9,7 +9,9 @@ public class Player : MonoBehaviour
     [SerializeField] string curStateStr;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float maxSpeed = 3f;
+    [SerializeField] private float airControlMultiple = 0.5f;
     [SerializeField] private float jumpForce = 3f;
+    [SerializeField] private float doubleJumpForce = 5f;
 
     public Vector2 inputVec;
 
@@ -20,12 +22,11 @@ public class Player : MonoBehaviour
 
     Collider2D col;
 
-    public bool isGrounded;
-    public bool IsGrounded
-    {
-        get { return isGrounded; }
-        private set { isGrounded = value; }
-    }
+    public bool blockInput;
+
+    public bool isGroundChecked = false;
+    public bool isGround = false;
+    public float AirControlMultiple { get { return airControlMultiple; } }
 
     private void Awake()
     {
@@ -33,15 +34,21 @@ public class Player : MonoBehaviour
         col = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
 
+
+        // TODO: 상태 변경 관리하기
         states = new PlayerState[(int) PlayerStateType.Size];
-        states[0] = new PlayerIdle(this);
-        states[1] = new PlayerWalk(this);
-        states[2] = new PlayerDuck(this);
-        states[3] = new PlayerOnAir(this);
-        states[4] = new PlayerOneJump(this);
-        states[5] = new PlayerDoubleJump(this);
-        states[6] = new PlayerHurt(this);
-        states[7] = new PlayerAttack(this);
+
+        int idx = 0;
+        states[idx++] = new PlayerIdle(this);
+        states[idx++] = new PlayerWalk(this);
+        states[idx++] = new PlayerDuck(this);
+        states[idx++] = new PlayerJump(this);
+        states[idx++] = new PlayerOnAir(this);
+        states[idx++] = new PlayerDoubleJump(this);
+        states[idx++] = new PlayerLand(this);
+        states[idx++] = new PlayerHurt(this);
+        states[idx++] = new PlayerBlock(this);
+        states[idx++] = new PlayerAttack(this);
 
         curState = states[0];
         curStateStr = curState.ToString();
@@ -76,22 +83,71 @@ public class Player : MonoBehaviour
     private void OnMove(InputValue value)
     {
         inputVec = value.Get<Vector2>();
+        if(inputVec.x < 0f)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+        else if(inputVec.x > 0f)
+        {
+            transform.localScale = Vector3.one;
+        }
     }
 
-    public void HorizonMove(float value)
+    private void OnBlock(InputValue value)
     {
-        if(rb.velocity.x < -maxSpeed || rb.velocity.x > maxSpeed)
+        blockInput = value.Get<float>() > 0.9f ? true : false ;
+    }
+
+    public void HorizonMove(float time)
+    {
+        float value = inputVec.x;
+
+        if (value < -0.5f)
+            value = -1f;
+        else if (value > 0.5f)
+            value = 1f;
+
+        HorizonMove(value, time);
+    }
+
+    public void HorizonMove(float value, float time)
+    {
+        if(rb.velocity.x < -maxSpeed && value < 0f)
+        {
+            return;
+        }
+        if(rb.velocity.x > maxSpeed && value > 0f)
         {
             return;
         }
 
-        rb.AddForce(Vector2.right * value * moveSpeed, ForceMode2D.Force);
+        rb.AddForce(Vector2.right * value * moveSpeed * time, ForceMode2D.Force);
     }
 
     public void Jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x, 0f);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
+
+    public void Jump(float force)
+    {
+        rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+    }
+
+    public void DoubleJump()
+    {
+        float dir;
+        if(inputVec.x == 0f)
+        {
+            dir = transform.localScale.x;
+        }
+        else
+        {
+            dir = inputVec.x;
+        }
+        rb.velocity = new Vector2(0f, rb.velocity.y * 0.5f);
+        Jump(jumpForce * 0.5f);
+        rb.AddForce(Vector2.right * dir * doubleJumpForce, ForceMode2D.Impulse);
     }
 
     public void Down()
@@ -102,22 +158,21 @@ public class Player : MonoBehaviour
         {
             if (contactPoints[i].collider.gameObject.layer == LayerMask.NameToLayer("Platform"))
             {
-                IsGrounded = false;
-                SetTriggerTrue();
+                isGround = false;
+                col.isTrigger = true;
                 break;
             }
         }
     }
 
-    public void SetTriggerTrue()
+    public Vector2 GetVelocity()
     {
-        if (rb.velocity.y > -0.01f) //상승 중일때만
-            col.isTrigger = true;
+        return rb.velocity;
     }
 
-    public void SetColTriggerFalse()
+    public bool IsAnimatorStateName(string str)
     {
-        col.isTrigger = false;
+        return anim.GetCurrentAnimatorStateInfo(0).IsName(str);
     }
 
     public bool CheckCollisioning()
@@ -126,12 +181,32 @@ public class Player : MonoBehaviour
         return col.GetContacts(cols) < 1;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //print($"{collision.gameObject.name}, enter");
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform")
+           || collision.gameObject.layer == LayerMask.NameToLayer("BedRock"))
+        {
+            isGround = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        //print($"{collision.gameObject.name}, exit");
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform")
+           || collision.gameObject.layer == LayerMask.NameToLayer("BedRock"))
+        {
+            isGround = false;
+        }
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform")
+           || collision.gameObject.layer == LayerMask.NameToLayer("BedRock"))
         {
             col.isTrigger = false;
         }
     }
-
 }

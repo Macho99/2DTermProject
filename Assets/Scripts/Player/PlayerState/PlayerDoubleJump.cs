@@ -12,26 +12,31 @@ public class PlayerDoubleJump : PlayerState
 
     public override void Enter()
     {
-        throw new System.NotImplementedException();
+        player.DoubleJump();
     }
 
     public override void Attack(InputValue value)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override void Jump(InputValue value)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override void Update()
     {
-        throw new System.NotImplementedException();
+        player.HorizonMove(player.inputVec.x * player.AirControlMultiple, Time.unscaledDeltaTime);
+        if (true == player.isGround)
+        {
+            player.ChangeState(PlayerStateType.Land);
+        }
     }
 
     public override void Exit()
     {
-        throw new System.NotImplementedException();
+
     }
+
 }

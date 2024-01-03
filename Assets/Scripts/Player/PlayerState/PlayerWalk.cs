@@ -23,11 +23,22 @@ public class PlayerWalk : PlayerState
 
     public override void Jump(InputValue value)
     {
-
+        player.ChangeState(PlayerStateType.Jump);
     }
 
     public override void Update()
     {
+        if (true == player.blockInput)
+        {
+            player.ChangeState(PlayerStateType.Block);
+            return;
+        }
+
+        if (false == player.isGround)
+        {
+            player.ChangeState(PlayerStateType.OnAir);
+        }
+
         float inputX = player.inputVec.x;
         if (Mathf.Abs(inputX) < 0.01f)
         {
@@ -35,7 +46,7 @@ public class PlayerWalk : PlayerState
             return;
         }
 
-        player.HorizonMove(player.inputVec.x);
+        player.HorizonMove(Time.unscaledDeltaTime);
     }
 
     public override void Exit()
