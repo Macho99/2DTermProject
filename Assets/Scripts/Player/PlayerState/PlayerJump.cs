@@ -39,9 +39,17 @@ public class PlayerJump : PlayerState
     {
         if (true == player.IsAnimatorStateName("OnAir"))
         {
-            player.ChangeState(PlayerStateType.OnAir);
-            player.Jump();
-            return;
+            if(false == player.CheckTop())
+            {
+                player.ChangeState(PlayerStateType.OnAir);
+                player.Jump();
+                return;
+            }
+            else
+            {
+                player.ChangeState(PlayerStateType.Idle);
+                return;
+            }
         }
 
         player.HorizonMove(Time.unscaledDeltaTime);

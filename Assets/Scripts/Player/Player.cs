@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     public Vector2 inputVec; 
     public bool blockInput;
     public bool isGround = false;
+    public bool isRight = true;
     public float AirControlMultiple { get { return airControlMultiple; } }
 
 
@@ -85,10 +86,12 @@ public class Player : MonoBehaviour
         inputVec.x = value.Get<float>();
         if (inputVec.x < 0f)
         {
+            isRight = false;
             transform.localScale = new Vector3(-1, 1, 1);
         }
         else if (inputVec.x > 0f)
         {
+            isRight = true;
             transform.localScale = Vector3.one;
         }
     }
