@@ -15,7 +15,7 @@ public class PlayerDoubleJump : PlayerState
         player.DoubleJump();
     }
 
-    public override void Attack(InputValue value)
+    public override void Slash(InputValue value)
     {
 
     }
@@ -27,7 +27,7 @@ public class PlayerDoubleJump : PlayerState
 
     public override void Update()
     {
-        player.HorizonMove(player.inputVec.x * player.AirControlMultiple, Time.unscaledDeltaTime);
+        player.HorizonMove(player.AirControlMultiple, Time.unscaledDeltaTime);
         if (true == player.isGround)
         {
             player.ChangeState(PlayerStateType.Land);

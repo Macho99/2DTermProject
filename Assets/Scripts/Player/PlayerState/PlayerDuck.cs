@@ -11,31 +11,50 @@ public class PlayerDuck : PlayerState
 
     public override void Enter()
     {
+        player.SetColliderSize(false);
+    }
+    public override void Exit()
+    {
 
     }
 
-    public override void Attack(InputValue value)
+    public override void Slash(InputValue value)
     {
 
     }
 
     public override void Jump(InputValue value)
     {
-        player.Down();
-        player.ChangeState(PlayerStateType.OnAir);
+        if (player.CheckTop() == false)
+        {
+            player.SetColliderSize(true);
+            player.ChangeState(PlayerStateType.Jump);
+        }
     }
 
     public override void Update()
     {
-        if(player.inputVec.y > -0.9f)
+        if(player.inputVec.y > -0.5f)
         {
-            player.ChangeState(PlayerStateType.Idle);
+            //Debug.Log(player.CheckTop());
+            if (player.CheckTop() == false)
+            {
+                player.ChangeState(PlayerStateType.Idle);
+                player.SetColliderSize(true);
+                return;
+            }
+        }
+
+        if(Mathf.Abs(player.inputVec.x) > 0.01f)
+        {
+            player.ChangeState(PlayerStateType.Crawl);
+            return;
+        }
+
+        //X축 입력이 없으면서 X축 속도가 있을 때 감속
+        else if (Mathf.Abs(player.GetVelocity().x) > 0.1f)
+        {
+            player.HorizonBreak(Time.unscaledDeltaTime);
         }
     }
-
-    public override void Exit()
-    {
-
-    }
-
 }

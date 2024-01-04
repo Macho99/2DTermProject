@@ -8,21 +8,20 @@ public enum PlayerStateType
     Idle = 0,
     Walk,
     Duck,
+    Crawl,
     Jump,
     OnAir,
     DoubleJump,
     Land,
     Hurt,
     Block,
-    Attack,
+    Slash,
 
     Size
 }
 
 public abstract class PlayerState
 {
-    protected static bool downPressed;
-
     protected Player player;
     protected PlayerState(Player player)
     {
@@ -31,7 +30,7 @@ public abstract class PlayerState
 
     public abstract void Jump(InputValue value);
 
-    public abstract void Attack(InputValue value);
+    public abstract void Slash(InputValue value);
 
     public abstract void Enter();
 

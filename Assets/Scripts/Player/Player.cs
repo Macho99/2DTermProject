@@ -7,31 +7,30 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [SerializeField] string curStateStr;
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float accelSpeed = 5f;
     [SerializeField] private float maxSpeed = 3f;
     [SerializeField] private float airControlMultiple = 0.5f;
     [SerializeField] private float jumpForce = 3f;
     [SerializeField] private float doubleJumpForce = 5f;
 
-    public Vector2 inputVec;
-
-    PlayerState curState;
-    Rigidbody2D rb;
-    PlayerState[] states;
-    Animator anim;
-
-    Collider2D col;
-
+    public Vector2 inputVec; 
     public bool blockInput;
-
-    public bool isGroundChecked = false;
     public bool isGround = false;
     public float AirControlMultiple { get { return airControlMultiple; } }
+
+
+    PlayerState curState;
+    PlayerState[] states;
+    Rigidbody2D rb;
+    Animator anim;
+
+    CapsuleCollider2D col;
+
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        col = GetComponent<Collider2D>();
+        col = GetComponent<CapsuleCollider2D>();
         anim = GetComponent<Animator>();
 
 
@@ -42,13 +41,14 @@ public class Player : MonoBehaviour
         states[idx++] = new PlayerIdle(this);
         states[idx++] = new PlayerWalk(this);
         states[idx++] = new PlayerDuck(this);
+        states[idx++] = new PlayerCrawl(this);
         states[idx++] = new PlayerJump(this);
         states[idx++] = new PlayerOnAir(this);
         states[idx++] = new PlayerDoubleJump(this);
         states[idx++] = new PlayerLand(this);
         states[idx++] = new PlayerHurt(this);
         states[idx++] = new PlayerBlock(this);
-        states[idx++] = new PlayerAttack(this);
+        states[idx++] = new PlayerSlash(this);
 
         curState = states[0];
         curStateStr = curState.ToString();
@@ -75,22 +75,27 @@ public class Player : MonoBehaviour
         curState.Jump(value);
     }
 
-    private void OnAttack(InputValue value)
+    private void OnAttackBtn1(InputValue value)
     {
-        curState.Attack(value);
+        curState.Slash(value);
     }
 
-    private void OnMove(InputValue value)
+    private void OnHorizonMove(InputValue value)
     {
-        inputVec = value.Get<Vector2>();
-        if(inputVec.x < 0f)
+        inputVec.x = value.Get<float>();
+        if (inputVec.x < 0f)
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
-        else if(inputVec.x > 0f)
+        else if (inputVec.x > 0f)
         {
             transform.localScale = Vector3.one;
         }
+    }
+
+    private void OnVerticalMove(InputValue value)
+    {
+        inputVec.y  = value.Get<float>();
     }
 
     private void OnBlock(InputValue value)
@@ -100,28 +105,31 @@ public class Player : MonoBehaviour
 
     public void HorizonMove(float time)
     {
-        float value = inputVec.x;
-
-        if (value < -0.5f)
-            value = -1f;
-        else if (value > 0.5f)
-            value = 1f;
-
-        HorizonMove(value, time);
+        HorizonMove(1f, 1f, time);
     }
 
-    public void HorizonMove(float value, float time)
+    public void HorizonMove(float accelMulti, float time)
     {
-        if(rb.velocity.x < -maxSpeed && value < 0f)
-        {
-            return;
-        }
-        if(rb.velocity.x > maxSpeed && value > 0f)
-        {
-            return;
-        }
+        HorizonMove(accelMulti, 1f, time);
+    }
 
-        rb.AddForce(Vector2.right * value * moveSpeed * time, ForceMode2D.Force);
+    public void HorizonMove(float accelMulti, float maxMulti, float time)
+    {
+        if(rb.velocity.x < -maxSpeed * maxMulti && inputVec.x< 0f)
+        {
+            return;
+        }
+        if(rb.velocity.x > maxSpeed * maxMulti && inputVec.x > 0f)
+        {
+            return;
+        }
+        rb.AddForce(Vector2.right * inputVec.x * (accelMulti * accelSpeed) * time, ForceMode2D.Force);
+    }
+
+    public void HorizonBreak(float time)
+    {
+        time *= 100f;
+        rb.AddForce(new Vector2(-rb.velocity.x * 0.5f * time, 0), ForceMode2D.Force);
     }
 
     public void Jump()
@@ -150,21 +158,6 @@ public class Player : MonoBehaviour
         rb.AddForce(Vector2.right * dir * doubleJumpForce, ForceMode2D.Impulse);
     }
 
-    public void Down()
-    {
-        ContactPoint2D[] contactPoints = new ContactPoint2D[10];
-        int num = col.GetContacts(contactPoints);
-        for (int i = 0; i < num; i++)
-        {
-            if (contactPoints[i].collider.gameObject.layer == LayerMask.NameToLayer("Platform"))
-            {
-                isGround = false;
-                col.isTrigger = true;
-                break;
-            }
-        }
-    }
-
     public Vector2 GetVelocity()
     {
         return rb.velocity;
@@ -175,38 +168,69 @@ public class Player : MonoBehaviour
         return anim.GetCurrentAnimatorStateInfo(0).IsName(str);
     }
 
-    public bool CheckCollisioning()
+    public bool CheckTop()
     {
-        Collider2D[] cols =  new Collider2D[1];
-        return col.GetContacts(cols) < 1;
+        RaycastHit2D hit;
+        hit = Physics2D.BoxCast(transform.position + Vector3.up, new Vector2(0.5f, 0.2f), 0f, Vector2.zero, 0f, LayerMask.GetMask("Platform"));
+        //hit = Physics2D.Raycast(transform.position + Vector3.up, Vector2.up, 0.2f, LayerMask.GetMask("Platform"));
+
+        //print(hit.collider.gameObject.name);
+
+        return hit.collider == null ? false : true;
+    }
+
+    public bool CheckGround()
+    {
+        RaycastHit2D hit;
+        hit = Physics2D.BoxCast(transform.position, new Vector2(0.2f, 0.2f), 0f, Vector2.zero, 0f, LayerMask.GetMask("Platform"));
+        //hit = Physics2D.Raycast(transform.position, Vector2.down, 0.2f, LayerMask.GetMask("Platform"));
+        return hit.collider == null ? false : true;
+    }
+
+    public void SetColliderSize(bool isBig)
+    {
+        if(isBig == true)
+        {
+            col.offset = new Vector2(0f, 0.5f);
+            col.size = new Vector2(0.5f, 1f);
+        }
+        else if(isBig == false)
+        {
+            col.offset = new Vector2(0f, 0.3f);
+            col.size = new Vector2(0.5f, 0.6f);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //print($"{collision.gameObject.name}, enter");
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform")
-           || collision.gameObject.layer == LayerMask.NameToLayer("BedRock"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
         {
-            isGround = true;
+            if(CheckGround() == true)
+            {
+                isGround = true;
+            }
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         //print($"{collision.gameObject.name}, exit");
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform")
-           || collision.gameObject.layer == LayerMask.NameToLayer("BedRock"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
         {
-            isGround = false;
+            if (CheckGround() == false)
+            {
+                isGround = false;
+            }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform")
-           || collision.gameObject.layer == LayerMask.NameToLayer("BedRock"))
-        {
-            col.isTrigger = false;
-        }
-    }
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Platform")
+    //       || collision.gameObject.layer == LayerMask.NameToLayer("BedRock"))
+    //    {
+    //        col.isTrigger = false;
+    //    }
+    //}
 }

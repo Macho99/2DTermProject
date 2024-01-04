@@ -15,7 +15,7 @@ public class PlayerHurt : PlayerState
 
     }
 
-    public override void Attack(InputValue value)
+    public override void Slash(InputValue value)
     {
 
     }

@@ -13,14 +13,17 @@ public class PlayerIdle : PlayerState
 
     }
 
-    public override void Attack(InputValue value)
+    public override void Slash(InputValue value)
     {
-
+        player.ChangeState(PlayerStateType.Slash);
     }
 
     public override void Jump(InputValue value)
     {
-        player.ChangeState(PlayerStateType.Jump);
+        if (player.CheckTop() == false)
+        {
+            player.ChangeState(PlayerStateType.Jump);
+        }
     }
 
     public override void Update()
@@ -52,7 +55,7 @@ public class PlayerIdle : PlayerState
         //X축 입력이 없으면서 X축 속도가 있을 때 감속
         else if(Mathf.Abs(player.GetVelocity().x) > 0.1f)
         {
-            player.HorizonMove(player.GetVelocity().x * -0.5f, Time.unscaledDeltaTime);
+            player.HorizonBreak(Time.unscaledDeltaTime);
         }
     }
 

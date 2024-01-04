@@ -11,7 +11,7 @@ public class PlayerBlock : PlayerState
     {
     }
 
-    public override void Attack(InputValue value)
+    public override void Slash(InputValue value)
     {
 
     }

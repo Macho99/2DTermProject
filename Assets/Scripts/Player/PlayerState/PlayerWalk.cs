@@ -16,14 +16,17 @@ public class PlayerWalk : PlayerState
 
     }
 
-    public override void Attack(InputValue value)
+    public override void Slash(InputValue value)
     {
-        //nothing
+        player.ChangeState(PlayerStateType.Slash);
     }
 
     public override void Jump(InputValue value)
     {
-        player.ChangeState(PlayerStateType.Jump);
+        if (player.CheckTop() == false)
+        {
+            player.ChangeState(PlayerStateType.Jump);
+        }
     }
 
     public override void Update()

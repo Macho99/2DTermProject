@@ -12,7 +12,7 @@ public class PlayerLand : PlayerState
     {
     }
 
-    public override void Attack(InputValue value)
+    public override void Slash(InputValue value)
     {
 
     }
@@ -40,6 +40,6 @@ public class PlayerLand : PlayerState
             return;
         }
 
-        player.HorizonMove(player.inputVec.x, Time.unscaledDeltaTime);
+        player.HorizonMove(Time.unscaledDeltaTime);
     }
 }

@@ -15,7 +15,7 @@ public class PlayerOnAir : PlayerState
         readyToLand = !(player.isGround);
     }
 
-    public override void Attack(InputValue value)
+    public override void Slash(InputValue value)
     {
 
     }
@@ -27,7 +27,7 @@ public class PlayerOnAir : PlayerState
 
     public override void Update()
     {
-        player.HorizonMove(player.inputVec.x * player.AirControlMultiple, Time.unscaledDeltaTime);
+        player.HorizonMove(player.AirControlMultiple, Time.unscaledDeltaTime);
 
         if (readyToLand)
         {

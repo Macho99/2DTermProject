@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Debug = UnityEngine.Debug;
 
-public class PlayerJump : PlayerState
+public class PlayerCrawl : PlayerState
 {
-    public PlayerJump(Player player) : base(player)
+    public PlayerCrawl(Player player) : base(player)
     {
-
     }
 
     public override void Slash(InputValue value)
@@ -27,7 +23,6 @@ public class PlayerJump : PlayerState
 
     public override void Exit()
     {
-
     }
 
     public override void Jump(InputValue value)
@@ -37,13 +32,19 @@ public class PlayerJump : PlayerState
 
     public override void Update()
     {
-        if (true == player.IsAnimatorStateName("OnAir"))
+        if (false == player.isGround)
         {
             player.ChangeState(PlayerStateType.OnAir);
-            player.Jump();
+        }
+
+        float inputX = player.inputVec.x;
+
+        if (Mathf.Abs(inputX) < 0.01f)
+        {
+            player.ChangeState(PlayerStateType.Duck);
             return;
         }
 
-        player.HorizonMove(Time.unscaledDeltaTime);
+        player.HorizonMove(1f, 0.4f, Time.unscaledDeltaTime);
     }
 }
