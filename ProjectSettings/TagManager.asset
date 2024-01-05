@@ -11,10 +11,10 @@ TagManager:
   - 
   - Water
   - UI
-  - BedRock
   - Platform
-  - 
-  - 
+  - Player
+  - Monster
+  - PlayerDetector
   - 
   - 
   - 
