@@ -12,10 +12,11 @@ public class PlayerDoubleJump : PlayerState
 
     public override void Enter()
     {
+        player.SetAnimState(PlayerStateType.DoubleJump);
         player.DoubleJump();
     }
 
-    public override void Slash(InputValue value)
+    public override void Attack(InputValue value)
     {
 
     }

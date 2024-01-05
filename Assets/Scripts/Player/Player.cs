@@ -12,11 +12,14 @@ public class Player : MonoBehaviour
     [SerializeField] private float airControlMultiple = 0.5f;
     [SerializeField] private float jumpForce = 3f;
     [SerializeField] private float doubleJumpForce = 5f;
+    [SerializeField] private float readyDuration = 3f;
 
     public Vector2 inputVec; 
     public bool blockInput;
     public bool isGround = false;
     public bool isRight = true;
+    public float LastCombatTime { get; set; }
+    public float ReadyDuration { get { return readyDuration; } }
     public float AirControlMultiple { get { return airControlMultiple; } }
 
 
@@ -47,9 +50,10 @@ public class Player : MonoBehaviour
         states[idx++] = new PlayerOnAir(this);
         states[idx++] = new PlayerDoubleJump(this);
         states[idx++] = new PlayerLand(this);
-        states[idx++] = new PlayerHurt(this);
+        states[idx++] = new PlayerStun(this);
         states[idx++] = new PlayerBlock(this);
-        states[idx++] = new PlayerSlash(this);
+        states[idx++] = new PlayerAttack(this);
+        idx++;//Ready 상태는 Idle과 같으므로 만들지 않음
 
         curState = states[0];
         curStateStr = curState.ToString();
@@ -61,7 +65,6 @@ public class Player : MonoBehaviour
 
         curState = states[(int)type];
         curStateStr = curState.ToString();
-        anim.SetInteger("State", (int)type);
         //print(type.ToString());
 
         curState.Enter();
@@ -78,7 +81,7 @@ public class Player : MonoBehaviour
 
     private void OnAttackBtn1(InputValue value)
     {
-        curState.Slash(value);
+        curState.Attack(value);
     }
 
     private void OnHorizonMove(InputValue value)
@@ -104,6 +107,11 @@ public class Player : MonoBehaviour
     private void OnBlock(InputValue value)
     {
         blockInput = value.Get<float>() > 0.9f ? true : false ;
+    }
+
+    public void SetAnimState(PlayerStateType type)
+    {
+        anim.SetInteger("State", (int)type);
     }
 
     public void HorizonMove(float time)
@@ -175,9 +183,6 @@ public class Player : MonoBehaviour
     {
         RaycastHit2D hit;
         hit = Physics2D.BoxCast(transform.position + Vector3.up, new Vector2(0.5f, 0.2f), 0f, Vector2.zero, 0f, LayerMask.GetMask("Platform"));
-        //hit = Physics2D.Raycast(transform.position + Vector3.up, Vector2.up, 0.2f, LayerMask.GetMask("Platform"));
-
-        //print(hit.collider.gameObject.name);
 
         return hit.collider == null ? false : true;
     }
@@ -186,7 +191,7 @@ public class Player : MonoBehaviour
     {
         RaycastHit2D hit;
         hit = Physics2D.BoxCast(transform.position, new Vector2(0.2f, 0.2f), 0f, Vector2.zero, 0f, LayerMask.GetMask("Platform"));
-        //hit = Physics2D.Raycast(transform.position, Vector2.down, 0.2f, LayerMask.GetMask("Platform"));
+
         return hit.collider == null ? false : true;
     }
 

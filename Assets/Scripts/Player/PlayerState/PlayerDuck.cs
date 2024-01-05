@@ -11,6 +11,7 @@ public class PlayerDuck : PlayerState
 
     public override void Enter()
     {
+        player.SetAnimState(PlayerStateType.Duck);
         player.SetColliderSize(false);
     }
     public override void Exit()
@@ -18,7 +19,7 @@ public class PlayerDuck : PlayerState
 
     }
 
-    public override void Slash(InputValue value)
+    public override void Attack(InputValue value)
     {
 
     }

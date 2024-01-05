@@ -6,16 +6,27 @@ using UnityEngine.InputSystem;
 
 public class PlayerIdle : PlayerState
 {
+    bool readyState;
     public PlayerIdle(Player player) : base(player) { }
 
     public override void Enter()
     {
-
+        float curTime = Time.time;
+        if(curTime < player.LastCombatTime + player.ReadyDuration)
+        {
+            player.SetAnimState(PlayerStateType.Ready);
+            readyState = true;
+        }
+        else
+        {
+            player.SetAnimState(PlayerStateType.Idle);
+            readyState = false;
+        }
     }
 
-    public override void Slash(InputValue value)
+    public override void Attack(InputValue value)
     {
-        player.ChangeState(PlayerStateType.Slash);
+        player.ChangeState(PlayerStateType.Attack);
     }
 
     public override void Jump(InputValue value)
@@ -28,35 +39,56 @@ public class PlayerIdle : PlayerState
 
     public override void Update()
     {
-        if(true == player.blockInput)
+        if (Transition() == true)
         {
-            player.ChangeState(PlayerStateType.Block);
-            return;
-        }
-
-        if(player.inputVec.y < -0.9f)
-        {
-            player.ChangeState(PlayerStateType.Duck);
-            return;
-        }
-
-        if(false == player.isGround)
-        {
-            player.ChangeState(PlayerStateType.OnAir);
-        }
-
-        //X축 입력이 들어올 때
-        if(Mathf.Abs(player.inputVec.x) > 0.01f)
-        {
-            player.ChangeState(PlayerStateType.Walk);
             return;
         }
 
         //X축 입력이 없으면서 X축 속도가 있을 때 감속
-        else if(Mathf.Abs(player.GetVelocity().x) > 0.1f)
+        if(Mathf.Abs(player.inputVec.x) < 0.01f && Mathf.Abs(player.GetVelocity().x) > 0.1f)
         {
             player.HorizonBreak(Time.unscaledDeltaTime);
         }
+
+        if (readyState)
+        {
+            float curTime = Time.time;
+            if(curTime > player.LastCombatTime + player.ReadyDuration)
+            {
+                player.SetAnimState(PlayerStateType.Idle);
+                readyState = false;
+            }
+        }
+    }
+
+    private bool Transition()
+    {
+        if (true == player.blockInput)
+        {
+            player.ChangeState(PlayerStateType.Block);
+            return true;
+        }
+
+        if (player.inputVec.y < -0.9f)
+        {
+            player.ChangeState(PlayerStateType.Duck);
+            return true;
+        }
+
+        if (false == player.isGround)
+        {
+            player.ChangeState(PlayerStateType.OnAir);
+            return true;
+        }
+
+        //X축 입력이 들어올 때
+        if (Mathf.Abs(player.inputVec.x) > 0.01f)
+        {
+            player.ChangeState(PlayerStateType.Walk);
+            return true;
+        }
+
+        return false;
     }
 
     public override void Exit()

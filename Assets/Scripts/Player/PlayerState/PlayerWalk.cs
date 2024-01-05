@@ -13,12 +13,12 @@ public class PlayerWalk : PlayerState
 
     public override void Enter()
     {
-
+        player.SetAnimState(PlayerStateType.Walk);
     }
 
-    public override void Slash(InputValue value)
+    public override void Attack(InputValue value)
     {
-        player.ChangeState(PlayerStateType.Slash);
+        player.ChangeState(PlayerStateType.Attack);
     }
 
     public override void Jump(InputValue value)

@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerHurt : PlayerState
+public class PlayerStun : PlayerState
 {
-    public PlayerHurt(Player player) : base(player)
+    public PlayerStun(Player player) : base(player)
     {
 
     }
 
     public override void Enter()
     {
+        player.SetAnimState(PlayerStateType.Stun);
 
     }
 
-    public override void Slash(InputValue value)
+    public override void Attack(InputValue value)
     {
 
     }

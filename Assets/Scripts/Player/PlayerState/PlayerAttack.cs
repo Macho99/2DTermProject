@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerSlash : PlayerState
+public class PlayerAttack : PlayerState
 {
     bool readyToIdle;
-    public PlayerSlash(Player player) : base(player)
+    public PlayerAttack(Player player) : base(player)
     {
     }
 
     public override void Enter()
     {
         readyToIdle = false;
+        player.SetAnimState(PlayerStateType.Attack);
     }
 
-    public override void Slash(InputValue value)
+    public override void Attack(InputValue value)
     {
 
     }
@@ -37,13 +38,13 @@ public class PlayerSlash : PlayerState
         }
         else
         {
-            readyToIdle = player.IsAnimatorStateName("Slash");
+            readyToIdle = player.IsAnimatorStateName("Attack");
         }
         player.HorizonBreak(Time.unscaledDeltaTime);
     }
 
     public override void Exit()
     {
-
+        player.LastCombatTime = Time.time;
     }
 }

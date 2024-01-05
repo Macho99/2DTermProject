@@ -12,10 +12,11 @@ public class PlayerOnAir : PlayerState
     }
     public override void Enter()
     {
+        player.SetAnimState(PlayerStateType.OnAir);
         readyToLand = !(player.isGround);
     }
 
-    public override void Slash(InputValue value)
+    public override void Attack(InputValue value)
     {
 
     }

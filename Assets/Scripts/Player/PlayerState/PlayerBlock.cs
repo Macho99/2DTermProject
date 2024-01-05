@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerBlock : PlayerState
@@ -11,18 +12,18 @@ public class PlayerBlock : PlayerState
     {
     }
 
-    public override void Slash(InputValue value)
+    public override void Attack(InputValue value)
     {
 
     }
     public override void Enter()
     {
-
+        player.SetAnimState(PlayerStateType.Block);
     }
 
     public override void Exit()
     {
-
+        player.LastCombatTime = Time.time;
     }
 
     public override void Jump(InputValue value)

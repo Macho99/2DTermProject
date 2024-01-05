@@ -13,9 +13,10 @@ public enum PlayerStateType
     OnAir,
     DoubleJump,
     Land,
-    Hurt,
+    Stun,
     Block,
-    Slash,
+    Attack,
+    Ready,
 
     Size
 }
@@ -28,9 +29,14 @@ public abstract class PlayerState
         this.player = player;
     }
 
+    public virtual void TakeDamage(int damage, float force, float stunDuration)
+    {
+        // TODO : 구현하기
+    }
+
     public abstract void Jump(InputValue value);
 
-    public abstract void Slash(InputValue value);
+    public abstract void Attack(InputValue value);
 
     public abstract void Enter();
 

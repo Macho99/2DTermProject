@@ -12,13 +12,14 @@ public class PlayerCrawl : PlayerState
     {
     }
 
-    public override void Slash(InputValue value)
+    public override void Attack(InputValue value)
     {
 
     }
 
     public override void Enter()
     {
+        player.SetAnimState(PlayerStateType.Crawl);
     }
 
     public override void Exit()
