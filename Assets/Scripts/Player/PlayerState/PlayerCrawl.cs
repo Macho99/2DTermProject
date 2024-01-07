@@ -19,7 +19,7 @@ public class PlayerCrawl : PlayerState
 
     public override void Enter()
     {
-        player.SetAnimState(PlayerStateType.Crawl);
+        player.PlayAnim("Crawl");
     }
 
     public override void Exit()
@@ -46,6 +46,6 @@ public class PlayerCrawl : PlayerState
             return;
         }
 
-        player.HorizonMove(1f, 0.4f, Time.unscaledDeltaTime);
+        player.HorizonMove(Time.unscaledDeltaTime , 1f, 0.4f);
     }
 }

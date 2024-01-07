@@ -24,6 +24,9 @@ public class RoosterAttack : StateBase<Rooster.State, Rooster>
 
     public override void Transition()
     {
+        if (true == owner.IsAnimatorStateName("Peck"))
+            return;
+
         if (true == CheckDist())
             return;
         if (true == CheckDirection())
@@ -65,7 +68,7 @@ public class RoosterAttack : StateBase<Rooster.State, Rooster>
         if (owner.Target.position.x < owner.transform.position.x)
         {
             //몬스터가 오른쪽을 보고있을때
-            if (owner.IsRight == true)
+            if (owner.dir == 1)
             {
                 stateMachine.ChangeState(Rooster.State.Turn);
                 return true;
@@ -75,7 +78,7 @@ public class RoosterAttack : StateBase<Rooster.State, Rooster>
         else
         {
             //몬스터가 왼쪽을 보고있을때
-            if (owner.IsRight == false)
+            if (owner.dir == -1)
             {
                 stateMachine.ChangeState(Rooster.State.Turn);
                 return true;

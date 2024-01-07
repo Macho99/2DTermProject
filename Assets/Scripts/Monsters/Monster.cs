@@ -1,53 +1,113 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
+using UnityEngine.Events;
 
+public enum MonsterUIState { Detect, Miss, Stun}
 public abstract class Monster : MonoBehaviour
 {
+    [SerializeField] protected int curHp;
     [SerializeField] protected int maxHp = 100;
     [SerializeField] protected int damage = 10;
-    [SerializeField] float moveSpeed = 3;
+    [SerializeField] float moveSpeed = 2f;
+    [SerializeField] float runSpeed = 3f;
+    [SerializeField] Transform flipable;
+    [SerializeField] ParticleSystem hitParticle;
+    [SerializeField] float knockbackTime = 0.5f;
 
     protected Rigidbody2D rb;
     protected Animator anim;
     protected BoxCollider2D col;
-    protected int curHp;
     protected Transform target;
-    
+
+    public UnityEvent onHpChanged;
+    public MonsterUIState curUIState;
+    public UnityEvent onUIStateChanged;
+
+    public float CurHp { get { return curHp; } }
+    public float MaxHp { get { return maxHp; } }
     public Transform Target { get { return target; } set { target = value; } }
-    public bool IsRight { get; set; }
+    public int dir { get; set; }
     public float MoveSpeed { get { return moveSpeed; } }
+    public float RunSpeed { get { return runSpeed; } }
+
+    public float StunEndTime { get; private set; }
+
+    private float lastHitTime = 0f;
+    public void Flip()
+    {
+        if (dir == 1)
+        {
+            flipable.rotation = Quaternion.Euler(0f, 180f, 0f);
+            dir = -1;
+        }
+        else
+        {
+            flipable.rotation = Quaternion.Euler(0f, 0f, 0f);
+            dir = 1;
+        }
+    }
+
+    public void UIStateChange(MonsterUIState type)
+    {
+        curUIState = type;
+        onUIStateChanged?.Invoke();
+    }
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         col = GetComponent<BoxCollider2D>();
-        IsRight = true;
+        dir = 1;
 
         curHp = maxHp;
     }
 
     public void SetVel(Vector2 vel)
     {
+        if(Time.time < lastHitTime + knockbackTime)
+        {
+            return;
+        }
         rb.velocity = vel;
     }
 
-    protected virtual void Die()
-    {
-        //TODO: 애니메이터 세팅
-    }
+    protected abstract void Die();
+    protected abstract void Stun();
 
     public void TakeDamage(int damage, Vector2 knockBack, float stunDuration = 0f)
     {
+        if(curHp <= 0)
+            return;
+
         curHp -= damage;
-        rb.AddForce(knockBack, ForceMode2D.Impulse);
-        if (curHp < 0)
+        rb.velocity = new Vector2(0f, rb.velocity.y);
+        hitParticle.Play();
+        
+        lastHitTime = Time.time;
+        onHpChanged?.Invoke();
+
+        if (curHp <= 0)
         {
+            if(Mathf.Sign(knockBack.x * dir) > 0f)
+            {
+                Flip();
+            }
+
+            rb.AddForce(knockBack * 2f, ForceMode2D.Impulse);
             curHp = 0;
             Die();
+            return;
         }
-        //TODO : stun
+        rb.AddForce(knockBack, ForceMode2D.Impulse);
+
+        if (stunDuration > 0.1f)
+        {
+            StunEndTime = Time.time + stunDuration;
+            Stun();
+        }
     }
 
     public void HitPlayer(int damage, Vector2 knockBack, float stunDuration = 0f)

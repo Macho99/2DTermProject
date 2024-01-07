@@ -12,7 +12,7 @@ public class PlayerOnAir : PlayerState
     }
     public override void Enter()
     {
-        player.SetAnimState(PlayerStateType.OnAir);
+        player.PlayAnim("OnAir");
         readyToLand = !(player.isGround);
     }
 
@@ -23,12 +23,15 @@ public class PlayerOnAir : PlayerState
 
     public override void Jump(InputValue value)
     {
-        player.ChangeState(PlayerStateType.DoubleJump);
+        if(false == player.doubleJumped)
+        {
+            player.ChangeState(PlayerStateType.DoubleJump);
+        }
     }
 
     public override void Update()
     {
-        player.HorizonMove(player.AirControlMultiple, Time.unscaledDeltaTime);
+        player.HorizonMove(Time.unscaledDeltaTime, player.AirControlMultiple);
 
         if (readyToLand)
         {

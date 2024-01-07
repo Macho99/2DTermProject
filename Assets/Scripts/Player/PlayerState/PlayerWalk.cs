@@ -13,7 +13,7 @@ public class PlayerWalk : PlayerState
 
     public override void Enter()
     {
-        player.SetAnimState(PlayerStateType.Walk);
+        player.PlayAnim("Walk");
     }
 
     public override void Attack(InputValue value)

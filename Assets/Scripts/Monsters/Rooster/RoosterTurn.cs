@@ -10,7 +10,7 @@ public class RoosterTurn : StateBase<Rooster.State, Rooster>
 
     public override void Enter()
     {
-        if(true == owner.IsRight)
+        if(1 == owner.dir)
         {
             owner.AnimPlay("TurnLeft");
         }
@@ -34,16 +34,7 @@ public class RoosterTurn : StateBase<Rooster.State, Rooster>
     {
         if (true == owner.IsAnimatorStateName("Wait"))
         {
-            if (owner.IsRight == true)
-            {
-                owner.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-                owner.IsRight = false;
-            }
-            else
-            {
-                owner.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                owner.IsRight = true;
-            }
+            owner.Flip();
             stateMachine.ChangeState(Rooster.State.Idle);
         }
     }

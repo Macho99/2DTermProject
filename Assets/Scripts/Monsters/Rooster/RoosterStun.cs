@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class RoosterDetect : StateBase<Rooster.State, Rooster>
+public class RoosterStun : StateBase<Rooster.State, Rooster>
 {
-    public RoosterDetect(Rooster owner, StateMachine<Rooster.State, Rooster> stateMachine) : base(owner, stateMachine)
+    public RoosterStun(Rooster owner, StateMachine<Rooster.State, Rooster> stateMachine) : base(owner, stateMachine)
     {
     }
 
     public override void Enter()
     {
-        owner.AnimPlay("Clicked");
-        owner.UIStateChange(MonsterUIState.Detect);
+        owner.AnimPlay("Stun");
+        owner.UIStateChange(MonsterUIState.Stun);
     }
 
     public override void Exit()
@@ -25,7 +25,7 @@ public class RoosterDetect : StateBase<Rooster.State, Rooster>
 
     public override void Transition()
     {
-        if (true == owner.IsAnimatorStateName("Wait"))
+        if(owner.StunEndTime < Time.time)
         {
             stateMachine.ChangeState(Rooster.State.Idle);
         }
@@ -36,3 +36,4 @@ public class RoosterDetect : StateBase<Rooster.State, Rooster>
 
     }
 }
+

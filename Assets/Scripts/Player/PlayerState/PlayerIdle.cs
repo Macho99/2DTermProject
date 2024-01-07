@@ -12,14 +12,21 @@ public class PlayerIdle : PlayerState
     public override void Enter()
     {
         float curTime = Time.time;
+
+        if(false == player.isGround)
+        {
+            player.ChangeState(PlayerStateType.OnAir); 
+            return;
+        }
+
         if(curTime < player.LastCombatTime + player.ReadyDuration)
         {
-            player.SetAnimState(PlayerStateType.Ready);
+            player.PlayAnim("Ready");
             readyState = true;
         }
         else
         {
-            player.SetAnimState(PlayerStateType.Idle);
+            player.PlayAnim("Idle");
             readyState = false;
         }
     }
@@ -55,7 +62,7 @@ public class PlayerIdle : PlayerState
             float curTime = Time.time;
             if(curTime > player.LastCombatTime + player.ReadyDuration)
             {
-                player.SetAnimState(PlayerStateType.Idle);
+                player.PlayAnim("Idle");
                 readyState = false;
             }
         }

@@ -28,6 +28,8 @@ public class Rooster : Monster
         stateMachine.AddState(State.Walk, new RoosterWalk(this, stateMachine));
         stateMachine.AddState(State.Trace, new RoosterTrace(this, stateMachine));
         stateMachine.AddState(State.Attack, new RoosterAttack(this, stateMachine));
+        stateMachine.AddState(State.Stun, new RoosterStun(this, stateMachine));
+        stateMachine.AddState(State.Die, new RoosterDie(this, stateMachine));
 
         LastAttackTime = Time.time;
     }
@@ -48,7 +50,20 @@ public class Rooster : Monster
         if(target == null)
         {
             target = player.transform;
-            stateMachine.ChangeState(State.Detect);
+            if(StunEndTime < Time.time)
+            {
+                stateMachine.ChangeState(State.Detect);
+            }
         }
+    }
+
+    protected override void Die()
+    {
+        stateMachine.ChangeState(State.Die);
+    }
+
+    protected override void Stun()
+    {
+        stateMachine.ChangeState(State.Stun);
     }
 }

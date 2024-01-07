@@ -13,11 +13,14 @@ public class Player : MonoBehaviour
     [SerializeField] private float jumpForce = 3f;
     [SerializeField] private float doubleJumpForce = 5f;
     [SerializeField] private float readyDuration = 3f;
+    [SerializeField] private int attackDamage = 10;
+    [SerializeField] private float knockbackForce = 5f;
 
     public Vector2 inputVec; 
     public bool blockInput;
     public bool isGround = false;
-    public bool isRight = true;
+    public bool doubleJumped = false;
+    public int dir = 1; // 1이면 오른쪽, -1이면 왼쪽
     public float LastCombatTime { get; set; }
     public float ReadyDuration { get { return readyDuration; } }
     public float AirControlMultiple { get { return airControlMultiple; } }
@@ -53,7 +56,6 @@ public class Player : MonoBehaviour
         states[idx++] = new PlayerStun(this);
         states[idx++] = new PlayerBlock(this);
         states[idx++] = new PlayerAttack(this);
-        idx++;//Ready 상태는 Idle과 같으므로 만들지 않음
 
         curState = states[0];
         curStateStr = curState.ToString();
@@ -89,12 +91,12 @@ public class Player : MonoBehaviour
         inputVec.x = value.Get<float>();
         if (inputVec.x < 0f)
         {
-            isRight = false;
+            dir = -1;
             transform.localScale = new Vector3(-1, 1, 1);
         }
         else if (inputVec.x > 0f)
         {
-            isRight = true;
+            dir = 1;
             transform.localScale = Vector3.one;
         }
     }
@@ -109,22 +111,12 @@ public class Player : MonoBehaviour
         blockInput = value.Get<float>() > 0.9f ? true : false ;
     }
 
-    public void SetAnimState(PlayerStateType type)
+    public void PlayAnim(string name)
     {
-        anim.SetInteger("State", (int)type);
+        anim.Play(name);
     }
 
-    public void HorizonMove(float time)
-    {
-        HorizonMove(1f, 1f, time);
-    }
-
-    public void HorizonMove(float accelMulti, float time)
-    {
-        HorizonMove(accelMulti, 1f, time);
-    }
-
-    public void HorizonMove(float accelMulti, float maxMulti, float time)
+    public void HorizonMove(float time, float accelMulti = 1f, float maxMulti = 1f)
     {
         if(rb.velocity.x < -maxSpeed * maxMulti && inputVec.x< 0f)
         {
@@ -209,6 +201,31 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void NormalAttack()
+    {
+        Vector2 origin = transform.position;
+        origin.y += 0.5f;
+        RaycastHit2D hit = Physics2D.BoxCast(origin, Vector2.one, 0f, Vector2.right * dir * 0.5f, 1f, LayerMask.GetMask("Monster"));
+
+        if (hit.collider == null) return;
+
+        if(hit.collider.TryGetComponent<Monster>(out Monster monster))
+        {
+            Vector2 knockbackDir;
+            //거리가 가까우면 플레이어의 공격 방향으로 넉백 되도록
+            if ((monster.transform.position - transform.position).sqrMagnitude < 0.4f * 0.4f)
+            {
+                knockbackDir = Vector2.right * dir;
+            }
+            else
+            {
+                knockbackDir = monster.transform.position - transform.position;
+                knockbackDir.Normalize();
+            }
+            monster.TakeDamage(attackDamage, knockbackDir * knockbackForce, 1f);
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //print($"{collision.gameObject.name}, enter");
@@ -232,13 +249,4 @@ public class Player : MonoBehaviour
             }
         }
     }
-
-    //private void OnTriggerExit2D(Collider2D collision)
-    //{
-    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Platform")
-    //       || collision.gameObject.layer == LayerMask.NameToLayer("BedRock"))
-    //    {
-    //        col.isTrigger = false;
-    //    }
-    //}
 }

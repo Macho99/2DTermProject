@@ -5,15 +5,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerAttack : PlayerState
 {
-    bool readyToIdle;
     public PlayerAttack(Player player) : base(player)
     {
     }
 
     public override void Enter()
     {
-        readyToIdle = false;
-        player.SetAnimState(PlayerStateType.Attack);
+        player.PlayAnim("Attack");
     }
 
     public override void Attack(InputValue value)
@@ -28,17 +26,11 @@ public class PlayerAttack : PlayerState
 
     public override void Update()
     {
-        if (readyToIdle)
+        if (true == player.IsAnimatorStateName("Wait"))
         {
-            if (true == player.IsAnimatorStateName("Idle"))
-            {
-                player.ChangeState(PlayerStateType.Idle);
-                return;
-            }
-        }
-        else
-        {
-            readyToIdle = player.IsAnimatorStateName("Attack");
+            player.NormalAttack();
+            player.ChangeState(PlayerStateType.Idle);
+            return;
         }
         player.HorizonBreak(Time.unscaledDeltaTime);
     }

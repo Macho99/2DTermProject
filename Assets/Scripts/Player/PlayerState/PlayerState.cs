@@ -16,7 +16,6 @@ public enum PlayerStateType
     Stun,
     Block,
     Attack,
-    Ready,
 
     Size
 }

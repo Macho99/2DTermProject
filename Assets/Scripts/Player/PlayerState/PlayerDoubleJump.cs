@@ -12,8 +12,9 @@ public class PlayerDoubleJump : PlayerState
 
     public override void Enter()
     {
-        player.SetAnimState(PlayerStateType.DoubleJump);
+        player.PlayAnim("OnAir");
         player.DoubleJump();
+        player.doubleJumped = true;
     }
 
     public override void Attack(InputValue value)
@@ -28,7 +29,7 @@ public class PlayerDoubleJump : PlayerState
 
     public override void Update()
     {
-        player.HorizonMove(player.AirControlMultiple, Time.unscaledDeltaTime);
+        player.HorizonMove(Time.unscaledDeltaTime, player.AirControlMultiple);
         if (true == player.isGround)
         {
             player.ChangeState(PlayerStateType.Land);

@@ -7,7 +7,6 @@ public class RoosterWalk : StateBase<Rooster.State, Rooster>
     float maxWalkTime = 2f;
     float minWalkTime = 1f;
     float curWalkTime;
-    float dir;
 
     public RoosterWalk(Rooster owner, StateMachine<Rooster.State, Rooster> stateMachine) : base(owner, stateMachine)
     {
@@ -18,8 +17,6 @@ public class RoosterWalk : StateBase<Rooster.State, Rooster>
     {
         owner.AnimPlay("Walk");
         curWalkTime = Random.Range(minWalkTime, maxWalkTime);
-
-        dir = owner.IsRight ? 1f : -1f;
     }
 
     public override void Exit()
@@ -42,7 +39,7 @@ public class RoosterWalk : StateBase<Rooster.State, Rooster>
 
     public override void Update()
     {
-        owner.SetVel(new Vector2(owner.MoveSpeed * dir, 0f));
+        owner.SetVel(new Vector2(owner.MoveSpeed * owner.dir, 0f));
         curWalkTime -= Time.deltaTime;
     }
 }

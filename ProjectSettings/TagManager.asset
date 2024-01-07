@@ -15,8 +15,8 @@ TagManager:
   - Player
   - Monster
   - PlayerDetector
-  - 
-  - 
+  - Interactable
+  - Interactor
   - 
   - 
   - 
@@ -52,4 +52,7 @@ TagManager:
     locked: 0
   - name: ForeGround
     uniqueID: 3108861591
+    locked: 0
+  - name: UI
+    uniqueID: 4173070529
     locked: 0

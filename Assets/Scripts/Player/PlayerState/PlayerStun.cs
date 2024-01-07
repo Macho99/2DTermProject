@@ -12,7 +12,7 @@ public class PlayerStun : PlayerState
 
     public override void Enter()
     {
-        player.SetAnimState(PlayerStateType.Stun);
+        player.PlayAnim("Stun");
 
     }
 

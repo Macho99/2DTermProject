@@ -18,7 +18,7 @@ public class PlayerBlock : PlayerState
     }
     public override void Enter()
     {
-        player.SetAnimState(PlayerStateType.Block);
+        player.PlayAnim("Block");
     }
 
     public override void Exit()

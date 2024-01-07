@@ -23,7 +23,7 @@ public class PlayerJump : PlayerState
 
     public override void Enter()
     {
-        player.SetAnimState(PlayerStateType.Jump);
+        player.PlayAnim("Jump");
     }
 
     public override void Exit()
@@ -38,7 +38,7 @@ public class PlayerJump : PlayerState
 
     public override void Update()
     {
-        if (true == player.IsAnimatorStateName("OnAir"))
+        if (true == player.IsAnimatorStateName("Wait"))
         {
             if(false == player.CheckTop())
             {

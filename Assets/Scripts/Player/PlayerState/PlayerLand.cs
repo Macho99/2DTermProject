@@ -19,8 +19,8 @@ public class PlayerLand : PlayerState
 
     public override void Enter()
     {
-        player.SetAnimState(PlayerStateType.Land);
-
+        player.PlayAnim("Land");
+        player.doubleJumped = false;
     }
 
     public override void Exit()
@@ -35,7 +35,7 @@ public class PlayerLand : PlayerState
 
     public override void Update()
     {
-        if (true == player.IsAnimatorStateName("Idle"))
+        if (true == player.IsAnimatorStateName("Wait"))
         {
             player.ChangeState(PlayerStateType.Idle);
             return;
