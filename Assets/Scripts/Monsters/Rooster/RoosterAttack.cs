@@ -24,7 +24,7 @@ public class RoosterAttack : StateBase<Rooster.State, Rooster>
 
     public override void Transition()
     {
-        if (true == owner.IsAnimatorStateName("Peck"))
+        if (true == owner.IsAnimatorStateName("Attack"))
             return;
 
         if (true == CheckDist())
@@ -44,7 +44,7 @@ public class RoosterAttack : StateBase<Rooster.State, Rooster>
     private void Attack()
     {
         owner.LastAttackTime = Time.time;
-        owner.AnimPlay("Peck");
+        owner.AnimPlay("Attack");
         //TODO : 플레이어 공격 코드
     }
 

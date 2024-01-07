@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerBlock : PlayerState
+public class PlayerInteract : PlayerState
 {
-    public PlayerBlock(Player player) : base(player)
+    public PlayerInteract(Player player) : base(player)
     {
     }
 
@@ -16,14 +12,21 @@ public class PlayerBlock : PlayerState
     {
 
     }
+
     public override void Enter()
     {
-        player.PlayAnim("Block");
+        
+        if (player.Interactor.InteractStart() == false)
+        {
+            player.ChangeState(PlayerStateType.Idle); 
+            return;
+        }
+        player.PlayAnim("Interact");
     }
 
     public override void Exit()
     {
-        player.LastCombatTime = Time.time;
+        player.Interactor.InteractStop();
     }
 
     public override void Jump(InputValue value)
@@ -33,7 +36,7 @@ public class PlayerBlock : PlayerState
 
     public override void Update()
     {
-        if (false == player.BlockInput)
+        if(false == player.InteractInput)
         {
             player.ChangeState(PlayerStateType.Idle);
             return;

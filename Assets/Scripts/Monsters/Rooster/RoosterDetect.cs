@@ -9,7 +9,7 @@ public class RoosterDetect : StateBase<Rooster.State, Rooster>
 
     public override void Enter()
     {
-        owner.AnimPlay("Clicked");
+        owner.AnimPlay("Detect");
         owner.UIStateChange(MonsterUIState.Detect);
     }
 

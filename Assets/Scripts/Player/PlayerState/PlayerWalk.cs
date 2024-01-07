@@ -31,7 +31,7 @@ public class PlayerWalk : PlayerState
 
     public override void Update()
     {
-        if (true == player.blockInput)
+        if (true == player.BlockInput)
         {
             player.ChangeState(PlayerStateType.Block);
             return;

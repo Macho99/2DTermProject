@@ -15,16 +15,18 @@ public class Player : MonoBehaviour
     [SerializeField] private float readyDuration = 3f;
     [SerializeField] private int attackDamage = 10;
     [SerializeField] private float knockbackForce = 5f;
+    [SerializeField] private float stunTime = 0f;
 
     public Vector2 inputVec; 
-    public bool blockInput;
+    public bool BlockInput { get; private set; }
+    public bool InteractInput { get; private set; }
     public bool isGround = false;
     public bool doubleJumped = false;
     public int dir = 1; // 1이면 오른쪽, -1이면 왼쪽
     public float LastCombatTime { get; set; }
     public float ReadyDuration { get { return readyDuration; } }
     public float AirControlMultiple { get { return airControlMultiple; } }
-
+    public Interactor Interactor { get; private set; }
 
     PlayerState curState;
     PlayerState[] states;
@@ -33,12 +35,12 @@ public class Player : MonoBehaviour
 
     CapsuleCollider2D col;
 
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
         anim = GetComponent<Animator>();
+        Interactor = GetComponentInChildren<Interactor>();
 
 
         // TODO: 상태 변경 관리하기
@@ -56,6 +58,7 @@ public class Player : MonoBehaviour
         states[idx++] = new PlayerStun(this);
         states[idx++] = new PlayerBlock(this);
         states[idx++] = new PlayerAttack(this);
+        states[idx++] = new PlayerInteract(this);
 
         curState = states[0];
         curStateStr = curState.ToString();
@@ -108,7 +111,11 @@ public class Player : MonoBehaviour
 
     private void OnBlock(InputValue value)
     {
-        blockInput = value.Get<float>() > 0.9f ? true : false ;
+        BlockInput = value.Get<float>() > 0.9f ? true : false;
+    }
+    private void OnInteract(InputValue value)
+    {
+        InteractInput = value.Get<float>() > 0.9f ? true : false;
     }
 
     public void PlayAnim(string name)
@@ -187,6 +194,14 @@ public class Player : MonoBehaviour
         return hit.collider == null ? false : true;
     }
 
+    public void ForceInteractStop()
+    {
+        if (curState.GetType().Equals(typeof(PlayerInteract)))
+        {
+            ChangeState(PlayerStateType.Idle);
+        }
+    }
+
     public void SetColliderSize(bool isBig)
     {
         if(isBig == true)
@@ -222,7 +237,7 @@ public class Player : MonoBehaviour
                 knockbackDir = monster.transform.position - transform.position;
                 knockbackDir.Normalize();
             }
-            monster.TakeDamage(attackDamage, knockbackDir * knockbackForce, 1f);
+            monster.TakeDamage(attackDamage, knockbackDir * knockbackForce, stunTime);
         }
     }
 

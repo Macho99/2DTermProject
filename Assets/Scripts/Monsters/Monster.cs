@@ -99,6 +99,9 @@ public abstract class Monster : MonoBehaviour
             rb.AddForce(knockBack * 2f, ForceMode2D.Impulse);
             curHp = 0;
             Die();
+
+            GetComponent<MonsterDrop>().EnableInteractable();
+
             return;
         }
         rb.AddForce(knockBack, ForceMode2D.Impulse);

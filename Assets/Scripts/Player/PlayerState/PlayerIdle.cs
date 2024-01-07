@@ -24,6 +24,7 @@ public class PlayerIdle : PlayerState
             player.PlayAnim("Ready");
             readyState = true;
         }
+
         else
         {
             player.PlayAnim("Idle");
@@ -70,7 +71,7 @@ public class PlayerIdle : PlayerState
 
     private bool Transition()
     {
-        if (true == player.blockInput)
+        if (true == player.BlockInput)
         {
             player.ChangeState(PlayerStateType.Block);
             return true;
@@ -86,6 +87,14 @@ public class PlayerIdle : PlayerState
         {
             player.ChangeState(PlayerStateType.OnAir);
             return true;
+        }
+
+        if(true == player.InteractInput)
+        {
+            if(true == player.Interactor.CanInteract())
+            {
+                player.ChangeState(PlayerStateType.Interact);
+            }
         }
 
         //X축 입력이 들어올 때
