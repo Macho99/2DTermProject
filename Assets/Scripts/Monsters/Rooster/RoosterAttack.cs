@@ -45,7 +45,7 @@ public class RoosterAttack : StateBase<Rooster.State, Rooster>
     {
         owner.LastAttackTime = Time.time;
         owner.AnimPlay("Attack");
-        //TODO : 플레이어 공격 코드
+        FieldSceneFlowController.Player.TakeDamage(owner.Damage, Vector2.zero);
     }
 
     private bool CheckDist()

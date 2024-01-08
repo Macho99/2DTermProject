@@ -9,9 +9,13 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
     private static DataManager dataManager;
     private static ResourceManager resourceManager;
+    private static InventoryManager inventoryManager;
+    private static UIManager uiManager;
     public static GameManager Instance { get { return instance; } }
     public static DataManager Data { get { return dataManager; } }
-
+    public static ResourceManager Resource { get { return resourceManager; } }
+    public static InventoryManager Inven { get { return inventoryManager; } }
+    public static UIManager UI {  get { return uiManager; } }
 
     public UnityEvent onFpsChange;
     public int fps;
@@ -51,5 +55,11 @@ public class GameManager : MonoBehaviour
     {
         dataManager = new GameObject("DataManager").AddComponent<DataManager>();
         dataManager.transform.parent = transform;
+        resourceManager = new GameObject("ResourceManager").AddComponent<ResourceManager>();
+        resourceManager.transform.parent = transform;
+        inventoryManager = new GameObject("InventoryManager").AddComponent<InventoryManager>();
+        inventoryManager.transform.parent = transform;
+        uiManager = new GameObject("UIManager").AddComponent<UIManager>();
+        uiManager.transform.parent = transform;
     }
 }

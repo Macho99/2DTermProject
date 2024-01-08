@@ -13,7 +13,7 @@ public class MonsterDropInteractBar : MonoBehaviour
     MonsterDrop owner;
 
     private void Awake()
-    { 
+    {
         owner= transform.parent.parent.GetComponent<MonsterDrop>();
     }
 

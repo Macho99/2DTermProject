@@ -25,6 +25,7 @@ public abstract class Monster : MonoBehaviour
     public MonsterUIState curUIState;
     public UnityEvent onUIStateChanged;
 
+    public int Damage { get {  return damage; } }
     public float CurHp { get { return curHp; } }
     public float MaxHp { get { return maxHp; } }
     public Transform Target { get { return target; } set { target = value; } }

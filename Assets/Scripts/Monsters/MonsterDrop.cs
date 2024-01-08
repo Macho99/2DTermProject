@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class MonsterDrop : MonoBehaviour, IInteractable
 {
     [SerializeField] int dropAmount = 1;
-    //[SerializeField] int dropItemType;
+    [SerializeField] ItemType dropItemType;
     [SerializeField] int maxInteractCount = 1;
     [SerializeField] int curInteractCount;
     [SerializeField] float interactDuration = 3f;
@@ -82,6 +82,7 @@ public class MonsterDrop : MonoBehaviour, IInteractable
 
     public void InteractSuccess(Interactor interactor)
     {
+        interactor.TakeItem(GameManager.Data.GetItem(dropItemType));
         interactor.InteractResult(true);
     }
 

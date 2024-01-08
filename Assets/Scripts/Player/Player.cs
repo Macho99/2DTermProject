@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
@@ -16,7 +17,14 @@ public class Player : MonoBehaviour
     [SerializeField] private int attackDamage = 10;
     [SerializeField] private float knockbackForce = 5f;
     [SerializeField] private float stunTime = 0f;
+    [SerializeField] private int curHp;
+    [SerializeField] private int maxHp = 100;
 
+
+    public UnityEvent onHpChanged;
+
+    public int MaxHp { get { return maxHp; } }
+    public int CurHp { get { return curHp; } }
     public Vector2 inputVec; 
     public bool BlockInput { get; private set; }
     public bool InteractInput { get; private set; }
@@ -62,6 +70,12 @@ public class Player : MonoBehaviour
 
         curState = states[0];
         curStateStr = curState.ToString();
+        curHp = maxHp;
+    }
+
+    private void Start()
+    {
+        onHpChanged?.Invoke();
     }
 
     public void ChangeState(PlayerStateType type)
@@ -263,5 +277,34 @@ public class Player : MonoBehaviour
                 isGround = false;
             }
         }
+    }
+
+    public void TakeDamage(int damage, Vector2 knockBack, float stunDuration = 0f)
+    {
+        curHp -= damage;
+        rb.velocity = new Vector2(0f, rb.velocity.y);
+        //hitParticle.Play();
+        rb.AddForce(knockBack, ForceMode2D.Impulse);
+
+        onHpChanged?.Invoke();
+
+        if (curHp <= 0)
+        {
+            curHp = 0;
+            onHpChanged?.Invoke();
+            Die();
+            return;
+        }
+
+        //if (stunDuration > 0.1f)
+        //{
+        //    StunEndTime = Time.time + stunDuration;
+        //    Stun();
+        //}
+    }
+
+    private void Die()
+    {
+
     }
 }

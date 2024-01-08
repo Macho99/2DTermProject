@@ -4,14 +4,38 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    public Dictionary<ItemType, string> dictItemName;
-    public Dictionary<ItemType, string> dictItemDesc;
-    public Dictionary<ItemType, Item> dictItem;
+    private Item[] items;
+    private string[] itemNames;
+    private string[] itemDescs;
 
     private void Awake()
     {
-        dictItem = new Dictionary<ItemType, Item>();
-        dictItemDesc = new Dictionary<ItemType, string>();
-        dictItemName = new Dictionary<ItemType, string>();
+        items = new Item[(int) ItemType.Size];
+        itemNames = new string[(int) ItemType.Size];
+        itemDescs = new string[(int) ItemType.Size];
+
+        int idx = (int)ItemType.RoosterMeat;
+        items[idx] = null;
+        itemNames[idx] = "닭고기";
+        itemDescs[idx] = "질기지만 잘 익히면 맛있을 것 같다";
+    }
+
+    public Item GetItem(ItemType type)
+    {
+        //기타 아이템
+        if (null == items[(int)type]){
+            return new OtherItem(type);
+        }
+
+        return items[(int)type];
+    }
+
+    public string GetItemName(ItemType type)
+    {
+        return itemNames[(int) type];
+    }
+    public string GetItemDesc(ItemType type)
+    {
+        return itemDescs[(int) type];
     }
 }
