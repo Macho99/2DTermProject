@@ -12318,7 +12318,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2
+  m_Text: 5
 --- !u!222 &427872979
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -31157,7 +31157,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cb276eaac4154dc4e93514bb1a435e16, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 56ae65b9f06f14aa49872c79b9fba168, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -54983,7 +54983,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6deb53d94b58c36498d7c13935616d95, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3ff4955ef06ef4debab9e7255f043f0d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -65783,7 +65783,7 @@ SpriteRenderer:
   m_Size: {x: 4, y: 4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1670334664 stripped
@@ -66125,7 +66125,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 5
+  m_Text: 'C
+
+'
 --- !u!222 &1683415792
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -68987,7 +68989,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1777818183
 RectTransform:
   m_ObjectHideFlags: 0
@@ -69008,7 +69010,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 582, y: -209}
+  m_AnchoredPosition: {x: 1327, y: -209}
   m_SizeDelta: {x: 670, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1777818184
@@ -69394,7 +69396,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cb276eaac4154dc4e93514bb1a435e16, type: 3}
+  m_Sprite: {fileID: 21300000, guid: af16dc5e98e0d47ac9fd8734f244c058, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -74595,7 +74597,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 5
+  m_Text: I
 --- !u!222 &1948125419
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -78584,6 +78586,7 @@ MonoBehaviour:
   traceRange: 5
   attackDist: 1
   attackDuration: 1
+  knockbackForce: 3
   curState: 
 --- !u!4 &2066943442
 Transform:
@@ -78688,9 +78691,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3742b36c409550b45be549eece8ce48e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropAmount: 1
+  dropAmount: 5
   dropItemType: 0
-  maxInteractCount: 1
+  maxInteractCount: 2
   curInteractCount: 0
   interactDuration: 3
   interactable: {fileID: 1077073339}

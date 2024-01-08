@@ -12,41 +12,34 @@ public class Alarm : MonoBehaviour
 
     [SerializeField] Animator anim;
     [SerializeField] RectTransform rect;
-    Vector3 initPos;
-
-    Coroutine turnOffCoroutine;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
         rect = GetComponent<RectTransform>();
-        initPos = rect.position;
         GameManager.UI.Alarm = this;
     }
 
-    public void Init(Sprite sprite, string infoStr, string textStr, int amount = 1)
+    public void Init(Item item)
     {
-        gameObject.SetActive(true);
+        string name;
+        if(item is MultipleItem multipleItem)
+        {
+            name = $"{item.Name} X {multipleItem.Amount}";
+        }
+        else
+        {
+            name = item.Name;
+        }
+        Init(item.Sprite, "¾ÆÀÌÅÛ È¹µæ!!", name);
+    }
 
+    public void Init(Sprite sprite, string infoStr, string textStr)
+    {
         image.sprite = sprite;
         upperText.text = infoStr;
         lowerText.text = textStr;
 
-        if (turnOffCoroutine != null)
-        {
-            StopCoroutine(turnOffCoroutine);
-        }
-
-        anim.Play("Enable");
-        rect.position = initPos;
-        turnOffCoroutine = StartCoroutine(CoTurnOff());
-    }
-
-    private IEnumerator CoTurnOff()
-    {
-        yield return new WaitForSeconds(3f);
-        anim.Play("Disable");
-        yield return new WaitUntil(() => { return anim.GetCurrentAnimatorStateInfo(0).IsName("Wait"); });
-        gameObject.SetActive(false);
+        anim.Play("Start");
     }
 }

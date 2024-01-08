@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[Serializable]
 public enum ItemType
 {
     RoosterMeat,
@@ -12,6 +13,7 @@ public enum ItemType
     Size
 }
 
+[Serializable]
 public abstract class Item {
     private ItemType type;
 

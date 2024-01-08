@@ -13,6 +13,16 @@ public class UIManager : MonoBehaviour
 
     public void ItemAlarmSet(Item item)
     {
-        Alarm?.Init(item.Sprite, "아이템 획득!!", item.Name);
+        Alarm?.Init(item);
+    }
+
+    public void InfoAlarmSet(Sprite sprite, string upperStr, string lowerStr)
+    {
+        Alarm?.Init(sprite, upperStr, lowerStr);
+    }
+
+    public void InvenFullAlarm()
+    {
+        InfoAlarmSet(GameManager.Resource.spriteDict["Bag"], "습득 불가", "아이템 가방이 꽉 찼습니다..");
     }
 }

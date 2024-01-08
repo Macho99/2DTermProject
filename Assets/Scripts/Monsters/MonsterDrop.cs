@@ -82,7 +82,7 @@ public class MonsterDrop : MonoBehaviour, IInteractable
 
     public void InteractSuccess(Interactor interactor)
     {
-        interactor.TakeItem(GameManager.Data.GetItem(dropItemType));
+        interactor.TakeItem(GameManager.Data.GetItem(dropItemType, dropAmount));
         interactor.InteractResult(true);
     }
 

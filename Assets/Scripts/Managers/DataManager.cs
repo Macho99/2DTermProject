@@ -20,11 +20,11 @@ public class DataManager : MonoBehaviour
         itemDescs[idx] = "질기지만 잘 익히면 맛있을 것 같다";
     }
 
-    public Item GetItem(ItemType type)
+    public Item GetItem(ItemType type, int amount = 1)
     {
         //기타 아이템
         if (null == items[(int)type]){
-            return new OtherItem(type);
+            return new OtherItem(type, amount);
         }
 
         return items[(int)type];

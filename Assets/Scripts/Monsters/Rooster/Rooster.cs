@@ -10,8 +10,10 @@ public class Rooster : Monster
     [SerializeField] float traceRange;
     [SerializeField] float attackDist;
     [SerializeField] float attackDuration;
+    [SerializeField] float knockbackForce = 3f;
     [SerializeField] string curState;
 
+    public float KnockbackForce {  get { return knockbackForce; } }
     public float AttackDuration { get { return attackDuration; } }
     public float LastAttackTime {  get; set; }
     public float AttackDist { get { return attackDist; } }
@@ -65,5 +67,10 @@ public class Rooster : Monster
     protected override void Stun()
     {
         stateMachine.ChangeState(State.Stun);
+    }
+
+    protected override void HittedDetect()
+    {
+        stateMachine.ChangeState(State.Detect);
     }
 }

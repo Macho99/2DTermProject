@@ -21,9 +21,9 @@ public abstract class Monster : MonoBehaviour
     protected BoxCollider2D col;
     protected Transform target;
 
-    public UnityEvent onHpChanged;
+    [HideInInspector] public UnityEvent onHpChanged;
     public MonsterUIState curUIState;
-    public UnityEvent onUIStateChanged;
+    [HideInInspector] public UnityEvent onUIStateChanged;
 
     public int Damage { get {  return damage; } }
     public float CurHp { get { return curHp; } }
@@ -77,6 +77,7 @@ public abstract class Monster : MonoBehaviour
 
     protected abstract void Die();
     protected abstract void Stun();
+    protected abstract void HittedDetect();
 
     public void TakeDamage(int damage, Vector2 knockBack, float stunDuration = 0f)
     {
@@ -89,6 +90,11 @@ public abstract class Monster : MonoBehaviour
         
         lastHitTime = Time.time;
         onHpChanged?.Invoke();
+        if(target == null)
+        {
+            target = FieldSceneFlowController.Player.transform;
+            HittedDetect();
+        }
 
         if (curHp <= 0)
         {

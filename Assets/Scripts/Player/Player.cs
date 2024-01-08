@@ -284,6 +284,7 @@ public class Player : MonoBehaviour
         curHp -= damage;
         rb.velocity = new Vector2(0f, rb.velocity.y);
         //hitParticle.Play();
+        anim.SetTrigger("Hit");
         rb.AddForce(knockBack, ForceMode2D.Impulse);
 
         onHpChanged?.Invoke();
