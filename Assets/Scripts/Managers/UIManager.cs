@@ -6,6 +6,9 @@ public class UIManager : MonoBehaviour
 {
     public Alarm Alarm { private get; set; }
 
+    public ItemInfoUI ItemInfo { get; set; }
+    public DragInfoUI DragInfo { get; set; }
+
     private void Start()
     {
         GameManager.Inven.onItemGet.AddListener(ItemAlarmSet);
@@ -13,12 +16,12 @@ public class UIManager : MonoBehaviour
 
     public void ItemAlarmSet(Item item)
     {
-        Alarm?.Init(item);
+        Alarm?.Set(item);
     }
 
     public void InfoAlarmSet(Sprite sprite, string upperStr, string lowerStr)
     {
-        Alarm?.Init(sprite, upperStr, lowerStr);
+        Alarm?.Set(sprite, upperStr, lowerStr);
     }
 
     public void InvenFullAlarm()

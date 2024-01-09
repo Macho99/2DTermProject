@@ -24,6 +24,7 @@ public abstract class Item {
 
     public ItemType Type { get { return type;} }
     public string Name { get { return GameManager.Data.GetItemName(type); } }
-    public string Desc { get { return GameManager.Data.GetItemDesc(type); } }
+    public string Summary { get { return GameManager.Data.GetItemSummary(type); } }
+    public string DetailDesc { get { return GameManager.Data.GetItemDetailDesc(type); } }
     public Sprite Sprite { get { return GameManager.Resource.GetItemSprite(type); } }
 }

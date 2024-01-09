@@ -21,7 +21,7 @@ public class Interactor : MonoBehaviour
 
     public void TakeItem(Item item)
     {
-        GameManager.Inven.GetItem(item);
+        GameManager.Inven.PlayerGetItem(item);
     }
 
     public bool InteractStart()

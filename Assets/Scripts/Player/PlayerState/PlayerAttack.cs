@@ -44,7 +44,7 @@ public class PlayerAttack : PlayerState
             player.ChangeState(PlayerStateType.Idle);
             return;
         }
-        player.HorizonBreak(Time.unscaledDeltaTime);
+        player.HorizonBreak(TimeExtension.UnscaledDeltaTime);
     }
 
     public override void Exit()

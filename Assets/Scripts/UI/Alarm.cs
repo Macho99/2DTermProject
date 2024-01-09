@@ -10,8 +10,8 @@ public class Alarm : MonoBehaviour
     [SerializeField] TextMeshProUGUI upperText;
     [SerializeField] TextMeshProUGUI lowerText;
 
-    [SerializeField] Animator anim;
-    [SerializeField] RectTransform rect;
+    Animator anim;
+    RectTransform rect;
 
     private void Awake()
     {
@@ -20,7 +20,12 @@ public class Alarm : MonoBehaviour
         GameManager.UI.Alarm = this;
     }
 
-    public void Init(Item item)
+    private void OnDestroy()
+    {
+        GameManager.UI.Alarm = null;
+    }
+
+    public void Set(Item item)
     {
         string name;
         if(item is MultipleItem multipleItem)
@@ -31,10 +36,10 @@ public class Alarm : MonoBehaviour
         {
             name = item.Name;
         }
-        Init(item.Sprite, "æ∆¿Ã≈€ »πµÊ!!", name);
+        Set(item.Sprite, "æ∆¿Ã≈€ »πµÊ!!", name);
     }
 
-    public void Init(Sprite sprite, string infoStr, string textStr)
+    public void Set(Sprite sprite, string infoStr, string textStr)
     {
         image.sprite = sprite;
         upperText.text = infoStr;

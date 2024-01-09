@@ -36,9 +36,8 @@ public class MonsterDrop : MonoBehaviour, IInteractable
     {
         progressRatio = 0f;
         float curInteractingDuration = 0f;
-        while(curInteractingDuration < interactDuration)
-        {
-            curInteractingDuration += Time.unscaledDeltaTime;
+        while (curInteractingDuration < interactDuration) {
+            curInteractingDuration += TimeExtension.UnscaledDeltaTime;
             progressRatio = curInteractingDuration / interactDuration;
             onInteractProgress?.Invoke();
             yield return null;

@@ -41,6 +41,6 @@ public class PlayerLand : PlayerState
             return;
         }
 
-        player.HorizonMove(Time.unscaledDeltaTime);
+        player.HorizonMove(TimeExtension.UnscaledDeltaTime);
     }
 }

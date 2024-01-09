@@ -60,7 +60,7 @@ public class PlayerHpBar : MonoBehaviour
         while (Mathf.Abs(ratio - slider.value) > 0.01f)
         {
             float diff = Mathf.Abs(ratio - slider.value);
-            float amount = Mathf.Lerp(0, diff, Time.unscaledDeltaTime * changeSpeed);
+            float amount = Mathf.Lerp(0, diff, TimeExtension.UnscaledDeltaTime * changeSpeed);
             //hp가 줄었을 때
             if (ratio < slider.value)
             {

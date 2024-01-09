@@ -31,7 +31,7 @@ public class PlayerOnAir : PlayerState
 
     public override void Update()
     {
-        player.HorizonMove(Time.unscaledDeltaTime, player.AirControlMultiple);
+        player.HorizonMove(TimeExtension.UnscaledDeltaTime, player.AirControlMultiple);
 
         if (readyToLand)
         {

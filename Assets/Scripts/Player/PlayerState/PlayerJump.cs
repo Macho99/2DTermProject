@@ -53,6 +53,6 @@ public class PlayerJump : PlayerState
             }
         }
 
-        player.HorizonMove(Time.unscaledDeltaTime);
+        player.HorizonMove(TimeExtension.UnscaledDeltaTime);
     }
 }

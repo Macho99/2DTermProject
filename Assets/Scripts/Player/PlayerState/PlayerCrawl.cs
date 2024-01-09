@@ -46,6 +46,6 @@ public class PlayerCrawl : PlayerState
             return;
         }
 
-        player.HorizonMove(Time.unscaledDeltaTime , 1f, 0.4f);
+        player.HorizonMove(TimeExtension.UnscaledDeltaTime , 1f, 0.4f);
     }
 }

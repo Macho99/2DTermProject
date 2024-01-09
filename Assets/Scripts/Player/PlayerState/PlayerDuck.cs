@@ -55,7 +55,7 @@ public class PlayerDuck : PlayerState
         //X축 입력이 없으면서 X축 속도가 있을 때 감속
         else if (Mathf.Abs(player.GetVelocity().x) > 0.1f)
         {
-            player.HorizonBreak(Time.unscaledDeltaTime);
+            player.HorizonBreak(TimeExtension.UnscaledDeltaTime);
         }
     }
 }

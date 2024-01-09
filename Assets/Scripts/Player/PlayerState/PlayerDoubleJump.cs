@@ -29,7 +29,7 @@ public class PlayerDoubleJump : PlayerState
 
     public override void Update()
     {
-        player.HorizonMove(Time.unscaledDeltaTime, player.AirControlMultiple);
+        player.HorizonMove(TimeExtension.UnscaledDeltaTime, player.AirControlMultiple);
         if (true == player.isGround)
         {
             player.ChangeState(PlayerStateType.Land);

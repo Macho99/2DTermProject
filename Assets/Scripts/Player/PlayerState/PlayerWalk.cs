@@ -49,7 +49,7 @@ public class PlayerWalk : PlayerState
             return;
         }
 
-        player.HorizonMove(Time.unscaledDeltaTime);
+        player.HorizonMove(TimeExtension.UnscaledDeltaTime);
     }
 
     public override void Exit()
