@@ -12,6 +12,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private IngredientItem[] ingredientInv;
 
     [HideInInspector] public UnityEvent<Item> onItemGet;
+
     public int MaxInvenSize {  get { return maxInvenSize; } }
 
     private void Awake()
@@ -20,6 +21,9 @@ public class InventoryManager : MonoBehaviour
         equipInv = new EquipItem[maxInvenSize];
         consumInv = new ConsumptionItem[maxInvenSize];
         ingredientInv = new IngredientItem[maxInvenSize];
+
+        PlayerGetItem(GameManager.Data.GetItem(ItemID.RoosterMeat, 2));
+        PlayerGetItem(GameManager.Data.GetItem(ItemID.DuckEgg, 4));
     }
 
     public void PlayerGetItem(Item item)
@@ -36,6 +40,30 @@ public class InventoryManager : MonoBehaviour
         {
             AddInv(equipInv, equipItem);
         }
+    }
+
+    public void Refresh(ItemType invType, int idx, Item item)
+    {
+        Item[] inv;
+        switch(invType)
+        {
+            case ItemType.Equip:
+                inv = equipInv;
+                break;
+            case ItemType.Consump:
+                inv = consumInv;
+                break;
+            case ItemType.Ingredient:
+            default:
+                inv = ingredientInv;
+                break;
+        }
+        if(idx >= inv.Length)
+        {
+            Debug.LogError($"{idx}는 inv의 최대 길이 밖임");
+            return;
+        }
+        inv[idx] = item;
     }
 
     public IngredientItem[] GetIngredientInv()
@@ -87,7 +115,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (null == inv[i])
                 emptyIdx = Mathf.Min(i, emptyIdx);
-            else if (inv[i].Type == newItem.Type)
+            else if (inv[i].ID == newItem.ID)
             {
                 find = true;
                 inv[i].AddAmount(newItem.Amount);
@@ -106,10 +134,5 @@ public class InventoryManager : MonoBehaviour
             inv[emptyIdx] = newItem;
         }
         onItemGet?.Invoke(newItem);
-    }
-
-    public void Refresh()
-    {
-
     }
 }

@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField] GameObject contentsFolder;
     [SerializeField] InvenElement slotPrefab;
     [SerializeField] InvenElement[] slots;
+    [SerializeField] Image title;
+    [SerializeField] Color equipColor;
+    [SerializeField] Color consumpColor;
+    [SerializeField] Color ingredientColor;
 
-    private enum OpenInvenType { Equip, Consump, Ingredient };
-    private OpenInvenType openInvenType;
+    private ItemType openInvenType;
 
     private void Awake()
     {
@@ -19,9 +23,11 @@ public class InventoryUI : MonoBehaviour
         {
             InvenElement elem = Instantiate(slotPrefab, contentsFolder.transform);
             elem.name = $"slot{i.ToString()}";
+            elem.Idx = i;
+            elem.InventoryUI = this;
             slots[i] = elem;
         }
-        openInvenType = OpenInvenType.Ingredient;
+        openInvenType = ItemType.Ingredient;
     }
 
     private void Start()
@@ -35,7 +41,7 @@ public class InventoryUI : MonoBehaviour
         Refresh(openInvenType);
     }
 
-    private void Refresh(OpenInvenType type)
+    private void Refresh(ItemType type)
     {
         Item[] inv;
 
@@ -43,16 +49,17 @@ public class InventoryUI : MonoBehaviour
 
         switch (openInvenType)
         {
-            case OpenInvenType.Equip:
+            case ItemType.Equip:
+                title.color = equipColor;
                 inv = GameManager.Inven.GetEquipInv();
                 break;
-            case OpenInvenType.Consump:
+            case ItemType.Consump:
+                title.color = consumpColor;
                 inv = GameManager.Inven.GetConsumpInv();
                 break;
-            case OpenInvenType.Ingredient:
-                inv = GameManager.Inven.GetIngredientInv();
-                break;
+            case ItemType.Ingredient:
             default:
+                title.color = ingredientColor;
                 inv = GameManager.Inven.GetIngredientInv();
                 break;
         }
@@ -75,18 +82,18 @@ public class InventoryUI : MonoBehaviour
     public void EquipMenuSelected(bool val)
     {
         if (val == false) return;
-        Refresh(OpenInvenType.Equip);
+        Refresh(ItemType.Equip);
     }
 
     public void ConsumpMenuSelected(bool val)
     {
         if (val == false) return;
-        Refresh(OpenInvenType.Consump);
+        Refresh(ItemType.Consump);
     }
 
     public void IngredientMenuSelected(bool val)
     {
         if (val == false) return;
-        Refresh(OpenInvenType.Ingredient);
+        Refresh(ItemType.Ingredient);
     }
 }

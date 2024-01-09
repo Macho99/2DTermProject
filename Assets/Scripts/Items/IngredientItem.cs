@@ -4,7 +4,9 @@ using System.Collections.Generic;
 [Serializable]
 public class IngredientItem : MultipleItem
 {
-    public IngredientItem(ItemType type, int amount = 1) : base(type, amount)
+    private static ItemType type = ItemType.Ingredient;
+    public IngredientItem(ItemID id, int amount = 1) : base(id, type, amount)
     {
+
     }
 }

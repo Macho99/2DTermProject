@@ -6,7 +6,7 @@ public abstract class MultipleItem : Item
 {
     int amount;
     public int Amount { get { return amount; } }
-    protected MultipleItem(ItemType type, int amount) : base(type)
+    protected MultipleItem(ItemID id, ItemType type,  int amount) : base(id, type)
     {
         this.amount = amount;
     }

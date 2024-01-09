@@ -13,8 +13,9 @@ public class InvenElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private TextMeshProUGUI text;
     private Color transparencyColor;
     private Color normalColor;
-    private RectTransform rect;
 
+    public InventoryUI InventoryUI { private get; set; }
+    public int Idx { get; set; }
     public Item CurItem { get { return curItem; } }
 
     private void Awake()
@@ -24,7 +25,6 @@ public class InvenElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         normalColor = Color.white;
         image = transform.GetChild(0).GetComponent<Image>();
         text = GetComponentInChildren<TextMeshProUGUI>();
-        rect = GetComponent<RectTransform>();
     }
 
     public void Set(Item item = null)
@@ -85,7 +85,6 @@ public class InvenElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (curItem == null) return;
         GameManager.UI.DragInfo.InActive();
     }
 
@@ -97,12 +96,20 @@ public class InvenElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnDrop(PointerEventData eventData)
     {
-        if(TryGetComponent<InvenElement>(out InvenElement elem))
+        if(eventData.pointerDrag.TryGetComponent<InvenElement>(out InvenElement otherElem))
         {
-            if(elem.curItem != null)
-            {
+            if (null == otherElem.curItem) return;
+            if(otherElem == this) return;
 
-            }
+            ItemType type = otherElem.curItem.Type;
+
+            Item temp = otherElem.curItem;
+            otherElem.curItem = this.curItem;
+            this.curItem = temp;
+            GameManager.Inven.Refresh(type, otherElem.Idx, otherElem.curItem);
+            GameManager.Inven.Refresh(type, this.Idx, this.curItem);
+            InventoryUI.Refresh();
+            OnPointerEnter(null);
         }
     }
 }

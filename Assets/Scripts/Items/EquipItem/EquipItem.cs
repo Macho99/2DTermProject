@@ -2,9 +2,8 @@
 
 public abstract class EquipItem : Item
 {
-    public EquipItem(ItemType type) : base(type)
+    private static ItemType type = ItemType.Equip;
+    public EquipItem(ItemID id) : base(id, type)
     {
     }
-
-
 }

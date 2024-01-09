@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class MonsterDrop : MonoBehaviour, IInteractable
 {
     [SerializeField] int dropAmount = 1;
-    [SerializeField] ItemType dropItemType;
+    [SerializeField] ItemID dropItemType;
     [SerializeField] int maxInteractCount = 1;
     [SerializeField] int curInteractCount;
     [SerializeField] float interactDuration = 3f;

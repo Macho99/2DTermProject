@@ -286,6 +286,7 @@ public class Player : MonoBehaviour
         //hitParticle.Play();
         anim.SetTrigger("Hit");
         rb.AddForce(knockBack, ForceMode2D.Impulse);
+        LastCombatTime = Time.time;
 
         onHpChanged?.Invoke();
 

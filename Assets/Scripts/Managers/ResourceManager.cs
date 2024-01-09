@@ -15,7 +15,7 @@ public class ResourceManager : MonoBehaviour
         foreach(var sprite in spriteResources)
         {
             //파일 이름과 ItemType enum 이름 같아야함!!
-            ItemType type = (ItemType) Enum.Parse(typeof(ItemType), sprite.name);
+            ItemID type = (ItemID) Enum.Parse(typeof(ItemID), sprite.name);
 
             //type 개수만큼 sprite가 있는지 확인
             itemSprites[(int)type] = sprite;
@@ -29,7 +29,7 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-    public Sprite GetItemSprite(ItemType type)
+    public Sprite GetItemSprite(ItemID type)
     {
         return itemSprites[(int) type];
     }

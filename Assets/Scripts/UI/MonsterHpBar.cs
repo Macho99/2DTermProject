@@ -38,11 +38,22 @@ public class MonsterHpBar : MonoBehaviour
 
         mask.fillAmount = owner.CurHp / owner.MaxHp;
 
+        if (owner.CurHp <= 0)
+        {
+            background.gameObject.SetActive(false);
+            mask.gameObject.SetActive(false);
+            if(null != offCoroutine)
+            {
+                StopCoroutine(offCoroutine);
+            }
+        }
+
         lastOnTime = Time.time;
         if(null == offCoroutine)
         {
             StartCoroutine(CoOff());
         }
+
     }
 
     private IEnumerator CoOff()

@@ -11,39 +11,45 @@ public class DataManager : MonoBehaviour
 
     private void Awake()
     {
-        items = new Item[(int) ItemType.Size];
-        itemNames = new string[(int) ItemType.Size];
-        itemSummary = new string[(int) ItemType.Size];
-        itemDetailDesc = new string[(int) ItemType.Size];
+        items = new Item[(int) ItemID.Size];
+        itemNames = new string[(int) ItemID.Size];
+        itemSummary = new string[(int) ItemID.Size];
+        itemDetailDesc = new string[(int) ItemID.Size];
 
-        int idx = (int)ItemType.RoosterMeat;
+        int idx = (int)ItemID.RoosterMeat;
         items[idx] = null;
         itemNames[idx] = "닭고기";
-        itemSummary[idx] = "요리재료";
+        itemSummary[idx] = "요리 재료";
         itemDetailDesc[idx] = "이걸로 스튜, 구이 등을 만들 수 있을 것 같다";
+
+        idx = (int)ItemID.DuckEgg;
+        items[idx] = null;
+        itemNames[idx] = "오리 알";
+        itemSummary[idx] = "요리 재료";
+        itemDetailDesc[idx] = "프라이팬에 구워서 소금만 뿌려 먹어도 맛있을까? 직접 한번 해보자.";
     }
 
-    public Item GetItem(ItemType type, int amount = 1)
+    public Item GetItem(ItemID id, int amount = 1)
     {
         //기타 아이템
-        if (null == items[(int)type]){
-            return new IngredientItem(type, amount);
+        if (null == items[(int)id]){
+            return new IngredientItem(id, amount);
         }
 
-        return items[(int)type];
+        return items[(int)id];
     }
 
-    public string GetItemName(ItemType type)
+    public string GetItemName(ItemID id)
     {
-        return itemNames[(int) type];
+        return itemNames[(int) id];
     }
-    public string GetItemSummary(ItemType type)
+    public string GetItemSummary(ItemID id)
     {
-        return itemSummary[(int) type];
+        return itemSummary[(int) id];
     }
 
-    public string GetItemDetailDesc(ItemType type)
+    public string GetItemDetailDesc(ItemID id)
     {
-        return itemDetailDesc[(int) type];
+        return itemDetailDesc[(int) id];
     }
 }

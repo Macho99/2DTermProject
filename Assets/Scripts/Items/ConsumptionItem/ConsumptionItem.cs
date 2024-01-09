@@ -4,7 +4,8 @@ using UnityEngine;
 
 public abstract class ConsumptionItem : MultipleItem
 {
-    public ConsumptionItem(ItemType type, int amount) : base(type, amount)
+    private static ItemType type = ItemType.Consump;
+    public ConsumptionItem(ItemID id, int amount) : base(id, type, amount)
     {
     }
     public void Use()
