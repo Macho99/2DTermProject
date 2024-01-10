@@ -17,11 +17,6 @@ public class PlayerDoubleJump : PlayerState
         player.doubleJumped = true;
     }
 
-    public override void Attack(InputValue value)
-    {
-
-    }
-
     public override void Jump(InputValue value)
     {
 

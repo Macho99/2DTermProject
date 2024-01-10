@@ -16,11 +16,6 @@ public class PlayerJump : PlayerState
 
     }
 
-    public override void Attack(InputValue value)
-    {
-
-    }
-
     public override void Enter()
     {
         player.PlayAnim("Jump");

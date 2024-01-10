@@ -16,11 +16,6 @@ public class PlayerStun : PlayerState
 
     }
 
-    public override void Attack(InputValue value)
-    {
-
-    }
-
     public override void Jump(InputValue value)
     {
 

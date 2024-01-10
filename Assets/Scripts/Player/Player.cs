@@ -4,6 +4,7 @@ using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.U2D.Animation;
 
 public class Player : MonoBehaviour
 {
@@ -14,20 +15,44 @@ public class Player : MonoBehaviour
     [SerializeField] private float jumpForce = 3f;
     [SerializeField] private float doubleJumpForce = 5f;
     [SerializeField] private float readyDuration = 3f;
-    [SerializeField] private int attackDamage = 10;
-    [SerializeField] private float knockbackForce = 5f;
-    [SerializeField] private float stunTime = 0f;
     [SerializeField] private int curHp;
     [SerializeField] private int maxHp = 100;
+    [SerializeField] private Transform weaponFolder;
+    [SerializeField] private SpriteLibrary weaponLibrary;
+    [SerializeField] private Weapon curWeapon;
 
+    private SpriteRenderer weaponSpRenderer;
 
     public UnityEvent onHpChanged;
+    public UnityEvent onAttackBtn1Pressed;
+    public UnityEvent onAttackBtn2Pressed;
+    public UnityEvent onAttackState;
+
+    public Weapon CurWeapon { 
+        get {
+            return curWeapon;
+        }
+        set
+        {
+            curWeapon = value;
+            if(value == null)
+            {
+                weaponLibrary.spriteLibraryAsset = null;
+                weaponSpRenderer.sprite = null;
+                return;
+            }
+            weaponLibrary.spriteLibraryAsset = curWeapon.SpriteLibraryAsset;
+        }
+    }
 
     public int MaxHp { get { return maxHp; } }
     public int CurHp { get { return curHp; } }
     public Vector2 inputVec; 
+    public bool AttackBtn1Input { get; private set; }
+    public bool AttackBtn2Input { get; private set; } 
     public bool BlockInput { get; private set; }
     public bool InteractInput { get; private set; }
+    public bool IsAttackState { get; set; }
     public bool isGround = false;
     public bool doubleJumped = false;
     public int dir = 1; // 1이면 오른쪽, -1이면 왼쪽
@@ -49,7 +74,9 @@ public class Player : MonoBehaviour
         col = GetComponent<CapsuleCollider2D>();
         anim = GetComponent<Animator>();
         Interactor = GetComponentInChildren<Interactor>();
+        weaponSpRenderer = weaponLibrary.GetComponent<SpriteRenderer>();
 
+        curHp = maxHp;
 
         // TODO: 상태 변경 관리하기
         states = new PlayerState[(int) PlayerStateType.Size];
@@ -69,8 +96,8 @@ public class Player : MonoBehaviour
         states[idx++] = new PlayerInteract(this);
 
         curState = states[0];
+        curState.Enter();
         curStateStr = curState.ToString();
-        curHp = maxHp;
     }
 
     private void Start()
@@ -92,6 +119,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         curState.Update();
+        CurWeapon?.WeaponUpdate();
     }
 
     private void OnJump(InputValue value) {
@@ -100,12 +128,34 @@ public class Player : MonoBehaviour
 
     private void OnAttackBtn1(InputValue value)
     {
-        curState.Attack(value);
+        AttackBtn1Input = (value.Get<float>() > 0.9f) ? true : false;
+
+        if(true == AttackBtn1Input)
+        {
+            onAttackBtn1Pressed?.Invoke();
+        }
+    }
+
+    private void OnAttackBtn2(InputValue value)
+    {
+        AttackBtn2Input = (value.Get<float>() > 0.9f) ? true : false;
+
+        if(true == AttackBtn2Input)
+        {
+            onAttackBtn2Pressed?.Invoke();
+        }
     }
 
     private void OnHorizonMove(InputValue value)
     {
         inputVec.x = value.Get<float>();
+        if (true == IsAttackState) return;
+
+        AddjustFlip();
+    }
+
+    public void AddjustFlip()
+    {
         if (inputVec.x < 0f)
         {
             dir = -1;
@@ -127,6 +177,7 @@ public class Player : MonoBehaviour
     {
         BlockInput = value.Get<float>() > 0.9f ? true : false;
     }
+
     private void OnInteract(InputValue value)
     {
         InteractInput = value.Get<float>() > 0.9f ? true : false;
@@ -139,7 +190,7 @@ public class Player : MonoBehaviour
 
     public void HorizonMove(float time, float accelMulti = 1f, float maxMulti = 1f)
     {
-        if(rb.velocity.x < -maxSpeed * maxMulti && inputVec.x< 0f)
+        if(rb.velocity.x < -maxSpeed * maxMulti && inputVec.x < 0f)
         {
             return;
         }
@@ -227,31 +278,6 @@ public class Player : MonoBehaviour
         {
             col.offset = new Vector2(0f, 0.3f);
             col.size = new Vector2(0.5f, 0.6f);
-        }
-    }
-
-    public void NormalAttack()
-    {
-        Vector2 origin = transform.position;
-        origin.y += 0.5f;
-        RaycastHit2D hit = Physics2D.BoxCast(origin, Vector2.one, 0f, Vector2.right * dir * 0.5f, 1f, LayerMask.GetMask("Monster"));
-
-        if (hit.collider == null) return;
-
-        if(hit.collider.TryGetComponent<Monster>(out Monster monster))
-        {
-            Vector2 knockbackDir;
-            //거리가 가까우면 플레이어의 공격 방향으로 넉백 되도록
-            if ((monster.transform.position - transform.position).sqrMagnitude < 0.4f * 0.4f)
-            {
-                knockbackDir = Vector2.right * dir;
-            }
-            else
-            {
-                knockbackDir = monster.transform.position - transform.position;
-                knockbackDir.Normalize();
-            }
-            monster.TakeDamage(attackDamage, knockbackDir * knockbackForce, stunTime);
         }
     }
 

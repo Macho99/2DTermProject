@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerIdle : PlayerState
 {
@@ -30,11 +31,16 @@ public class PlayerIdle : PlayerState
             player.PlayAnim("Idle");
             readyState = false;
         }
+
+        player.onAttackBtn1Pressed.AddListener(Attack);
+        player.onAttackBtn2Pressed.AddListener(Attack);
+        player.AddjustFlip();
     }
 
-    public override void Attack(InputValue value)
+    public override void Exit()
     {
-        player.ChangeState(PlayerStateType.Attack);
+        player.onAttackBtn1Pressed.RemoveListener(Attack);
+        player.onAttackBtn2Pressed.RemoveListener(Attack);
     }
 
     public override void Jump(InputValue value)
@@ -105,10 +111,5 @@ public class PlayerIdle : PlayerState
         }
 
         return false;
-    }
-
-    public override void Exit()
-    {
-
     }
 }

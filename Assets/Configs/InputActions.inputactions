@@ -16,12 +16,21 @@
                 },
                 {
                     "name": "AttackBtn1",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "b876f1ef-46a0-4681-b5f3-42feaea576ca",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "AttackBtn2",
+                    "type": "Value",
+                    "id": "3672befd-d89f-4783-acbc-fa72cd2d5b7a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Block",
@@ -168,6 +177,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5ab6bd59-9739-483a-a90f-bb093b5e4daf",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackBtn2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

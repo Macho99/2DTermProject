@@ -16,11 +16,6 @@ public class PlayerOnAir : PlayerState
         readyToLand = !(player.isGround);
     }
 
-    public override void Attack(InputValue value)
-    {
-
-    }
-
     public override void Jump(InputValue value)
     {
         if(false == player.doubleJumped)

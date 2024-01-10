@@ -39,7 +39,7 @@ public class RoosterWalk : StateBase<Rooster.State, Rooster>
 
     public override void Update()
     {
-        owner.SetVel(new Vector2(owner.MoveSpeed * owner.dir, 0f));
+        owner.HorizonMove(owner.MoveSpeed * owner.dir);
         curWalkTime -= Time.deltaTime;
     }
 }

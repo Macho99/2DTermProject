@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class StateBase<TState, TOwner> where TOwner : MonoBehaviour
+public abstract class StateBase<TState, TOwner>
 {
     protected TOwner owner;
     protected StateMachine<TState, TOwner> stateMachine;

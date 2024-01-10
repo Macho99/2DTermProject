@@ -19,11 +19,6 @@ public class PlayerDuck : PlayerState
 
     }
 
-    public override void Attack(InputValue value)
-    {
-
-    }
-
     public override void Jump(InputValue value)
     {
         if (player.CheckTop() == false)

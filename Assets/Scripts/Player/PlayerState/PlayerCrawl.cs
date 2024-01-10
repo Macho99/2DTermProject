@@ -12,11 +12,6 @@ public class PlayerCrawl : PlayerState
     {
     }
 
-    public override void Attack(InputValue value)
-    {
-
-    }
-
     public override void Enter()
     {
         player.PlayAnim("Crawl");

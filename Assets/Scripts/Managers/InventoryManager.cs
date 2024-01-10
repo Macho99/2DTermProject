@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class InventoryManager : MonoBehaviour
 {
     private const int maxInvenSize = 20;
     [SerializeField] private EquipItem[] equipInv;
-    [SerializeField] private ConsumptionItem[] consumInv;
+    [SerializeField] private ConsumptionItem[] consumpInv;
     [SerializeField] private IngredientItem[] ingredientInv;
 
     [HideInInspector] public UnityEvent<Item> onItemGet;
@@ -19,7 +20,7 @@ public class InventoryManager : MonoBehaviour
     {
         onItemGet = new UnityEvent<Item>();
         equipInv = new EquipItem[maxInvenSize];
-        consumInv = new ConsumptionItem[maxInvenSize];
+        consumpInv = new ConsumptionItem[maxInvenSize];
         ingredientInv = new IngredientItem[maxInvenSize];
 
         PlayerGetItem(GameManager.Data.GetItem(ItemID.RoosterMeat, 2));
@@ -34,7 +35,7 @@ public class InventoryManager : MonoBehaviour
         }
         else if(item is ConsumptionItem newConsumItem)
         {
-            AddMultipleInv(consumInv, newConsumItem);
+            AddMultipleInv(consumpInv, newConsumItem);
         }
         else if(item is EquipItem equipItem)
         {
@@ -51,7 +52,7 @@ public class InventoryManager : MonoBehaviour
                 inv = equipInv;
                 break;
             case ItemType.Consump:
-                inv = consumInv;
+                inv = consumpInv;
                 break;
             case ItemType.Ingredient:
             default:
@@ -78,7 +79,7 @@ public class InventoryManager : MonoBehaviour
     
     public ConsumptionItem[] GetConsumpInv()
     {
-        return consumInv;
+        return consumpInv;
     }
 
     private void AddInv(Item[] inv, Item item)

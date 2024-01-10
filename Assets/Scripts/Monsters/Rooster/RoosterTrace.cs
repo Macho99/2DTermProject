@@ -63,7 +63,7 @@ public class RoosterTrace : StateBase<Rooster.State, Rooster>
 
     public override void Update()
     {
-        owner.SetVel(Vector2.right * owner.dir * owner.RunSpeed);
+        owner.HorizonMove(owner.dir * owner.RunSpeed);
         CheckDirection();
     }
 

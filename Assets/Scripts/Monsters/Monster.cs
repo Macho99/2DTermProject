@@ -66,6 +66,15 @@ public abstract class Monster : MonoBehaviour
         curHp = maxHp;
     }
 
+    public void HorizonMove(float velX)
+    {
+        if (Time.time < lastHitTime + knockbackTime)
+        {
+            return;
+        }
+        rb.velocity = new Vector2(velX, rb.velocity.y);
+    }
+
     public void SetVel(Vector2 vel)
     {
         if(Time.time < lastHitTime + knockbackTime)
@@ -103,7 +112,7 @@ public abstract class Monster : MonoBehaviour
                 Flip();
             }
 
-            rb.AddForce(knockBack * 2f, ForceMode2D.Impulse);
+            rb.AddForce(knockBack.normalized * 7f, ForceMode2D.Impulse);
             curHp = 0;
             Die();
 
@@ -111,6 +120,7 @@ public abstract class Monster : MonoBehaviour
 
             return;
         }
+
         rb.AddForce(knockBack, ForceMode2D.Impulse);
 
         if (stunDuration > 0.1f)

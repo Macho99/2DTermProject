@@ -14,11 +14,8 @@ public class PlayerWalk : PlayerState
     public override void Enter()
     {
         player.PlayAnim("Walk");
-    }
-
-    public override void Attack(InputValue value)
-    {
-        player.ChangeState(PlayerStateType.Attack);
+        player.onAttackBtn1Pressed.AddListener(Attack);
+        player.onAttackBtn2Pressed.AddListener(Attack);
     }
 
     public override void Jump(InputValue value)
@@ -54,6 +51,7 @@ public class PlayerWalk : PlayerState
 
     public override void Exit()
     {
-
+        player.onAttackBtn1Pressed.RemoveListener(Attack);
+        player.onAttackBtn2Pressed.RemoveListener(Attack);
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachine<TState, TOwner> where TOwner : MonoBehaviour
+public class StateMachine<TState, TOwner>
 {
     private TOwner owner;
     private Dictionary<TState, StateBase<TState, TOwner>> states;
@@ -41,6 +41,11 @@ public class StateMachine<TState, TOwner> where TOwner : MonoBehaviour
         curState.Exit();
         curState = states[newState];
         curState.Enter();
+    }
+
+    public void ForceExit()
+    {
+        curState.Exit();
     }
 
     public string GetCurStateStr()

@@ -34,9 +34,12 @@ public abstract class PlayerState
         // TODO : 구현하기
     }
 
-    public abstract void Jump(InputValue value);
+    protected void Attack()
+    {
+        player.ChangeState(PlayerStateType.Attack);
+    }
 
-    public abstract void Attack(InputValue value);
+    public abstract void Jump(InputValue value);
 
     public abstract void Enter();
 

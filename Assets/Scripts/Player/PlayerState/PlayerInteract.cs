@@ -8,11 +8,6 @@ public class PlayerInteract : PlayerState
     {
     }
 
-    public override void Attack(InputValue value)
-    {
-
-    }
-
     public override void Enter()
     {
         
