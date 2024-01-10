@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class Sword : Weapon
 {
-    public enum State { Idle, Slash, Jab, Charge};
+    [SerializeField] ParticleSystem chargeParticle;
+    [SerializeField] ParticleSystem groundCrackParticle;
+    public enum State { Idle, Slash, Jab, Sting ,Charge};
     StateMachine<State, Sword> stateMachine;
 
     protected override void Awake()
@@ -13,6 +15,7 @@ public class Sword : Weapon
         stateMachine.AddState(State.Idle, new SwordIdle(this, stateMachine));
         stateMachine.AddState(State.Slash, new SwordSlash(this, stateMachine));
         stateMachine.AddState(State.Jab, new SwordJab(this, stateMachine));
+        stateMachine.AddState(State.Sting, new SwordSting(this, stateMachine));
         stateMachine.AddState(State.Charge, new SwordCharge(this, stateMachine));
     }
 
@@ -35,5 +38,16 @@ public class Sword : Weapon
     protected override void StateMachineSetUp()
     {
         stateMachine.SetUp(State.Idle);
+    }
+
+    public void PlayChargeParticle(bool val)
+    {
+        chargeParticle.gameObject.SetActive(val);
+    }
+
+    public void PlayGroundCrackParticle(bool val, float scale = 1)
+    {
+        groundCrackParticle.gameObject.SetActive(val);
+        groundCrackParticle.transform.localScale = Vector3.one * scale;
     }
 }

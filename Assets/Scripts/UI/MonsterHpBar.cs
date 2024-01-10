@@ -49,10 +49,7 @@ public class MonsterHpBar : MonoBehaviour
         }
 
         lastOnTime = Time.time;
-        if(null == offCoroutine)
-        {
-            StartCoroutine(CoOff());
-        }
+        StartCoroutine(CoOff());
 
     }
 

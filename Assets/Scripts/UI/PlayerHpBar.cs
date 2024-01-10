@@ -19,7 +19,6 @@ public class PlayerHpBar : MonoBehaviour
     int curHp;
     int maxHp;
     float ratio;
-    Coroutine hpChangeCoroutine;
     private void Awake()
     {
         player = FieldSceneFlowController.Player;
@@ -49,10 +48,7 @@ public class PlayerHpBar : MonoBehaviour
 
 
 
-        if(null == hpChangeCoroutine)
-        {
-            StartCoroutine(CoHpChange());
-        }
+        StartCoroutine(CoHpChange());
     }
 
     private IEnumerator CoHpChange()

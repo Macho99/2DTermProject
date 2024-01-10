@@ -7,7 +7,7 @@ public class Rooster : Monster
     public enum State { Idle, LookAround, Detect, Turn, Walk, Trace, Attack, Stun, Die, Size};
     StateMachine<State, Rooster> stateMachine;
 
-    [SerializeField] float traceRange;
+    [SerializeField] float traceRange = 5f;
     [SerializeField] float attackDist;
     [SerializeField] float attackDuration;
     [SerializeField] float knockbackForce = 3f;

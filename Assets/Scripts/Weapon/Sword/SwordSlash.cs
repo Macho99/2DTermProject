@@ -8,8 +8,8 @@ using UnityEngine;
 public class SwordSlash : StateBase<Sword.State, Sword>
 {
     float attackDuration = 0.2f;
-    float japPossibleDuration = 0.5f;
-    float endDuration = 1f;
+    float japPossibleDuration = 0.2f;
+    float endDuration = 0.7f;
     float enterTime;
     bool attacked;
     public SwordSlash(Sword owner, StateMachine<Sword.State, Sword> stateMachine) : base(owner, stateMachine)
@@ -20,13 +20,13 @@ public class SwordSlash : StateBase<Sword.State, Sword>
     {
         attacked = false;
         enterTime = Time.time;
-        owner.player.onAttackBtn2Pressed.AddListener(GoJap);
+        owner.player.onAttackBtn2Pressed.AddListener(GoSting);
         owner.player.PlayAnim("Slash");
     }
 
     public override void Exit()
     {
-        owner.player.onAttackBtn2Pressed.RemoveListener(GoJap);
+        owner.player.onAttackBtn2Pressed.RemoveListener(GoSting);
     }
 
     public override void Setup()
@@ -55,11 +55,11 @@ public class SwordSlash : StateBase<Sword.State, Sword>
         }
     }
 
-    private void GoJap()
+    private void GoSting()
     {
         if(Time.time > enterTime + japPossibleDuration)
         {
-            stateMachine.ChangeState(Sword.State.Jab);
+            stateMachine.ChangeState(Sword.State.Sting);
         }
     }
 }

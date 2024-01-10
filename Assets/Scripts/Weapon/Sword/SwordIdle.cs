@@ -40,12 +40,11 @@ public class SwordIdle : StateBase<Sword.State, Sword>
         }
         else if(true == owner.player.AttackBtn2Input)
         {
-            //미구현
-            owner.player.ChangeState(PlayerStateType.Idle);
+            stateMachine.ChangeState(Sword.State.Jab);
         }
         else
         {
-            Debug.Log("공격 시작 했는데 버튼이 안눌림");
+            Debug.LogError("공격 시작 했는데 버튼이 안눌림");
         }
     }
 }

@@ -9,12 +9,10 @@ public class MonsterStateViewer : MonoBehaviour
 {
     [SerializeField] Sprite detectSprite;
     [SerializeField] Sprite missSprite;
-    [SerializeField] Sprite stunSprite;
     [SerializeField] Image background;
     [SerializeField] Image foreground;
 
     Monster owner;
-    Coroutine offCoroutine;
     float lastOnTime;
     float turnOnDuration;
 
@@ -49,9 +47,6 @@ public class MonsterStateViewer : MonoBehaviour
             case MonsterUIState.Miss:
                 sprite = missSprite;
                 break;
-            case MonsterUIState.Stun: 
-                sprite = stunSprite;
-                break;
             default:
                 sprite = detectSprite;
                 Debug.LogError("MonsterUIState에 해당하는 sprite가 없음");
@@ -64,10 +59,7 @@ public class MonsterStateViewer : MonoBehaviour
         foreground.gameObject.SetActive(true);
         background.gameObject.SetActive(true);
 
-        if (null == offCoroutine)
-        {
-            StartCoroutine(CoOff());
-        }
+        StartCoroutine(CoOff());
     }
 
     private IEnumerator CoOff()

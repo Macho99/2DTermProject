@@ -305,13 +305,21 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage, Vector2 knockBack, float stunDuration = 0f)
+    public void TakeDamage(Monster monster, int damage, Vector2 knockback, float stunDuration = 0f)
+    {
+        curState.TakeDamage(monster, damage, knockback, stunDuration);
+    }
+
+    public void PlayerTakeDamage(int damage, Vector2 knockback, float stunDuration, bool hitTrigger = true)
     {
         curHp -= damage;
         rb.velocity = new Vector2(0f, rb.velocity.y);
         //hitParticle.Play();
-        anim.SetTrigger("Hit");
-        rb.AddForce(knockBack, ForceMode2D.Impulse);
+        if(hitTrigger == true)
+        {
+            anim.SetTrigger("Hit");
+        }
+        rb.AddForce(knockback, ForceMode2D.Impulse);
         LastCombatTime = Time.time;
 
         onHpChanged?.Invoke();
@@ -323,12 +331,6 @@ public class Player : MonoBehaviour
             Die();
             return;
         }
-
-        //if (stunDuration > 0.1f)
-        //{
-        //    StunEndTime = Time.time + stunDuration;
-        //    Stun();
-        //}
     }
 
     private void Die()

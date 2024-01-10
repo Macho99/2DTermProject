@@ -10,12 +10,12 @@ public class RoosterStun : StateBase<Rooster.State, Rooster>
     public override void Enter()
     {
         owner.AnimPlay("Stun");
-        owner.UIStateChange(MonsterUIState.Stun);
+        owner.PlayStunParticle(true);
     }
 
     public override void Exit()
     {
-
+        owner.PlayStunParticle(false);
     }
 
     public override void Setup()

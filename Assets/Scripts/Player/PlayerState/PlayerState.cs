@@ -29,9 +29,9 @@ public abstract class PlayerState
         this.player = player;
     }
 
-    public virtual void TakeDamage(int damage, float force, float stunDuration)
+    public virtual void TakeDamage(Monster monster, int damage, Vector2 knockback, float stunDuration)
     {
-        // TODO : 구현하기
+        player.PlayerTakeDamage(damage, knockback, stunDuration);
     }
 
     protected void Attack()

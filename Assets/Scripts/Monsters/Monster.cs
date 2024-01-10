@@ -4,7 +4,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum MonsterUIState { Detect, Miss, Stun}
+public enum MonsterUIState { Detect, Miss }
 public abstract class Monster : MonoBehaviour
 {
     [SerializeField] protected int curHp;
@@ -14,6 +14,7 @@ public abstract class Monster : MonoBehaviour
     [SerializeField] float runSpeed = 3f;
     [SerializeField] Transform flipable;
     [SerializeField] ParticleSystem hitParticle;
+    [SerializeField] ParticleSystem stunParticle;
     [SerializeField] float knockbackTime = 0.5f;
 
     protected Rigidbody2D rb;
@@ -48,6 +49,11 @@ public abstract class Monster : MonoBehaviour
             flipable.rotation = Quaternion.Euler(0f, 0f, 0f);
             dir = 1;
         }
+    }
+
+    public void PlayStunParticle(bool val)
+    {
+        stunParticle.gameObject.SetActive(val);
     }
 
     public void UIStateChange(MonsterUIState type)
@@ -112,6 +118,7 @@ public abstract class Monster : MonoBehaviour
                 Flip();
             }
 
+            gameObject.layer = LayerMask.NameToLayer("DeadBody");
             rb.AddForce(knockBack.normalized * 7f, ForceMode2D.Impulse);
             curHp = 0;
             Die();

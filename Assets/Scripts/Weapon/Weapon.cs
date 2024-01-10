@@ -35,6 +35,10 @@ public abstract class Weapon : MonoBehaviour
         if(player.CurWeapon == this)
         {
             player.CurWeapon = null;
+            if(true == player.IsAttackState)
+            {
+                player.ChangeState(PlayerStateType.Idle);
+            }
         }
         CallStateExit();
     }

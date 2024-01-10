@@ -8,8 +8,8 @@ using UnityEngine;
 public class SwordJab : StateBase<Sword.State, Sword>
 {
     float attackDuration = 0.1f;
-    float chargePossibleDuration = 0.2f;
-    float endDuration = 0.5f;
+    //float chargePossibleDuration = 0.2f;
+    float endDuration = 0.3f;
     float enterTime;
     bool attacked;
     public SwordJab(Sword owner, StateMachine<Sword.State, Sword> stateMachine) : base(owner, stateMachine)
@@ -21,20 +21,10 @@ public class SwordJab : StateBase<Sword.State, Sword>
         attacked = false;
         enterTime = Time.time;
         owner.player.PlayAnim("Jab");
-        owner.player.onAttackBtn1Pressed.AddListener(GoCharge);
     }
 
     public override void Exit()
     {
-        owner.player.onAttackBtn1Pressed.RemoveListener(GoCharge);
-    }
-
-    private void GoCharge()
-    {
-        if(Time.time > enterTime + chargePossibleDuration)
-        {
-            stateMachine.ChangeState(Sword.State.Charge);
-        }
     }
 
     public override void Setup()
@@ -57,7 +47,7 @@ public class SwordJab : StateBase<Sword.State, Sword>
         {
             if (Time.time > enterTime + attackDuration)
             {
-                owner.BoxAttack((int) ((float) owner.Damage * 0.5f), owner.player.dir, 5f, 0f);
+                owner.BoxAttack((int)((float)owner.Damage * 0.3f), owner.player.dir, 3f, 0f);
                 attacked = true;
             }
         }
