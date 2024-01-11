@@ -107,6 +107,7 @@ public class Player : MonoBehaviour
 
     public void ChangeState(PlayerStateType type)
     {
+        if(curState == null) return;
         curState.Exit();
 
         curState = states[(int)type];
@@ -186,6 +187,11 @@ public class Player : MonoBehaviour
     public void PlayAnim(string name)
     {
         anim.Play(name);
+    }
+
+    public void SetAnimAttackSpeed(float speed = 1f)
+    {
+        anim.SetFloat("AttackSpeed", speed);
     }
 
     public void HorizonMove(float time, float accelMulti = 1f, float maxMulti = 1f)

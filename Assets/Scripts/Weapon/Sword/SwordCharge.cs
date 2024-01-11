@@ -3,31 +3,31 @@ using UnityEngine;
 
 public class SwordCharge: StateBase<Sword.State, Sword>
 {
-    float attackDuration = 0.2f;
-    float attackDelayDuration = 1.2f;
+    float attackDelay = 0.2f;
     float attackStartTime;
-    //float japPossibleDuration = 0.5f;
-    float endDuration = 3f;
+
+    float endDelay = 1.2f;
+    float noChargedEndDelay = 3f;
     float enterTime;
+
+    float groundParticleOffDelay = 1f;
     bool attacked;
-    bool charged;
     public SwordCharge(Sword owner, StateMachine<Sword.State, Sword> stateMachine) : base(owner, stateMachine)
     {
     }
 
     public override void Enter()
     {
-        charged = false;
         attacked = false;
         enterTime = Time.time;
-        owner.player.PlayAnim("Charge");
+        owner.player.PlayAnim("SlashCharge");
         owner.PlayChargeParticle(true);
     }
 
     public override void Exit()
     {
         owner.PlayChargeParticle(false);
-        owner.PlayGroundCrackParticle(false);
+        owner.PlayGroundCrackParticle(false, groundParticleOffDelay);
     }
 
     public override void Setup()
@@ -39,42 +39,38 @@ public class SwordCharge: StateBase<Sword.State, Sword>
     {
         if (true == attacked)
         {
-            if(Time.time > attackStartTime + attackDelayDuration)
+            if(Time.time > attackStartTime + endDelay)
             {
                 stateMachine.ChangeState(Sword.State.Idle);
-                owner.player.ChangeState(PlayerStateType.Idle);
             }
         }
-
-        if (Time.time > enterTime + endDuration)
+        else
         {
-            if(false == charged)
+            if(Time.time > enterTime + noChargedEndDelay)
             {
                 stateMachine.ChangeState(Sword.State.Idle);
-                owner.player.ChangeState(PlayerStateType.Idle);
             }
         }
     }
 
     public override void Update()
     {
-        if(false == charged)
+        if(false == attacked)
         {
             if(false == owner.player.AttackBtn1Input)
             {
-                charged = true;
+                float chargeRatio = (Time.time - enterTime) / noChargedEndDelay;
+                attacked = true;
                 attackStartTime = Time.time;
                 owner.player.PlayAnim("Slash");
                 owner.PlayChargeParticle(false);
-            }
-        }
-        else if (false == attacked)
-        {
-            if (Time.time > attackStartTime + attackDuration)
-            {
-                owner.BoxAttack((int)((float)owner.Damage * 2f), owner.player.dir, 5f, 5f);
-                attacked = true;
-                owner.PlayGroundCrackParticle(true);
+                owner.BoxAttack((int) (owner.Damage * 2 * chargeRatio), 
+                    owner.player.dir, 
+                    1f, 
+                    5f * chargeRatio, 
+                    5f * chargeRatio, 
+                    attackDelay);
+                owner.PlayGroundCrackParticle(true, attackDelay, chargeRatio);
             }
         }
     }

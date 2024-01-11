@@ -45,7 +45,7 @@ public class StateMachine<TState, TOwner>
 
     public void ForceExit()
     {
-        curState.Exit();
+        curState?.Exit();
     }
 
     public string GetCurStateStr()

@@ -13,6 +13,7 @@ public abstract class Monster : MonoBehaviour
     [SerializeField] float moveSpeed = 2f;
     [SerializeField] float runSpeed = 3f;
     [SerializeField] Transform flipable;
+    [SerializeField] Transform arrowHolder;
     [SerializeField] ParticleSystem hitParticle;
     [SerializeField] ParticleSystem stunParticle;
     [SerializeField] float knockbackTime = 0.5f;
@@ -33,7 +34,7 @@ public abstract class Monster : MonoBehaviour
     public int dir { get; set; }
     public float MoveSpeed { get { return moveSpeed; } }
     public float RunSpeed { get { return runSpeed; } }
-
+    public Transform ArrowHolder { get { return arrowHolder; } }
     public float StunEndTime { get; private set; }
 
     private float lastHitTime = 0f;
@@ -94,7 +95,7 @@ public abstract class Monster : MonoBehaviour
     protected abstract void Stun();
     protected abstract void HittedDetect();
 
-    public void TakeDamage(int damage, Vector2 knockBack, float stunDuration = 0f)
+    public void TakeDamage(int damage, Vector2 knockback, float stunDuration = 0f)
     {
         if(curHp <= 0)
             return;
@@ -113,13 +114,19 @@ public abstract class Monster : MonoBehaviour
 
         if (curHp <= 0)
         {
-            if(Mathf.Sign(knockBack.x * dir) > 0f)
+            if(knockback.x * dir > 0f)
             {
                 Flip();
             }
-
+            Vector2 dieKnockback;
+            if((knockback.normalized * 7f).sqrMagnitude < knockback.sqrMagnitude){
+                dieKnockback = knockback;
+            }
+            else{
+                dieKnockback = knockback.normalized * 7f;
+            }
             gameObject.layer = LayerMask.NameToLayer("DeadBody");
-            rb.AddForce(knockBack.normalized * 7f, ForceMode2D.Impulse);
+            rb.AddForce(dieKnockback, ForceMode2D.Impulse);
             curHp = 0;
             Die();
 
@@ -128,7 +135,7 @@ public abstract class Monster : MonoBehaviour
             return;
         }
 
-        rb.AddForce(knockBack, ForceMode2D.Impulse);
+        rb.AddForce(knockback, ForceMode2D.Impulse);
 
         if (stunDuration > 0.1f)
         {

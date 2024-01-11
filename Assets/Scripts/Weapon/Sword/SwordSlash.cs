@@ -7,21 +7,20 @@ using UnityEngine;
 
 public class SwordSlash : StateBase<Sword.State, Sword>
 {
-    float attackDuration = 0.2f;
-    float japPossibleDuration = 0.2f;
-    float endDuration = 0.7f;
+    float attackDelay = 0.2f;
+    float stingPossibleDelay = 0.2f;
+    float endDelay = 0.7f;
     float enterTime;
-    bool attacked;
     public SwordSlash(Sword owner, StateMachine<Sword.State, Sword> stateMachine) : base(owner, stateMachine)
     {
     }
 
     public override void Enter()
     {
-        attacked = false;
         enterTime = Time.time;
         owner.player.onAttackBtn2Pressed.AddListener(GoSting);
         owner.player.PlayAnim("Slash");
+        owner.BoxAttack(owner.Damage, owner.player.dir, 1f, 2f, 0f, attackDelay);
     }
 
     public override void Exit()
@@ -36,28 +35,20 @@ public class SwordSlash : StateBase<Sword.State, Sword>
 
     public override void Transition()
     {
-        if(Time.time > enterTime + endDuration)
+        if(Time.time > enterTime + endDelay)
         {
             stateMachine.ChangeState(Sword.State.Idle);
-            owner.player.ChangeState(PlayerStateType.Idle);
         }
     }
 
     public override void Update()
     {
-        if(false == attacked)
-        {
-            if(Time.time > enterTime + attackDuration)
-            {
-                owner.BoxAttack(owner.Damage, owner.player.dir, 2f, 0f);
-                attacked = true;
-            }
-        }
+
     }
 
     private void GoSting()
     {
-        if(Time.time > enterTime + japPossibleDuration)
+        if(Time.time > enterTime + stingPossibleDelay)
         {
             stateMachine.ChangeState(Sword.State.Sting);
         }

@@ -9,6 +9,7 @@ public class SwordIdle : StateBase<Sword.State, Sword>
 
     public override void Enter()
     {
+        owner.player.ChangeState(PlayerStateType.Idle);
         owner.player.onAttackState.AddListener(AttackStart);
     }
 

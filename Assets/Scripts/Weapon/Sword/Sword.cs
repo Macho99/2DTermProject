@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Sword : Weapon
@@ -45,9 +46,16 @@ public class Sword : Weapon
         chargeParticle.gameObject.SetActive(val);
     }
 
-    public void PlayGroundCrackParticle(bool val, float scale = 1)
+    public void PlayGroundCrackParticle(bool val, float delay, float scale = 1)
     {
-        groundCrackParticle.gameObject.SetActive(val);
+        _ = StartCoroutine(CoPlayGroundCrack(val, delay, scale));
+    }
+
+    private IEnumerator CoPlayGroundCrack(bool val, float delay, float scale = 1)
+    {
+        yield return new WaitForSeconds(delay);
+        scale += 0.2f;
         groundCrackParticle.transform.localScale = Vector3.one * scale;
+        groundCrackParticle.gameObject.SetActive(val);
     }
 }

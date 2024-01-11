@@ -7,20 +7,18 @@ using UnityEngine;
 
 public class SwordJab : StateBase<Sword.State, Sword>
 {
-    float attackDuration = 0.1f;
-    //float chargePossibleDuration = 0.2f;
-    float endDuration = 0.3f;
+    float attackDelay = 0.1f;
+    float endDelay = 0.3f;
     float enterTime;
-    bool attacked;
     public SwordJab(Sword owner, StateMachine<Sword.State, Sword> stateMachine) : base(owner, stateMachine)
     {
     }
 
     public override void Enter()
     {
-        attacked = false;
         enterTime = Time.time;
         owner.player.PlayAnim("Jab");
+        owner.BoxAttack(owner.Damage / 3, owner.player.dir, 1f, 3f, 0f, attackDelay);
     }
 
     public override void Exit()
@@ -34,22 +32,14 @@ public class SwordJab : StateBase<Sword.State, Sword>
 
     public override void Transition()
     {
-        if (Time.time > enterTime + endDuration)
+        if (Time.time > enterTime + endDelay)
         {
             stateMachine.ChangeState(Sword.State.Idle);
-            owner.player.ChangeState(PlayerStateType.Idle);
         }
     }
 
     public override void Update()
     {
-        if (false == attacked)
-        {
-            if (Time.time > enterTime + attackDuration)
-            {
-                owner.BoxAttack((int)((float)owner.Damage * 0.3f), owner.player.dir, 3f, 0f);
-                attacked = true;
-            }
-        }
+
     }
 }
