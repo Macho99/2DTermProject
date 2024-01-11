@@ -18,14 +18,14 @@ public class SwordSting : StateBase<Sword.State, Sword>
     public override void Enter()
     {
         enterTime = Time.time;
-        owner.player.PlayAnim("Jab");
-        owner.player.onAttackBtn1Pressed.AddListener(GoCharge);
-        owner.BoxAttack(owner.Damage / 2, owner.player.dir, 1f, 5f, 0f, attackDelay);
+        owner.Player.PlayAnim("Jab");
+        owner.Player.onAttackBtn1Pressed.AddListener(GoCharge);
+        owner.BoxAttack(owner.Damage / 2, owner.Player.dir, 1f, 5f, 0f, attackDelay);
     }
 
     public override void Exit()
     {
-        owner.player.onAttackBtn1Pressed.RemoveListener(GoCharge);
+        owner.Player.onAttackBtn1Pressed.RemoveListener(GoCharge);
     }
 
     private void GoCharge()

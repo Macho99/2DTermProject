@@ -9,19 +9,19 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] protected string curState;
     [SerializeField] SpriteLibraryAsset spriteLibraryAsset;
 
-    public Player player;
+    public Player Player { get; private set; }
     public int Damage { get { return damage; } }
     public SpriteLibraryAsset SpriteLibraryAsset { get { return spriteLibraryAsset; } }
     protected virtual void Awake()
     {
-        player = GetComponentInParent<Player>();
+        Player = GetComponentInParent<Player>();
     }
 
     protected virtual void OnEnable()
     {
-        if(player.CurWeapon == null)
+        if(Player.CurWeapon == null)
         {
-            player.CurWeapon = this;
+            Player.CurWeapon = this;
         }
         else
         {
@@ -32,12 +32,12 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void OnDisable()
     {
-        if(player.CurWeapon == this)
+        if(Player.CurWeapon == this)
         {
-            player.CurWeapon = null;
-            if(true == player.IsAttackState)
+            Player.CurWeapon = null;
+            if(true == Player.IsAttackState)
             {
-                player.ChangeState(PlayerStateType.Idle);
+                Player.ChangeState(PlayerStateType.Idle);
             }
         }
         CallStateExit();

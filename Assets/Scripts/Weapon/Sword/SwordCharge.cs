@@ -10,7 +10,6 @@ public class SwordCharge: StateBase<Sword.State, Sword>
     float noChargedEndDelay = 3f;
     float enterTime;
 
-    float groundParticleOffDelay = 1f;
     bool attacked;
     public SwordCharge(Sword owner, StateMachine<Sword.State, Sword> stateMachine) : base(owner, stateMachine)
     {
@@ -20,14 +19,13 @@ public class SwordCharge: StateBase<Sword.State, Sword>
     {
         attacked = false;
         enterTime = Time.time;
-        owner.player.PlayAnim("SlashCharge");
+        owner.Player.PlayAnim("SlashCharge");
         owner.PlayChargeParticle(true);
     }
 
     public override void Exit()
     {
         owner.PlayChargeParticle(false);
-        owner.PlayGroundCrackParticle(false, groundParticleOffDelay);
     }
 
     public override void Setup()
@@ -57,20 +55,20 @@ public class SwordCharge: StateBase<Sword.State, Sword>
     {
         if(false == attacked)
         {
-            if(false == owner.player.AttackBtn1Input)
+            if(false == owner.Player.AttackBtn1Input)
             {
                 float chargeRatio = (Time.time - enterTime) / noChargedEndDelay;
                 attacked = true;
                 attackStartTime = Time.time;
-                owner.player.PlayAnim("Slash");
+                owner.Player.PlayAnim("Slash");
                 owner.PlayChargeParticle(false);
                 owner.BoxAttack((int) (owner.Damage * 2 * chargeRatio), 
-                    owner.player.dir, 
+                    owner.Player.dir, 
                     1f, 
                     5f * chargeRatio, 
                     5f * chargeRatio, 
                     attackDelay);
-                owner.PlayGroundCrackParticle(true, attackDelay, chargeRatio);
+                owner.PlayGroundCrackParticle(attackDelay, chargeRatio);
             }
         }
     }

@@ -9,13 +9,13 @@ public class BowIdle : StateBase<Bow.State, Bow>
 
     public override void Enter()
     {
-        owner.player.ChangeState(PlayerStateType.Idle);
-        owner.player.onAttackState.AddListener(AttackStart);
+        owner.Player.ChangeState(PlayerStateType.Idle);
+        owner.Player.onAttackState.AddListener(AttackStart);
     }
 
     public override void Exit()
     {
-        owner.player.onAttackState.RemoveListener(AttackStart);
+        owner.Player.onAttackState.RemoveListener(AttackStart);
     }
 
     public override void Setup()
@@ -35,11 +35,11 @@ public class BowIdle : StateBase<Bow.State, Bow>
 
     private void AttackStart()
     {
-        if (true == owner.player.AttackBtn1Input)
+        if (true == owner.Player.AttackBtn1Input)
         {
             stateMachine.ChangeState(Bow.State.Charge);
         }
-        else if (true == owner.player.AttackBtn2Input)
+        else if (true == owner.Player.AttackBtn2Input)
         {
             //stateMachine.ChangeState(Bow.State.BackStep);
         }

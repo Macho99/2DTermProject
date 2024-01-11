@@ -18,14 +18,14 @@ public class SwordSlash : StateBase<Sword.State, Sword>
     public override void Enter()
     {
         enterTime = Time.time;
-        owner.player.onAttackBtn2Pressed.AddListener(GoSting);
-        owner.player.PlayAnim("Slash");
-        owner.BoxAttack(owner.Damage, owner.player.dir, 1f, 2f, 0f, attackDelay);
+        owner.Player.onAttackBtn2Pressed.AddListener(GoSting);
+        owner.Player.PlayAnim("Slash");
+        owner.BoxAttack(owner.Damage, owner.Player.dir, 1f, 2f, 0f, attackDelay);
     }
 
     public override void Exit()
     {
-        owner.player.onAttackBtn2Pressed.RemoveListener(GoSting);
+        owner.Player.onAttackBtn2Pressed.RemoveListener(GoSting);
     }
 
     public override void Setup()

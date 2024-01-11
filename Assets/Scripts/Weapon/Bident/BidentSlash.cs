@@ -17,14 +17,14 @@ public class BidentSlash : StateBase<Bident.State, Bident>
     public override void Enter()
     {
         enterTime = Time.time;
-        owner.player.PlayAnim("Slash");
-        owner.player.SetAnimAttackSpeed(owner.AttackSpeed);
-        owner.BoxAttack(owner.Damage, owner.player.dir, 1.5f, 3f, 0f, attackDelay);
+        owner.Player.PlayAnim("Slash");
+        owner.Player.SetAnimAttackSpeed(owner.AttackSpeed);
+        owner.BoxAttack(owner.Damage, owner.Player.dir, 1.5f, 3f, 0f, attackDelay);
     }
 
     public override void Exit()
     {
-        owner.player.SetAnimAttackSpeed();
+        owner.Player.SetAnimAttackSpeed();
     }
 
     public override void Setup()

@@ -17,8 +17,8 @@ public class SwordJab : StateBase<Sword.State, Sword>
     public override void Enter()
     {
         enterTime = Time.time;
-        owner.player.PlayAnim("Jab");
-        owner.BoxAttack(owner.Damage / 3, owner.player.dir, 1f, 3f, 0f, attackDelay);
+        owner.Player.PlayAnim("Jab");
+        owner.BoxAttack(owner.Damage / 3, owner.Player.dir, 1f, 3f, 0f, attackDelay);
     }
 
     public override void Exit()

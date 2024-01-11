@@ -19,14 +19,14 @@ public class BidentAirborne : StateBase<Bident.State, Bident>
     public override void Enter()
     {
         enterTime = Time.time;
-        owner.player.PlayAnim("Airborne");
-        owner.player.onAttackBtn2Pressed.AddListener(GoCharge);
-        owner.BoxAttack(owner.Damage / 2, owner.player.dir, 1.5f, new Vector2(owner.player.dir * 0.1f, 0.9f) * 8f, 2f, attackDelay);
+        owner.Player.PlayAnim("Airborne");
+        owner.Player.onAttackBtn2Pressed.AddListener(GoCharge);
+        owner.BoxAttack(owner.Damage / 2, owner.Player.dir, 1.5f, new Vector2(owner.Player.dir * 0.1f, 0.9f) * 8f, 2f, attackDelay);
     }
 
     public override void Exit()
     {
-        owner.player.onAttackBtn2Pressed.RemoveListener(GoCharge);
+        owner.Player.onAttackBtn2Pressed.RemoveListener(GoCharge);
     }
 
     private void GoCharge()

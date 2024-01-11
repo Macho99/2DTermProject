@@ -18,16 +18,16 @@ public class BidentSting : StateBase<Bident.State, Bident>
     public override void Enter()
     {
         enterTime = Time.time;
-        owner.player.PlayAnim("Jab");
-        owner.player.SetAnimAttackSpeed();
-        owner.player.onAttackBtn1Pressed.AddListener(GoAirborne);
-        owner.BoxAttack(owner.Damage / 2, owner.player.dir, 1.5f, 3f, 0f, attackDelay);
+        owner.Player.PlayAnim("Jab");
+        owner.Player.SetAnimAttackSpeed();
+        owner.Player.onAttackBtn1Pressed.AddListener(GoAirborne);
+        owner.BoxAttack(owner.Damage / 2, owner.Player.dir, 1.5f, 3f, 0f, attackDelay);
     }
 
     public override void Exit()
     {
-        owner.player.SetAnimAttackSpeed();
-        owner.player.onAttackBtn1Pressed.RemoveListener(GoAirborne);
+        owner.Player.SetAnimAttackSpeed();
+        owner.Player.onAttackBtn1Pressed.RemoveListener(GoAirborne);
     }
 
     private void GoAirborne()

@@ -5,7 +5,8 @@ using UnityEngine;
 public class Bident : Weapon
 {
     [SerializeField] private ParticleSystem chargeParticle;
-    [SerializeField] private ParticleSystem explosionParticle;
+    [SerializeField] private Transform cannonShotTrans;
+
     public enum State { Idle, Slash, Sting, Airborne, Charge };
     StateMachine<State, Bident> stateMachine;
     public float AttackSpeed {  get; private set; }
@@ -48,18 +49,23 @@ public class Bident : Weapon
         chargeParticle.gameObject.SetActive(val);
     }
 
-    public void PlayExplosionParticle(bool val, float delay = 0f, float scale = 1f)
+    public void PlayExplosionParticle(float delay = 0f, float scale = 1f)
     {
-        _ = StartCoroutine(CoPlayExplosion(val, delay, scale));
+        _ = StartCoroutine(CoPlayExplosion(delay, scale));
     }
 
-    private IEnumerator CoPlayExplosion(bool val, float delay, float scale)
+    private IEnumerator CoPlayExplosion(float delay, float scale)
     {
         yield return new WaitForSeconds(delay);
         scale = Mathf.Min(scale, 0.6f);
 
-        explosionParticle.transform.localScale = Vector3.one * scale;
-        explosionParticle.gameObject.SetActive(val);
+        GameObject particle = FieldObjPool.Instance.AllocateObj(ObjPoolType.CannonShotParticle);
+        particle.transform.position = cannonShotTrans.position;
+        particle.transform.localScale = Vector3.one * scale;
+        if(-1 == Player.dir)
+        {
+            particle.transform.Rotate(Vector3.up, 180f);
+        }
     }
 
     public void PlayerTranslate(Vector2 vec, float duration = 0.2f)
@@ -75,7 +81,7 @@ public class Bident : Weapon
         while (Time.time < endTime)
         {
             yield return null;
-            player.transform.Translate(movePerSecond * Time.deltaTime);
+            Player.transform.Translate(movePerSecond * Time.deltaTime);
         }
     }
 }

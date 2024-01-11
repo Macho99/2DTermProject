@@ -5,7 +5,9 @@ using UnityEngine;
 
 public enum ObjPoolType
 {
-
+    Arrow,
+    GroundCrackParticle,
+    CannonShotParticle,
 
     Size
 }
@@ -19,29 +21,15 @@ public class PoolElement {
     [HideInInspector] public Transform runtimeFolder;
 }
 
-public class ObjPool : MonoBehaviour
+public abstract class ObjPool : MonoBehaviour
 {
-    private static ObjPool instance;
-    public static ObjPool Instance { get { return instance; } }
-
     //인스펙터에서 ObjPoolType 순서대로 넣을 것!!
     [SerializeField] private PoolElement[] poolElements;
 
     private Stack<GameObject>[] pools;
     private Transform runtimeObjFolder;
     private Transform poolObjFolder;
-
-    private void Awake()
-    {
-        if(instance != null)
-        {
-            Destroy(gameObject);
-        }
-        instance = this;
-        Init();
-    }
-
-    private void Init()
+    protected void Init()
     {
         runtimeObjFolder = new GameObject("RuntimeObject").transform;
         runtimeObjFolder.parent = transform;

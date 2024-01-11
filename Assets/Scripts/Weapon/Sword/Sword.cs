@@ -5,7 +5,7 @@ using UnityEngine;
 public class Sword : Weapon
 {
     [SerializeField] ParticleSystem chargeParticle;
-    [SerializeField] ParticleSystem groundCrackParticle;
+    [SerializeField] Transform CrackTrans;
     public enum State { Idle, Slash, Jab, Sting ,Charge};
     StateMachine<State, Sword> stateMachine;
 
@@ -46,16 +46,19 @@ public class Sword : Weapon
         chargeParticle.gameObject.SetActive(val);
     }
 
-    public void PlayGroundCrackParticle(bool val, float delay, float scale = 1)
+    public void PlayGroundCrackParticle(float delay, float scale = 1)
     {
-        _ = StartCoroutine(CoPlayGroundCrack(val, delay, scale));
+        _ = StartCoroutine(CoPlayGroundCrack(delay, scale));
     }
 
-    private IEnumerator CoPlayGroundCrack(bool val, float delay, float scale = 1)
+    private IEnumerator CoPlayGroundCrack(float delay, float scale = 1)
     {
         yield return new WaitForSeconds(delay);
         scale += 0.2f;
-        groundCrackParticle.transform.localScale = Vector3.one * scale;
-        groundCrackParticle.gameObject.SetActive(val);
+        scale = Mathf.Min(scale, 0.8f);
+
+        GameObject particle = FieldObjPool.Instance.AllocateObj(ObjPoolType.GroundCrackParticle);
+        particle.transform.position = CrackTrans.position;
+        particle.transform.localScale = Vector3.one * scale;
     }
 }

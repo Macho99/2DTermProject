@@ -10,7 +10,6 @@ public class BidentCharge : StateBase<Bident.State, Bident>
     float noChargedEndDelay = 3f;
     float enterTime;
 
-    float groundParticleOffDelay = 1f;
     bool attacked;
     public BidentCharge(Bident owner, StateMachine<Bident.State, Bident> stateMachine) : base(owner, stateMachine)
     {
@@ -20,14 +19,13 @@ public class BidentCharge : StateBase<Bident.State, Bident>
     {
         attacked = false;
         enterTime = Time.time;
-        owner.player.PlayAnim("JabCharge");
+        owner.Player.PlayAnim("JabCharge");
         owner.PlayChargeParticle(true);
     }
 
     public override void Exit()
     {
         owner.PlayChargeParticle(false);
-        owner.PlayExplosionParticle(false, 0.5f);
     }
 
     public override void Setup()
@@ -57,33 +55,33 @@ public class BidentCharge : StateBase<Bident.State, Bident>
     {
         if (false == attacked)
         {
-            if (false == owner.player.AttackBtn2Input)
+            if (false == owner.Player.AttackBtn2Input)
             {
                 owner.PlayChargeParticle(false);
                 float chargeRatio = (Time.time - enterTime) / noChargedEndDelay;
                 attacked = true;
                 attackStartTime = Time.time;
-                owner.player.PlayAnim("Jab");
+                owner.Player.PlayAnim("Jab");
                 //owner.PlayChargeParticle(false);
                 owner.BoxAttack((int)(owner.Damage * 2 * chargeRatio), 
-                    owner.player.dir, 
+                    owner.Player.dir, 
                     5f * chargeRatio, 
                     12f * chargeRatio, 
                     3f * chargeRatio,
                     attackDelay);
-                owner.PlayExplosionParticle(true, attackDelay, chargeRatio);
+                owner.PlayExplosionParticle(attackDelay, chargeRatio);
 
                 Vector2 origin = owner.transform.position;
                 origin.y += 0.6f;
                 RaycastHit2D hit = Physics2D.BoxCast(origin, Vector2.one, 0f, 
-                    Vector2.right * owner.player.dir, 5f * chargeRatio, LayerMask.GetMask("Platform"));
+                    Vector2.right * owner.Player.dir, 5f * chargeRatio, LayerMask.GetMask("Platform"));
                 if(hit.collider == null)
                 {
-                    owner.PlayerTranslate(Vector2.right * owner.player.dir * 5f * chargeRatio);
+                    owner.PlayerTranslate(Vector2.right * owner.Player.dir * 5f * chargeRatio);
                 }
                 else
                 {
-                    owner.PlayerTranslate(Vector2.right * owner.player.dir * hit.distance * chargeRatio);
+                    owner.PlayerTranslate(Vector2.right * owner.Player.dir * hit.distance * chargeRatio);
                 }
             }
         }

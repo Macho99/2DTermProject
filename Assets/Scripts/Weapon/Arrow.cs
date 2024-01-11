@@ -12,6 +12,7 @@ public class Arrow : MonoBehaviour
     private float speed;
     private float knockbackForce;
     private float offTime;
+    private Coroutine angleAdjustCoroutine;
 
     private void Awake()
     {
@@ -19,23 +20,34 @@ public class Arrow : MonoBehaviour
         col = GetComponent<BoxCollider2D>();
     }
 
-    public void Init(int damage, Vector2 pos, Vector2 dir, float speed = 10f, float knockbackForce = 1f, float offTime = 3f)
-    { 
+    public void Init(int damage, Vector2 pos, Vector2 dir, float speed = 10f, float knockbackForce = 1f, float offTime = 10f)
+    {
         this.damage = damage;
-        rb.position = pos;
+        transform.position = pos;
+        transform.right = dir;
         rb.velocity = dir * speed;
-        transform.localScale = dir.x > 0f ? Vector3.one : new Vector3(-1, 1, 1);
         this.knockbackForce = knockbackForce;
         trailParticle.gameObject.SetActive(true);
+        col.enabled = true;
         _ = StartCoroutine(CoOff(offTime));
+        angleAdjustCoroutine = StartCoroutine(CoAngleAdjust());
     }
 
     private void OnDisable()
     {
-        col.enabled = true;
         rb.gravityScale = 0.2f;
         rb.isKinematic = false;
     }
+
+    private IEnumerator CoAngleAdjust()
+    {
+        while (true)
+        {
+            yield return new WaitForFixedUpdate();
+            transform.right = rb.velocity;
+        }
+    }
+
     private IEnumerator CoOff(float offTime)
     {
         yield return new WaitForSeconds(offTime);
@@ -44,7 +56,6 @@ public class Arrow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        trailParticle.gameObject.SetActive(false);
         if (collision.gameObject.layer == LayerMask.NameToLayer("Monster"))
         {
             Monster monster = collision.gameObject.GetComponent<Monster>();
@@ -54,10 +65,18 @@ public class Arrow : MonoBehaviour
             rb.velocity = Vector2.zero;
             rb.gravityScale = 0f;
             rb.isKinematic = true;
+            StopCoroutine(angleAdjustCoroutine);
+            _= StartCoroutine(CoTrailOff());
         }
         else if(collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
         {
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator CoTrailOff()
+    {
+        yield return new WaitForSeconds(0.5f);
+        trailParticle.gameObject.SetActive(false);
     }
 }

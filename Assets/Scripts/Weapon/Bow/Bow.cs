@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Bow : Weapon
 {
-    [SerializeField] private Arrow arrowPrefab;
     public enum State { Idle, Charge, BackStep, DoubleArrow, ArrowRain }; 
     StateMachine<State, Bow> stateMachine;
     public Transform ShotPoint {  get; private set; }
@@ -41,9 +40,9 @@ public class Bow : Weapon
         stateMachine.SetUp(State.Idle);
     }
 
-    public void ShotArrow(int damage, Vector2 dir, float speed, float knockbackForce = 1f, float offTime = 3f)
+    public void ShotArrow(int damage, Vector2 dir, float speed, float knockbackForce = 1f, float offTime = 10f)
     {
-        Arrow arrow = Instantiate(arrowPrefab);
+        Arrow arrow = FieldObjPool.Instance.AllocateObj(ObjPoolType.Arrow).GetComponent<Arrow>();
         arrow.Init(damage, ShotPoint.position, dir, speed, knockbackForce, offTime);
     }
 }
