@@ -6,6 +6,7 @@ public class BowCharge : StateBase<Bow.State, Bow>
     float attackStartTime;
 
     float endDelay = 0.2f;
+    float minimumChargeTime = 0.5f;
     float noChargedEndDelay = 3f;
     float enterTime;
 
@@ -18,7 +19,7 @@ public class BowCharge : StateBase<Bow.State, Bow>
     {
         attacked = false;
         enterTime = Time.time;
-        owner.Player.PlayAnim("Shot");
+        owner.Player.PlayAnim("ShotStart");
     }
 
     public override void Exit()
@@ -54,6 +55,12 @@ public class BowCharge : StateBase<Bow.State, Bow>
         {
             if (false == owner.Player.AttackBtn1Input)
             {
+                if (Time.time < enterTime + minimumChargeTime)
+                {
+                    stateMachine.ChangeState(Bow.State.Idle);
+                    return;
+                }
+
                 float chargeRatio = (Time.time - enterTime) / noChargedEndDelay;
                 chargeRatio = Mathf.Max(0.4f, chargeRatio);
                 attacked = true;

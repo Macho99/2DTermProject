@@ -8,6 +8,7 @@ public enum ObjPoolType
     Arrow,
     GroundCrackParticle,
     CannonShotParticle,
+    BloodExplosionParticle,
 
     Size
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class BidentCharge : StateBase<Bident.State, Bident>
 {
+    const int targetNum = 5;
     float attackDelay = 0f;
     float attackStartTime;
 
@@ -63,12 +64,12 @@ public class BidentCharge : StateBase<Bident.State, Bident>
                 attackStartTime = Time.time;
                 owner.Player.PlayAnim("Jab");
                 //owner.PlayChargeParticle(false);
-                owner.BoxAttack((int)(owner.Damage * 2 * chargeRatio), 
+                owner.BoxAttackAll((int)(owner.Damage * 2 * chargeRatio), 
                     owner.Player.dir, 
                     5f * chargeRatio, 
                     12f * chargeRatio, 
                     3f * chargeRatio,
-                    attackDelay);
+                    attackDelay, targetNum);
                 owner.PlayExplosionParticle(attackDelay, chargeRatio);
 
                 Vector2 origin = owner.transform.position;

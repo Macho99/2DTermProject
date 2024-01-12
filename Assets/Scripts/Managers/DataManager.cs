@@ -27,6 +27,12 @@ public class DataManager : MonoBehaviour
         itemNames[idx] = "오리 알";
         itemSummary[idx] = "요리 재료";
         itemDetailDesc[idx] = "프라이팬에 구워서 소금만 뿌려 먹어도 맛있을까? 직접 한번 해보자.";
+
+        idx = (int)ItemID.Sword;
+        items[idx] = new SwordItem(ItemID.Sword);
+        itemNames[idx] = "강철 칼";
+        itemSummary[idx] = "공격력 : 10 공격 속도: 보통 사거리 : 1";
+        itemDetailDesc[idx] = "S -> A -> S(차지) 다수의 적들에게 강력한 데미지를 주고, 최대 5초까지 기절시킨다.";
     }
 
     public Item GetItem(ItemID id, int amount = 1)

@@ -14,6 +14,7 @@ public class PlayerDoubleJump : PlayerState
     {
         player.PlayAnim("OnAir");
         player.DoubleJump();
+        player.PlayJumpParticle();
         player.doubleJumped = true;
     }
 

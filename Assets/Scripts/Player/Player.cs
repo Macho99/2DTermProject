@@ -20,13 +20,15 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform weaponFolder;
     [SerializeField] private SpriteLibrary weaponLibrary;
     [SerializeField] private Weapon curWeapon;
+    [SerializeField] private ParticleSystem walkParticle;
+    [SerializeField] private ParticleSystem jumpParticle;
 
     private SpriteRenderer weaponSpRenderer;
 
-    public UnityEvent onHpChanged;
-    public UnityEvent onAttackBtn1Pressed;
-    public UnityEvent onAttackBtn2Pressed;
-    public UnityEvent onAttackState;
+    [HideInInspector] public UnityEvent onHpChanged;
+    [HideInInspector] public UnityEvent onAttackBtn1Pressed;
+    [HideInInspector] public UnityEvent onAttackBtn2Pressed;
+    [HideInInspector] public UnityEvent onAttackState;
 
     public Weapon CurWeapon { 
         get {
@@ -223,6 +225,11 @@ public class Player : MonoBehaviour
         rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
     }
 
+    public void Jump(Vector2 vec)
+    {
+        rb.AddForce(vec, ForceMode2D.Impulse);
+    }
+
     public void DoubleJump()
     {
         float dir;
@@ -337,6 +344,16 @@ public class Player : MonoBehaviour
             Die();
             return;
         }
+    }
+
+    public void PlayWalkParticle(bool var)
+    {
+        walkParticle.gameObject.SetActive(var);
+    }
+
+    public void PlayJumpParticle()
+    {
+        jumpParticle.Play();
     }
 
     private void Die()

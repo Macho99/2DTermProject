@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bow : Weapon
 {
-    public enum State { Idle, Charge, BackStep, DoubleArrow, ArrowRain }; 
+    public enum State { Idle, Charge, BackStep, DoubleArrow, ArrowRain, PullOut }; 
     StateMachine<State, Bow> stateMachine;
     public Transform ShotPoint {  get; private set; }
 
@@ -14,9 +14,14 @@ public class Bow : Weapon
         ShotPoint = new GameObject("ShotPoint").transform;
         ShotPoint.parent = transform;
         ShotPoint.localPosition = new Vector2(0.5f, 0.5f);
+
         stateMachine = new StateMachine<State, Bow>(this);
         stateMachine.AddState(State.Idle, new BowIdle(this, stateMachine));
         stateMachine.AddState(State.Charge, new BowCharge(this, stateMachine));
+        stateMachine.AddState(State.BackStep, new BowBackStep(this, stateMachine));
+        stateMachine.AddState(State.DoubleArrow, new BowDoubleArrow(this, stateMachine));
+        stateMachine.AddState(State.ArrowRain, new BowArrowRain(this, stateMachine));
+        stateMachine.AddState(State.PullOut, new BowPullOut(this, stateMachine));
     }
 
     public override void ForceIdle()

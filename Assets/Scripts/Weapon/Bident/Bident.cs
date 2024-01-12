@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bident : Weapon
 {
     [SerializeField] private ParticleSystem chargeParticle;
-    [SerializeField] private Transform cannonShotTrans;
+    private Transform CannonParticlePoint;
 
     public enum State { Idle, Slash, Sting, Airborne, Charge };
     StateMachine<State, Bident> stateMachine;
@@ -21,6 +21,10 @@ public class Bident : Weapon
         stateMachine.AddState(State.Sting, new BidentSting(this, stateMachine));
         stateMachine.AddState(State.Airborne, new BidentAirborne(this, stateMachine));
         stateMachine.AddState(State.Charge, new BidentCharge(this, stateMachine));
+
+        CannonParticlePoint = new GameObject("CannonParticlePoint").transform;
+        CannonParticlePoint.parent = transform;
+        CannonParticlePoint.localPosition = new Vector2(0.5f, 0.5f);
     }
 
     public override void ForceIdle()
@@ -60,7 +64,7 @@ public class Bident : Weapon
         scale = Mathf.Min(scale, 0.6f);
 
         GameObject particle = FieldObjPool.Instance.AllocateObj(ObjPoolType.CannonShotParticle);
-        particle.transform.position = cannonShotTrans.position;
+        particle.transform.position = CannonParticlePoint.position;
         particle.transform.localScale = Vector3.one * scale;
         if(-1 == Player.dir)
         {

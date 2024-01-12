@@ -16,4 +16,12 @@ public class FieldObjPool : ObjPool
         instance = this;
         Init();
     }
+
+    private void OnDestroy()
+    {
+        if (instance == this)
+        {
+            instance = null;
+        }
+    }
 }

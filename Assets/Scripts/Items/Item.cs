@@ -11,6 +11,10 @@ public enum ItemID
     RoosterMeat,
     DuckEgg,
 
+    Sword,
+    Bident,
+    Bow,
+
     // TODO: 아이템 추가하면 1. DataManager Awake() 추가, 2. Resource 폴더에 sprite 추가
     Size
 }

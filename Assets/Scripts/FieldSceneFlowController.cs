@@ -36,6 +36,14 @@ public class FieldSceneFlowController : MonoBehaviour
         invenOpened = false;
     }
 
+    private void OnDestroy()
+    {
+        if(instance == this)
+        {
+            instance = null;
+        }
+    }
+
     private void OnInventory(InputValue value)
     {
         InvenToggle();

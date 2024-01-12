@@ -25,6 +25,7 @@ public class InventoryManager : MonoBehaviour
 
         PlayerGetItem(GameManager.Data.GetItem(ItemID.RoosterMeat, 2));
         PlayerGetItem(GameManager.Data.GetItem(ItemID.DuckEgg, 4));
+        PlayerGetItem(GameManager.Data.GetItem(ItemID.Sword));
     }
 
     public void PlayerGetItem(Item item)

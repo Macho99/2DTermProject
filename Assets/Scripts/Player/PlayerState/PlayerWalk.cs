@@ -16,6 +16,7 @@ public class PlayerWalk : PlayerState
         player.PlayAnim("Walk");
         player.onAttackBtn1Pressed.AddListener(Attack);
         player.onAttackBtn2Pressed.AddListener(Attack);
+        player.PlayWalkParticle(true);
     }
 
     public override void Jump(InputValue value)
@@ -53,5 +54,6 @@ public class PlayerWalk : PlayerState
     {
         player.onAttackBtn1Pressed.RemoveListener(Attack);
         player.onAttackBtn2Pressed.RemoveListener(Attack);
+        player.PlayWalkParticle(false);
     }
 }

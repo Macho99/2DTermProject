@@ -62,6 +62,11 @@ public abstract class Weapon : MonoBehaviour
         _ = StartCoroutine(CoBoxAttack(damage, dir, distance, knockbackForce, stunTime, delayTime));
     }
 
+    public void BoxAttackAll(int damage, int dir, float distance, float knockbackForce, float stunTime, float delayTime, int targetNum)
+    {
+        _ = StartCoroutine(CoBoxAttackAll(damage, dir, distance, knockbackForce, stunTime, delayTime, targetNum));
+    }
+
     public IEnumerator CoBoxAttack(int damage, int dir, float distance, Vector2 knockback, float stunTime, float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
@@ -88,6 +93,36 @@ public abstract class Weapon : MonoBehaviour
 
         if (hit.collider != null && hit.collider.TryGetComponent<Monster>(out Monster monster))
         {
+            Vector2 knockbackDir;
+            //거리가 가까우면 플레이어의 공격 방향으로 넉백 되도록
+            if ((monster.transform.position - transform.position).sqrMagnitude < 0.4f * 0.4f)
+            {
+                knockbackDir = Vector2.right * dir;
+            }
+            else
+            {
+                knockbackDir = monster.transform.position - transform.position;
+                knockbackDir.Normalize();
+            }
+            monster.TakeDamage(damage, knockbackDir * knockbackForce, stunTime);
+        }
+    }
+
+    public IEnumerator CoBoxAttackAll(int damage, int dir, float distance, float knockbackForce, float stunTime, float delayTime, int targetNum)
+    {
+        yield return new WaitForSeconds(delayTime);
+
+        Vector2 origin = transform.position;
+        origin.y += 0.5f;
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, new Vector2(0.5f, 1f), 0f, Vector2.right * dir, distance, LayerMask.GetMask("Monster"));
+
+        int curNum = 0;
+        foreach (RaycastHit2D hit in hits)
+        {
+            curNum++;
+            if (curNum > targetNum) break;
+
+            Monster monster = hit.collider.GetComponent<Monster>();
             Vector2 knockbackDir;
             //거리가 가까우면 플레이어의 공격 방향으로 넉백 되도록
             if ((monster.transform.position - transform.position).sqrMagnitude < 0.4f * 0.4f)

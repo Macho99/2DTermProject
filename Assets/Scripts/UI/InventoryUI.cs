@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
@@ -14,6 +15,10 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Color ingredientColor;
 
     private ItemType openInvenType;
+
+    [HideInInspector] public UnityEvent onEquipMenuSelected;
+    [HideInInspector] public UnityEvent onConsumpMenuSelected;
+    [HideInInspector] public UnityEvent onIngredientMenuSelected;
 
     private void Awake()
     {
@@ -33,7 +38,6 @@ public class InventoryUI : MonoBehaviour
     private void Start()
     {
         IngredientMenuSelected(true);
-        gameObject.SetActive(false);
     }
 
     public void Refresh()
@@ -83,17 +87,20 @@ public class InventoryUI : MonoBehaviour
     {
         if (val == false) return;
         Refresh(ItemType.Equip);
+        onEquipMenuSelected?.Invoke();
     }
 
     public void ConsumpMenuSelected(bool val)
     {
         if (val == false) return;
         Refresh(ItemType.Consump);
+        onConsumpMenuSelected?.Invoke();
     }
 
     public void IngredientMenuSelected(bool val)
     {
         if (val == false) return;
         Refresh(ItemType.Ingredient);
+        onIngredientMenuSelected?.Invoke();
     }
 }

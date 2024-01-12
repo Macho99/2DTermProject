@@ -21,7 +21,7 @@ public class BidentAirborne : StateBase<Bident.State, Bident>
         enterTime = Time.time;
         owner.Player.PlayAnim("Airborne");
         owner.Player.onAttackBtn2Pressed.AddListener(GoCharge);
-        owner.BoxAttack(owner.Damage / 2, owner.Player.dir, 1.5f, new Vector2(owner.Player.dir * 0.1f, 0.9f) * 8f, 2f, attackDelay);
+        owner.BoxAttack(owner.Damage / 2, owner.Player.dir, 1.5f, new Vector2(owner.Player.dir * 0.1f, 0.9f) * 8f, 1f, attackDelay);
     }
 
     public override void Exit()

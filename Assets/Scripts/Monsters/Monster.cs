@@ -159,4 +159,30 @@ public abstract class Monster : MonoBehaviour
     }
 
     public abstract void DetectPlayer(Player player);
+
+    public void ArrowPullOut(int damagePerArrow)
+    {
+        foreach(Transform arrow in arrowHolder)
+        {
+            TakeDamage(damagePerArrow, Vector2.right * -dir);
+            _ = StartCoroutine(CoPullOut(arrow.GetComponent<Arrow>()));
+        }
+    }
+
+    private IEnumerator CoPullOut(Arrow arrow)
+    {
+        float dist = 1f;
+        float speed = 3f;
+        float curDist = 0f;
+        while (curDist < dist)
+        {
+            if (false == arrow.gameObject.activeSelf) break;
+
+            float moveDist = speed * Time.deltaTime;
+            curDist += moveDist;
+            arrow.transform.Translate(-Vector3.right * moveDist, Space.Self);
+            yield return null;
+        }
+        arrow.ObjReturn();
+    }
 }

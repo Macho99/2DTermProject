@@ -41,7 +41,7 @@ public class BowIdle : StateBase<Bow.State, Bow>
         }
         else if (true == owner.Player.AttackBtn2Input)
         {
-            //stateMachine.ChangeState(Bow.State.BackStep);
+            stateMachine.ChangeState(Bow.State.BackStep);
         }
         else
         {

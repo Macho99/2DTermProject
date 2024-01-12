@@ -29,8 +29,9 @@ public class Arrow : MonoBehaviour
         this.knockbackForce = knockbackForce;
         trailParticle.gameObject.SetActive(true);
         col.enabled = true;
-        _ = StartCoroutine(CoOff(offTime));
         angleAdjustCoroutine = StartCoroutine(CoAngleAdjust());
+
+        _ = StartCoroutine(CoOff(offTime));
     }
 
     private void OnDisable()
@@ -51,7 +52,12 @@ public class Arrow : MonoBehaviour
     private IEnumerator CoOff(float offTime)
     {
         yield return new WaitForSeconds(offTime);
-        Destroy(gameObject);
+        ObjReturn();
+    }
+
+    public void ObjReturn()
+    {
+        FieldObjPool.Instance.ReturnObj(ObjPoolType.Arrow, gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -70,7 +76,12 @@ public class Arrow : MonoBehaviour
         }
         else if(collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
         {
-            Destroy(gameObject);
+            col.enabled = false;
+            rb.velocity = Vector2.zero;
+            rb.gravityScale = 0f;
+            rb.isKinematic = true;
+            StopCoroutine(angleAdjustCoroutine);
+            _ = StartCoroutine(CoTrailOff());
         }
     }
 

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class SwordCharge: StateBase<Sword.State, Sword>
 {
+    const int targetNum = 5;
     float attackDelay = 0.2f;
     float attackStartTime;
 
@@ -62,12 +63,12 @@ public class SwordCharge: StateBase<Sword.State, Sword>
                 attackStartTime = Time.time;
                 owner.Player.PlayAnim("Slash");
                 owner.PlayChargeParticle(false);
-                owner.BoxAttack((int) (owner.Damage * 2 * chargeRatio), 
+                owner.BoxAttackAll((int) (owner.Damage * 2 * chargeRatio), 
                     owner.Player.dir, 
                     1f, 
                     5f * chargeRatio, 
                     5f * chargeRatio, 
-                    attackDelay);
+                    attackDelay, targetNum);
                 owner.PlayGroundCrackParticle(attackDelay, chargeRatio);
             }
         }
