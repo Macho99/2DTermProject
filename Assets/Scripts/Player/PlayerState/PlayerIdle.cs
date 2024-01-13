@@ -32,6 +32,7 @@ public class PlayerIdle : PlayerState
             readyState = false;
         }
 
+        player.onHit.AddListener(OnHit);
         player.onAttackBtn1Pressed.AddListener(Attack);
         player.onAttackBtn2Pressed.AddListener(Attack);
         player.AddjustFlip();
@@ -39,8 +40,16 @@ public class PlayerIdle : PlayerState
 
     public override void Exit()
     {
+        player.onHit.RemoveListener(OnHit);
         player.onAttackBtn1Pressed.RemoveListener(Attack);
         player.onAttackBtn2Pressed.RemoveListener(Attack);
+    }
+
+    private void OnHit()
+    {
+        readyState = true;
+        player.LastCombatTime = Time.time;
+        player.PlayAnim("Ready");
     }
 
     public override void Jump(InputValue value)

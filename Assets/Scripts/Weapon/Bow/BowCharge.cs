@@ -5,8 +5,9 @@ public class BowCharge : StateBase<Bow.State, Bow>
 {
     float attackStartTime;
 
-    float endDelay = 0.2f;
-    float minimumChargeTime = 0.5f;
+    float endDelay = 0.1f;
+    float minimumChargeRatio = 0.15f;
+    float maxChargeTime = 1f;
     float noChargedEndDelay = 3f;
     float enterTime;
 
@@ -24,6 +25,7 @@ public class BowCharge : StateBase<Bow.State, Bow>
 
     public override void Exit()
     {
+        owner.Player.SetMultiPurposeBar(0f);
     }
 
     public override void Setup()
@@ -53,21 +55,24 @@ public class BowCharge : StateBase<Bow.State, Bow>
     {
         if (false == attacked)
         {
+            float chargeRatio = (Time.time - enterTime) / maxChargeTime;
             if (false == owner.Player.AttackBtn1Input)
             {
-                if (Time.time < enterTime + minimumChargeTime)
+                if (chargeRatio < minimumChargeRatio)
                 {
                     stateMachine.ChangeState(Bow.State.Idle);
                     return;
                 }
-
-                float chargeRatio = (Time.time - enterTime) / noChargedEndDelay;
-                chargeRatio = Mathf.Max(0.4f, chargeRatio);
+                chargeRatio = Mathf.Min(chargeRatio, 1f);
                 attacked = true;
                 attackStartTime = Time.time;
                 owner.Player.PlayAnim("ShotEnd");
                 Vector2 direction = Vector2.right * owner.Player.dir + Vector2.up * (chargeRatio * 0.3f);   
-                owner.ShotArrow(owner.Damage, direction, 20f * chargeRatio, 1f);
+                owner.ShotArrow(owner.Damage, direction, owner.Damage * 2f * chargeRatio, 1f);
+            }
+            else
+            {
+                owner.Player.SetMultiPurposeBar(chargeRatio);
             }
         }
     }

@@ -19,29 +19,14 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        if(Player.CurWeapon == null)
-        {
-            Player.CurWeapon = this;
-        }
-        else
-        {
-            gameObject.SetActive(false);
-        }
         StateMachineSetUp();
     }
 
     protected virtual void OnDisable()
     {
-        if(Player.CurWeapon == this)
-        {
-            Player.CurWeapon = null;
-            if(true == Player.IsAttackState)
-            {
-                Player.ChangeState(PlayerStateType.Idle);
-            }
-        }
         CallStateExit();
     }
+
     protected abstract void StateMachineSetUp();
 
     protected abstract void CallStateExit();

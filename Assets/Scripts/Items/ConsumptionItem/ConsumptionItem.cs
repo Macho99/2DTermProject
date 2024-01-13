@@ -8,7 +8,7 @@ public abstract class ConsumptionItem : MultipleItem
     public ConsumptionItem(ItemID id, int amount) : base(id, type, amount)
     {
     }
-    public void Use()
+    public override void Use()
     {
         Effect();
     }

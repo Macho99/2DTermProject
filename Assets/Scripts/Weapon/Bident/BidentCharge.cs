@@ -27,6 +27,7 @@ public class BidentCharge : StateBase<Bident.State, Bident>
     public override void Exit()
     {
         owner.PlayChargeParticle(false);
+        owner.Player.SetMultiPurposeBar(0f);
     }
 
     public override void Setup()
@@ -56,10 +57,10 @@ public class BidentCharge : StateBase<Bident.State, Bident>
     {
         if (false == attacked)
         {
+            float chargeRatio = (Time.time - enterTime) / noChargedEndDelay;
             if (false == owner.Player.AttackBtn2Input)
             {
                 owner.PlayChargeParticle(false);
-                float chargeRatio = (Time.time - enterTime) / noChargedEndDelay;
                 attacked = true;
                 attackStartTime = Time.time;
                 owner.Player.PlayAnim("Jab");
@@ -84,6 +85,10 @@ public class BidentCharge : StateBase<Bident.State, Bident>
                 {
                     owner.PlayerTranslate(Vector2.right * owner.Player.dir * hit.distance * chargeRatio);
                 }
+            }
+            else
+            {
+                owner.Player.SetMultiPurposeBar(chargeRatio);
             }
         }
     }

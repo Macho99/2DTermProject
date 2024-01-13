@@ -32,11 +32,13 @@ public abstract class Item {
         this.id = id;
         this.type = type;
     }
-
+    
     public ItemID ID { get { return id;} }
     public ItemType Type { get { return type;} }
     public string Name { get { return GameManager.Data.GetItemName(id); } }
     public string Summary { get { return GameManager.Data.GetItemSummary(id); } }
     public string DetailDesc { get { return GameManager.Data.GetItemDetailDesc(id); } }
     public Sprite Sprite { get { return GameManager.Resource.GetItemSprite(id); } }
+    public virtual void DeleteWeapon() { }
+    public virtual void Use() { }
 }

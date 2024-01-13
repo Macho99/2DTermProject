@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class ItemInfoUI : InfoUI
 {
     [SerializeField] private Image image;
-    [SerializeField] private TextMeshProUGUI itemName;
-    [SerializeField] private TextMeshProUGUI summary;
-    [SerializeField] private TextMeshProUGUI detailDesc;
+    [SerializeField] private Text itemName;
+    [SerializeField] private Text summary;
+    [SerializeField] private Text detailDesc;
 
     protected override void Awake()
     {

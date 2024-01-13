@@ -27,6 +27,7 @@ public class SwordCharge: StateBase<Sword.State, Sword>
     public override void Exit()
     {
         owner.PlayChargeParticle(false);
+        owner.Player.SetMultiPurposeBar(0f);
     }
 
     public override void Setup()
@@ -56,20 +57,24 @@ public class SwordCharge: StateBase<Sword.State, Sword>
     {
         if(false == attacked)
         {
-            if(false == owner.Player.AttackBtn1Input)
+            float chargeRatio = (Time.time - enterTime) / noChargedEndDelay;
+            if (false == owner.Player.AttackBtn1Input)
             {
-                float chargeRatio = (Time.time - enterTime) / noChargedEndDelay;
                 attacked = true;
                 attackStartTime = Time.time;
                 owner.Player.PlayAnim("Slash");
                 owner.PlayChargeParticle(false);
                 owner.BoxAttackAll((int) (owner.Damage * 2 * chargeRatio), 
                     owner.Player.dir, 
-                    1f, 
+                    1.5f, 
                     5f * chargeRatio, 
                     5f * chargeRatio, 
                     attackDelay, targetNum);
                 owner.PlayGroundCrackParticle(attackDelay, chargeRatio);
+            }
+            else
+            {
+                owner.Player.SetMultiPurposeBar(chargeRatio);
             }
         }
     }

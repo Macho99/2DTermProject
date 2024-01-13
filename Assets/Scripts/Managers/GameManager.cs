@@ -53,10 +53,10 @@ public class GameManager : MonoBehaviour
 
     private void InitManagers()
     {
-        dataManager = new GameObject("DataManager").AddComponent<DataManager>();
-        dataManager.transform.parent = transform;
         resourceManager = new GameObject("ResourceManager").AddComponent<ResourceManager>();
         resourceManager.transform.parent = transform;
+        dataManager = new GameObject("DataManager").AddComponent<DataManager>();
+        dataManager.transform.parent = transform;
         inventoryManager = new GameObject("InventoryManager").AddComponent<InventoryManager>();
         inventoryManager.transform.parent = transform;
         uiManager = new GameObject("UIManager").AddComponent<UIManager>();

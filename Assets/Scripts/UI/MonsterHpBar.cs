@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class MonsterHpBar : MonoBehaviour
 {
     [SerializeField] Image background;
-    [SerializeField] Image mask;
+    [SerializeField] Image greenMask;
+    [SerializeField] Image redMask;
+    [SerializeField] float lerpSpeed = 5f;
 
     private Monster owner;
     private Coroutine offCoroutine;
@@ -22,8 +24,7 @@ public class MonsterHpBar : MonoBehaviour
     private void OnEnable()
     {
         owner.onHpChanged.AddListener(UIUpdate);
-        background.gameObject.SetActive(false);
-        mask.gameObject.SetActive(false);
+        SetVisible(false);
     }
 
     private void OnDisable()
@@ -33,33 +34,43 @@ public class MonsterHpBar : MonoBehaviour
 
     public void UIUpdate()
     {
-        background.gameObject.SetActive(true);
-        mask.gameObject.SetActive(true);
+        SetVisible(true);
 
-        mask.fillAmount = owner.CurHp / owner.MaxHp;
+        greenMask.fillAmount = owner.CurHp / owner.MaxHp;
+        lastOnTime = Time.time;
+        StopAllCoroutines();
 
         if (owner.CurHp <= 0)
         {
-            background.gameObject.SetActive(false);
-            mask.gameObject.SetActive(false);
-            if(null != offCoroutine)
-            {
-                StopCoroutine(offCoroutine);
-            }
+            SetVisible(false);
+            return;
         }
-
-        lastOnTime = Time.time;
+        
         StartCoroutine(CoOff());
-
     }
 
     private IEnumerator CoOff()
     {
-        while(lastOnTime + turnOnDuration > Time.time)
+        yield return new WaitForSeconds(1f);
+
+        while(Mathf.Abs(greenMask.fillAmount - redMask.fillAmount) > 0.0001f)
+        {
+            redMask.fillAmount = Mathf.Lerp(greenMask.fillAmount, redMask.fillAmount, 1 - Time.deltaTime * lerpSpeed);
+            yield return null;
+        }
+
+        while(Time.time < lastOnTime + turnOnDuration)
         {
             yield return null;
         }
-        background.gameObject.SetActive(false);
-        mask.gameObject.SetActive(false);
+
+        SetVisible(false);
+    }
+
+    private void SetVisible(bool val)
+    {
+        background.gameObject.SetActive(val);
+        greenMask.gameObject.SetActive(val);
+        redMask.gameObject.SetActive(val);
     }
 }

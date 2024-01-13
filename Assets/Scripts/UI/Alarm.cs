@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class Alarm : MonoBehaviour
 {
     [SerializeField] Image image;
-    [SerializeField] TextMeshProUGUI upperText;
-    [SerializeField] TextMeshProUGUI lowerText;
+    [SerializeField] Text upperText;
+    [SerializeField] Text lowerText;
 
     Animator anim;
     RectTransform rect;

@@ -14,7 +14,7 @@ public class InvenElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private Color transparencyColor;
     private Color normalColor;
 
-    public InventoryUI InventoryUI { private get; set; }
+    public InventoryUI InventoryUI { get; set; }
     public int Idx { get; set; }
     public Item CurItem { get { return curItem; } }
 

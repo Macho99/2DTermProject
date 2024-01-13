@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -162,11 +163,14 @@ public abstract class Monster : MonoBehaviour
 
     public void ArrowPullOut(int damagePerArrow)
     {
+        int cnt = 0;
         foreach(Transform arrow in arrowHolder)
         {
-            TakeDamage(damagePerArrow, Vector2.right * -dir);
+            cnt++;
             _ = StartCoroutine(CoPullOut(arrow.GetComponent<Arrow>()));
         }
+        if (0 == cnt) return;
+        TakeDamage(damagePerArrow * cnt, Vector2.right * -dir);
     }
 
     private IEnumerator CoPullOut(Arrow arrow)

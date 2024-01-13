@@ -46,6 +46,11 @@ public class PlayerWalk : PlayerState
             player.ChangeState(PlayerStateType.Idle); 
             return;
         }
+        
+        if(false == player.IsAnimatorStateName("Walk"))
+        {
+            player.PlayAnim("Walk");
+        }
 
         player.HorizonMove(TimeExtension.UnscaledDeltaTime);
     }

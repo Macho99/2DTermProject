@@ -7,6 +7,7 @@ public class ResourceManager : MonoBehaviour
 {
     [SerializeField] private Sprite[] itemSprites;
     public Dictionary<string, Sprite> spriteDict;
+    public Dictionary<string, GameObject> prefabDict;
     private void Awake()
     {
         Sprite[] spriteResources = Resources.LoadAll<Sprite>("ItemSprites");
@@ -26,6 +27,13 @@ public class ResourceManager : MonoBehaviour
         foreach(var otherSprite in otherSprites)
         {
             spriteDict.Add(otherSprite.name, otherSprite);
+        }
+
+        prefabDict = new Dictionary<string, GameObject>();
+        GameObject[] prefabs = Resources.LoadAll<GameObject>("Prefabs");
+        foreach(var prefab in prefabs)
+        {
+            prefabDict.Add(prefab.name, prefab);
         }
     }
 

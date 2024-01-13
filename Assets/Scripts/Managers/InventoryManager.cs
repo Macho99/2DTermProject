@@ -13,19 +13,27 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private IngredientItem[] ingredientInv;
 
     [HideInInspector] public UnityEvent<Item> onItemGet;
+    [HideInInspector] public UnityEvent<Item> onItemDelete;
 
     public int MaxInvenSize {  get { return maxInvenSize; } }
 
     private void Awake()
     {
         onItemGet = new UnityEvent<Item>();
+        onItemDelete= new UnityEvent<Item>();
+
         equipInv = new EquipItem[maxInvenSize];
         consumpInv = new ConsumptionItem[maxInvenSize];
         ingredientInv = new IngredientItem[maxInvenSize];
+    }
 
+    private void Start()
+    {
         PlayerGetItem(GameManager.Data.GetItem(ItemID.RoosterMeat, 2));
         PlayerGetItem(GameManager.Data.GetItem(ItemID.DuckEgg, 4));
         PlayerGetItem(GameManager.Data.GetItem(ItemID.Sword));
+        PlayerGetItem(GameManager.Data.GetItem(ItemID.Bident));
+        PlayerGetItem(GameManager.Data.GetItem(ItemID.Bow));
     }
 
     public void PlayerGetItem(Item item)
@@ -41,13 +49,17 @@ public class InventoryManager : MonoBehaviour
         else if(item is EquipItem equipItem)
         {
             AddInv(equipInv, equipItem);
+            if(equipItem is WeaponItem weaponItem)
+            {
+                weaponItem.AddWeapon();
+            }
         }
     }
 
-    public void Refresh(ItemType invType, int idx, Item item)
+    private Item[] GetInv(ItemType invType)
     {
         Item[] inv;
-        switch(invType)
+        switch (invType)
         {
             case ItemType.Equip:
                 inv = equipInv;
@@ -60,7 +72,14 @@ public class InventoryManager : MonoBehaviour
                 inv = ingredientInv;
                 break;
         }
-        if(idx >= inv.Length)
+        return inv;
+    }
+
+    public void Refresh(ItemType invType, int idx, Item item)
+    {
+        Item[] inv = GetInv(invType);
+
+        if (idx >= inv.Length)
         {
             Debug.LogError($"{idx}는 inv의 최대 길이 밖임");
             return;
@@ -136,5 +155,69 @@ public class InventoryManager : MonoBehaviour
             inv[emptyIdx] = newItem;
         }
         onItemGet?.Invoke(newItem);
+    }
+
+    public void SortInv(ItemType openInvenType)
+    {
+        Item[] inv = GetInv(openInvenType);
+        bool changed = false;
+        bool finish = false;
+
+        for(int i = 0; i < inv.Length; i++)
+        {
+            if(true == finish)
+            {
+                break;
+            }
+            if (null != inv[i])
+            {
+                continue;
+            }
+
+            for(int j = i + 1; j < inv.Length; j++)
+            {
+                if(null != inv[j])
+                {
+                    Item temp = inv[j];
+                    inv[j] = inv[i];
+                    inv[i] = temp;
+                    changed = true;
+                    break;
+                }
+
+                if(j == inv.Length - 1)
+                {
+                    finish = true;
+                }
+            }
+        }
+
+        if (true == changed) return;
+
+        Array.Sort(inv, (a, b) =>
+        {
+            if (a == null)
+            {
+                if (b == null)
+                    return 0;
+                else
+                    return 1;
+            }
+            else
+            {
+                if (b == null)
+                    return -1;
+                else
+                    return string.Compare(a.Name,b.Name);
+            }
+        });
+    }
+
+    public void DeleteItem(ItemType type, int idx)
+    {
+        Item[] inv = GetInv(type);
+        onItemDelete?.Invoke(inv[idx]);
+        inv[idx].DeleteWeapon();
+        inv[idx] = null;
     }
 }

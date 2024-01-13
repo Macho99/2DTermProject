@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField] GameObject contentsFolder;
+    [SerializeField] Text spaceTakenText;
+    [SerializeField] Text spaceEmptyText;
     [SerializeField] InvenElement slotPrefab;
     [SerializeField] InvenElement[] slots;
     [SerializeField] Image title;
@@ -32,12 +34,12 @@ public class InventoryUI : MonoBehaviour
             elem.InventoryUI = this;
             slots[i] = elem;
         }
-        openInvenType = ItemType.Ingredient;
+        openInvenType = ItemType.Equip;
     }
 
     private void Start()
     {
-        IngredientMenuSelected(true);
+        EquipMenuSelected(true);
     }
 
     public void Refresh()
@@ -68,14 +70,19 @@ public class InventoryUI : MonoBehaviour
                 break;
         }
 
+        int takenCnt = 0;
         for (int i = 0; i < inv.Length; i++)
         {
+            if (inv[i] != null) takenCnt++;
             slots[i].Set(inv[i]);
         }
         for(int i=inv.Length; i< slots.Length; i++)
         {
             slots[i].Invisible();
         }
+
+        spaceTakenText.text = takenCnt.ToString();
+        spaceEmptyText.text = inv.Length.ToString();
     }
 
     private void OnEnable()
@@ -102,5 +109,11 @@ public class InventoryUI : MonoBehaviour
         if (val == false) return;
         Refresh(ItemType.Ingredient);
         onIngredientMenuSelected?.Invoke();
+    }
+
+    public void SortInv()
+    {
+        GameManager.Inven.SortInv(openInvenType);
+        Refresh();
     }
 }

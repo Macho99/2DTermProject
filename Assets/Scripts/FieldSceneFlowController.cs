@@ -12,6 +12,7 @@ public class FieldSceneFlowController : MonoBehaviour
     private bool invenOpened;
     public UnityEvent onInvenOpen;
     public UnityEvent onInvenClose;
+    public UnityEvent<int> onNumPressed;
 
     public static Player Player { get {
             if(player == null)
@@ -20,6 +21,7 @@ public class FieldSceneFlowController : MonoBehaviour
             }
             return player;
         }}
+
     public static FieldSceneFlowController Instance
     {
         get { return instance; }
@@ -34,6 +36,7 @@ public class FieldSceneFlowController : MonoBehaviour
         }
         instance = this;
         invenOpened = false;
+        onNumPressed = new UnityEvent<int>();
     }
 
     private void OnDestroy()
@@ -41,6 +44,7 @@ public class FieldSceneFlowController : MonoBehaviour
         if(instance == this)
         {
             instance = null;
+            player = null;
         }
     }
 
@@ -68,5 +72,22 @@ public class FieldSceneFlowController : MonoBehaviour
     private void OnEscape(InputValue value)
     {
 
+    }
+
+    private void OnNum1(InputValue value)
+    {
+        onNumPressed?.Invoke(1);
+    }
+    private void OnNum2(InputValue value)
+    {
+        onNumPressed?.Invoke(2);
+    }
+    private void OnNum3(InputValue value)
+    {
+        onNumPressed?.Invoke(3);
+    }
+    private void OnNum4(InputValue value)
+    {
+        onNumPressed?.Invoke(4);
     }
 }

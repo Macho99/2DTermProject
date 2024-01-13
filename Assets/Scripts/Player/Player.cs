@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.U2D.Animation;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Player : MonoBehaviour
 {
@@ -19,16 +20,20 @@ public class Player : MonoBehaviour
     [SerializeField] private int maxHp = 100;
     [SerializeField] private Transform weaponFolder;
     [SerializeField] private SpriteLibrary weaponLibrary;
+    [SerializeField] private List<Weapon> weaponList;
     [SerializeField] private Weapon curWeapon;
     [SerializeField] private ParticleSystem walkParticle;
     [SerializeField] private ParticleSystem jumpParticle;
 
     private SpriteRenderer weaponSpRenderer;
+    private RectTransform canvasRect;
 
     [HideInInspector] public UnityEvent onHpChanged;
     [HideInInspector] public UnityEvent onAttackBtn1Pressed;
     [HideInInspector] public UnityEvent onAttackBtn2Pressed;
     [HideInInspector] public UnityEvent onAttackState;
+    [HideInInspector] public UnityEvent onHit;
+    [HideInInspector] public UnityEvent<float> onMultiPurposeBarChanged;
 
     public Weapon CurWeapon { 
         get {
@@ -37,13 +42,6 @@ public class Player : MonoBehaviour
         set
         {
             curWeapon = value;
-            if(value == null)
-            {
-                weaponLibrary.spriteLibraryAsset = null;
-                weaponSpRenderer.sprite = null;
-                return;
-            }
-            weaponLibrary.spriteLibraryAsset = curWeapon.SpriteLibraryAsset;
         }
     }
 
@@ -77,6 +75,8 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         Interactor = GetComponentInChildren<Interactor>();
         weaponSpRenderer = weaponLibrary.GetComponent<SpriteRenderer>();
+        weaponList = new List<Weapon>();
+        canvasRect = GetComponentInChildren<Canvas>().GetComponent<RectTransform>();
 
         curHp = maxHp;
 
@@ -162,12 +162,15 @@ public class Player : MonoBehaviour
         if (inputVec.x < 0f)
         {
             dir = -1;
-            transform.localScale = new Vector3(-1, 1, 1);
+            Vector3 vec = new Vector3(-1, 1, 1);
+            transform.localScale = vec;
+            canvasRect.localScale = vec;
         }
         else if (inputVec.x > 0f)
         {
             dir = 1;
             transform.localScale = Vector3.one;
+            canvasRect.localScale = Vector3.one;
         }
     }
 
@@ -325,6 +328,7 @@ public class Player : MonoBehaviour
 
     public void PlayerTakeDamage(int damage, Vector2 knockback, float stunDuration, bool hitTrigger = true)
     {
+        onHit?.Invoke();
         curHp -= damage;
         rb.velocity = new Vector2(0f, rb.velocity.y);
         //hitParticle.Play();
@@ -354,6 +358,56 @@ public class Player : MonoBehaviour
     public void PlayJumpParticle()
     {
         jumpParticle.Play();
+    }
+
+    public Weapon AddWeapon(Weapon weaponPrefab)
+    {
+        Weapon weaponObj = Instantiate(weaponPrefab, weaponFolder);
+        weaponList.Add(weaponObj);
+        return weaponObj;
+    }
+
+    public void DeleteWeapon(Weapon weaponObj)
+    {
+        if(weaponObj == curWeapon) curWeapon= null;
+
+        Destroy(weaponObj.gameObject);
+        weaponList.Remove(weaponObj);
+    }
+
+    public void WeaponSlotChanged(Weapon newWeaponObj)
+    {
+        SetCurWeapon(newWeaponObj);
+    }
+
+    public void SetCurWeapon(Weapon weaponObj = null)
+    {
+        curWeapon?.gameObject.SetActive(false);
+
+        if (!weaponList.Contains(weaponObj))
+        {
+            if (weaponObj == null)
+            {
+                curWeapon = null;
+                weaponLibrary.spriteLibraryAsset = null;
+                weaponSpRenderer.sprite = null;
+                return;
+            }
+            else
+            {
+                Debug.LogError("weaponList에 등록되지 않은 weapon입니다");
+                return;
+            }
+        }
+
+        curWeapon = weaponObj;
+        weaponLibrary.spriteLibraryAsset = curWeapon.SpriteLibraryAsset;
+        curWeapon.gameObject.SetActive(true);
+    }
+
+    public void SetMultiPurposeBar(float ratio)
+    {
+        onMultiPurposeBarChanged?.Invoke(ratio);
     }
 
     private void Die()

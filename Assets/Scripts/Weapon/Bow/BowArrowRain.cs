@@ -38,6 +38,7 @@ public class BowArrowRain : StateBase<Bow.State, Bow>
         owner.Player.SetAnimAttackSpeed();
         owner.Player.onAttackBtn1Pressed.RemoveListener(Shot);
         owner.Player.onAttackBtn2Pressed.RemoveListener(GoPullOut);
+        owner.Player.SetMultiPurposeBar(0f);
     }
 
     public override void Setup()
@@ -52,10 +53,11 @@ public class BowArrowRain : StateBase<Bow.State, Bow>
 
     private void Shot()
     {
-        if(curShot >= maxShot) {
+        if(curShot > maxShot) {
             stateMachine.ChangeState(Bow.State.Idle);
             return; 
         }
+        owner.Player.SetMultiPurposeBar((float)curShot / maxShot);
 
         if(Time.time > lastShotTime + attackDelay) {
             owner.Player.PlayAnim("Shot");

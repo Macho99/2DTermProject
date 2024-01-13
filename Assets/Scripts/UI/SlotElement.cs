@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SlotElement : MonoBehaviour, IDropHandler
+public class SlotElement : MonoBehaviour, IDropHandler, IPointerClickHandler
 {
     [SerializeField] ItemType slotType;
     [SerializeField] int slotNum;
@@ -15,7 +15,6 @@ public class SlotElement : MonoBehaviour, IDropHandler
     private Item curItem;
     private int amount;
 
-
     private void Awake()
     {
         if(slotNum == 0)
@@ -23,6 +22,22 @@ public class SlotElement : MonoBehaviour, IDropHandler
             print("슬롯 번호는 0일 수 없습니다!");
         }
         slotUI = GetComponentInParent<SlotUI>();
+        GameManager.Inven.onItemDelete.AddListener(OnItemDelete);
+    }
+
+
+
+    private void OnDestroy()
+    {
+        GameManager.Inven.onItemDelete.AddListener(OnItemDelete);
+    }
+
+    private void OnItemDelete(Item item)
+    {
+        if(item == curItem)
+        {
+            Set();
+        }
     }
 
     public void Set(Item item = null)
@@ -30,7 +45,9 @@ public class SlotElement : MonoBehaviour, IDropHandler
         if (item == null)
         {
             amount = 0;
+            amountText.text = "";
             image.sprite = null;
+            image.gameObject.SetActive(false);
             return;
         }
 
@@ -46,6 +63,7 @@ public class SlotElement : MonoBehaviour, IDropHandler
             amountText.text = "";
         }
         image.sprite = item.Sprite;
+        image.gameObject.SetActive(true);
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -57,5 +75,10 @@ public class SlotElement : MonoBehaviour, IDropHandler
         }
 
         slotUI.OnItemDrop(slotNum - 1, item);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        slotUI.OnSlotClick(slotNum - 1);
     }
 }
