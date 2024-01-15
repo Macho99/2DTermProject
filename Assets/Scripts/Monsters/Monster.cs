@@ -11,13 +11,15 @@ public abstract class Monster : MonoBehaviour
     [SerializeField] protected int curHp;
     [SerializeField] protected int maxHp = 100;
     [SerializeField] protected int damage = 10;
-    [SerializeField] float moveSpeed = 2f;
-    [SerializeField] float runSpeed = 3f;
+    [SerializeField] float moveMaxSpeed = 2f;
+    [SerializeField] float runMaxSpeed = 3f;
+    [SerializeField] protected float accelSpeed = 1000f;
     [SerializeField] Transform flipable;
     [SerializeField] Transform arrowHolder;
     [SerializeField] ParticleSystem hitParticle;
     [SerializeField] ParticleSystem stunParticle;
-    [SerializeField] float knockbackTime = 0.5f;
+    [SerializeField] protected float knockbackTime = 0.3f;
+    [SerializeField] float lookRange = 10f;
 
     protected Rigidbody2D rb;
     protected Animator anim;
@@ -28,17 +30,30 @@ public abstract class Monster : MonoBehaviour
     public MonsterUIState curUIState;
     [HideInInspector] public UnityEvent onUIStateChanged;
 
+    public float LookRange { get { return lookRange; } }
     public int Damage { get {  return damage; } }
     public float CurHp { get { return curHp; } }
     public float MaxHp { get { return maxHp; } }
     public Transform Target { get { return target; } set { target = value; } }
     public int dir { get; set; }
-    public float MoveSpeed { get { return moveSpeed; } }
-    public float RunSpeed { get { return runSpeed; } }
+    public float MoveSpeed { get { return moveMaxSpeed; } }
+    public float RunSpeed { get { return runMaxSpeed; } }
     public Transform ArrowHolder { get { return arrowHolder; } }
     public float StunEndTime { get; private set; }
 
-    private float lastHitTime = 0f;
+    protected float lastHitTime = 0f;
+
+    protected virtual void Awake()
+    {
+        StunEndTime = -10f;
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponentInChildren<Animator>();
+        col = GetComponent<BoxCollider2D>();
+        dir = 1;
+
+        curHp = maxHp;
+    }
+
     public void Flip()
     {
         if (dir == 1)
@@ -64,23 +79,31 @@ public abstract class Monster : MonoBehaviour
         onUIStateChanged?.Invoke();
     }
 
-    protected virtual void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponentInChildren<Animator>();
-        col = GetComponent<BoxCollider2D>();
-        dir = 1;
+    //public void HorizonMove(float velX)
+    //{
+    //    if (Time.time < lastHitTime + knockbackTime)
+    //    {
+    //        return;
+    //    }
+    //    rb.velocity = new Vector2(velX, rb.velocity.y);
+    //}
 
-        curHp = maxHp;
-    }
-
-    public void HorizonMove(float velX)
+    public void HorizonMove(float direction, float maxSpeed , float time)
     {
         if (Time.time < lastHitTime + knockbackTime)
         {
             return;
         }
-        rb.velocity = new Vector2(velX, rb.velocity.y);
+
+        if (rb.velocity.x < -maxSpeed && direction < 0f)
+        {
+            return;
+        }
+        if (rb.velocity.x > maxSpeed && direction > 0f)
+        {
+            return;
+        }
+        rb.AddForce(Vector2.right * direction * accelSpeed * time, ForceMode2D.Force);
     }
 
     public void SetVel(Vector2 vel)

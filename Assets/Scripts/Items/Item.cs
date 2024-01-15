@@ -8,12 +8,15 @@ using UnityEngine;
 [Serializable]
 public enum ItemID
 {
-    RoosterMeat,
-    DuckEgg,
-
     Sword,
     Bident,
     Bow,
+
+    RedPotion,
+
+    RoosterMeat,
+    DuckEgg,
+
 
     // TODO: 아이템 추가하면 1. DataManager Awake() 추가, 2. Resource 폴더에 sprite 추가
     Size
@@ -23,7 +26,8 @@ public enum ItemID
 public enum ItemType { Equip, Consump, Ingredient };
 
 [Serializable]
-public abstract class Item {
+public abstract class Item
+{
     private ItemID id;
     private ItemType type;
 
@@ -39,6 +43,7 @@ public abstract class Item {
     public string Summary { get { return GameManager.Data.GetItemSummary(id); } }
     public string DetailDesc { get { return GameManager.Data.GetItemDetailDesc(id); } }
     public Sprite Sprite { get { return GameManager.Resource.GetItemSprite(id); } }
+
     public virtual void DeleteWeapon() { }
     public virtual void Use() { }
 }

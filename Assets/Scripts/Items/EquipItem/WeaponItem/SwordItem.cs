@@ -6,4 +6,9 @@ public class SwordItem : WeaponItem
     public SwordItem() : base(id)
     {
     }
+
+    public override object Clone()
+    {
+        return new SwordItem();
+    }
 }

@@ -8,11 +8,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerBlock : PlayerState
 {
-    const float counterAttackDuration = 0.5f;
     const float counterAttackStunDuration = 1.5f;
-    const float blockCoolTime = 5f;
 
-    float lastBlockTime = -5f;
     float enterTime;
     public PlayerBlock(Player player) : base(player)
     {
@@ -20,7 +17,7 @@ public class PlayerBlock : PlayerState
 
     public override void Enter()
     {
-        if(Time.time < lastBlockTime + blockCoolTime)
+        if(Time.time < player.LastBlockTime + Constants.BlockCoolTime)
         {
             player.ChangeState(PlayerStateType.Idle);
             return;
@@ -28,11 +25,14 @@ public class PlayerBlock : PlayerState
 
         enterTime = Time.time;
         player.PlayAnim("Block");
+        player.IsBlockState = true;
+        player.BlockUse();
     }
 
     public override void Exit()
     {
         player.LastCombatTime = Time.time;
+        player.IsBlockState = false;
     }
 
     public override void Jump(InputValue value)
@@ -42,18 +42,17 @@ public class PlayerBlock : PlayerState
 
     public override void TakeDamage(Monster monster, int damage, Vector2 knockback, float stunDuration)
     {
-        if(knockback.x * player.dir < 0f)
+        if (knockback.x * player.dir < 0f)
         {
-            if(Time.time < enterTime + counterAttackDuration)
+            if(Time.time < enterTime + Constants.CounterAttackDuration)
             {
-                monster.TakeDamage(0, -knockback, counterAttackStunDuration);
+                monster.TakeDamage(0, -knockback / 2, counterAttackStunDuration);
             }
             else
             {
                 player.PlayerTakeDamage(damage / 2, knockback, 0f, false);
             }
             player.ChangeState(PlayerStateType.Idle);
-            lastBlockTime = Time.time;
             return;
         }
 
@@ -67,6 +66,6 @@ public class PlayerBlock : PlayerState
             player.ChangeState(PlayerStateType.Idle);
             return;
         }
-        lastBlockTime = Time.time;
+        player.LastBlockTime = Time.time;
     }
 }

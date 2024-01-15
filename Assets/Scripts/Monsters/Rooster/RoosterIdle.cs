@@ -63,4 +63,3 @@ public class RoosterIdle : StateBase<Rooster.State, Rooster>
         curIdleDuration -= Time.deltaTime;
     }
 }
-

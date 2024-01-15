@@ -14,6 +14,7 @@ public class InventoryManager : MonoBehaviour
 
     [HideInInspector] public UnityEvent<Item> onItemGet;
     [HideInInspector] public UnityEvent<Item> onItemDelete;
+    [HideInInspector] public UnityEvent<Item> onItemAmountChanged;
 
     public int MaxInvenSize {  get { return maxInvenSize; } }
 
@@ -21,6 +22,7 @@ public class InventoryManager : MonoBehaviour
     {
         onItemGet = new UnityEvent<Item>();
         onItemDelete= new UnityEvent<Item>();
+        onItemAmountChanged = new UnityEvent<Item>();
 
         equipInv = new EquipItem[maxInvenSize];
         consumpInv = new ConsumptionItem[maxInvenSize];
@@ -34,6 +36,7 @@ public class InventoryManager : MonoBehaviour
         PlayerGetItem(GameManager.Data.GetItem(ItemID.Sword));
         PlayerGetItem(GameManager.Data.GetItem(ItemID.Bident));
         PlayerGetItem(GameManager.Data.GetItem(ItemID.Bow));
+        PlayerGetItem(GameManager.Data.GetItem(ItemID.RedPotion, 10));
     }
 
     public void PlayerGetItem(Item item)
@@ -216,8 +219,44 @@ public class InventoryManager : MonoBehaviour
     public void DeleteItem(ItemType type, int idx)
     {
         Item[] inv = GetInv(type);
-        onItemDelete?.Invoke(inv[idx]);
-        inv[idx].DeleteWeapon();
+        Item item = inv[idx];
+        item.DeleteWeapon();
         inv[idx] = null;
+        onItemDelete?.Invoke(item);
+    }
+
+    public void ItemAmountChanged(Item item)
+    {
+        if(item is MultipleItem multi)
+        {
+            if(0 == multi.Amount)
+            {
+                int idx;
+                FindItem(item, out idx);
+                if(-1 == idx)
+                {
+                    Debug.LogError($"인벤토리에 {item.Name}이 없습니다!");
+                    return;
+                }
+                DeleteItem(item.Type, idx);
+                return;
+            }
+        }
+        
+        onItemAmountChanged?.Invoke(item);
+    }
+
+    private void FindItem(Item item, out int idx)
+    {
+        Item[] inv = GetInv(item.Type);
+        idx = -1;
+        for (int i = 0; i < inv.Length; i++)
+        {
+            if (inv[i] == item)
+            {
+                idx = i;
+                return;
+            }
+        }
     }
 }

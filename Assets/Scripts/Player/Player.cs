@@ -10,7 +10,7 @@ using static UnityEngine.Rendering.DebugUI;
 public class Player : MonoBehaviour
 {
     [SerializeField] string curStateStr;
-    [SerializeField] private float accelSpeed = 5f;
+    [SerializeField] private float accelSpeed = 1000f;
     [SerializeField] private float maxSpeed = 3f;
     [SerializeField] private float airControlMultiple = 0.5f;
     [SerializeField] private float jumpForce = 3f;
@@ -18,12 +18,16 @@ public class Player : MonoBehaviour
     [SerializeField] private float readyDuration = 3f;
     [SerializeField] private int curHp;
     [SerializeField] private int maxHp = 100;
+    [SerializeField] private float hpDownDuration = 5f;
+    [SerializeField] private int hpDownAmount = 2;
     [SerializeField] private Transform weaponFolder;
     [SerializeField] private SpriteLibrary weaponLibrary;
     [SerializeField] private List<Weapon> weaponList;
     [SerializeField] private Weapon curWeapon;
     [SerializeField] private ParticleSystem walkParticle;
     [SerializeField] private ParticleSystem jumpParticle;
+    [SerializeField] private ParticleSystem stunParticle;
+    [SerializeField] private ParticleSystem healParticle;
 
     private SpriteRenderer weaponSpRenderer;
     private RectTransform canvasRect;
@@ -33,6 +37,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public UnityEvent onAttackBtn2Pressed;
     [HideInInspector] public UnityEvent onAttackState;
     [HideInInspector] public UnityEvent onHit;
+    [HideInInspector] public UnityEvent onBlockUse;
     [HideInInspector] public UnityEvent<float> onMultiPurposeBarChanged;
 
     public Weapon CurWeapon { 
@@ -53,6 +58,7 @@ public class Player : MonoBehaviour
     public bool BlockInput { get; private set; }
     public bool InteractInput { get; private set; }
     public bool IsAttackState { get; set; }
+    public bool IsStunState { get; set; }
     public bool isGround = false;
     public bool doubleJumped = false;
     public int dir = 1; // 1이면 오른쪽, -1이면 왼쪽
@@ -60,6 +66,9 @@ public class Player : MonoBehaviour
     public float ReadyDuration { get { return readyDuration; } }
     public float AirControlMultiple { get { return airControlMultiple; } }
     public Interactor Interactor { get; private set; }
+    public float LastBlockTime { get; set; }
+    public bool IsBlockState { get; set; }
+    public float StunEndTime { get; private set; }
 
     PlayerState curState;
     PlayerState[] states;
@@ -79,6 +88,7 @@ public class Player : MonoBehaviour
         canvasRect = GetComponentInChildren<Canvas>().GetComponent<RectTransform>();
 
         curHp = maxHp;
+        LastBlockTime = -Constants.BlockCoolTime;
 
         // TODO: 상태 변경 관리하기
         states = new PlayerState[(int) PlayerStateType.Size];
@@ -105,6 +115,16 @@ public class Player : MonoBehaviour
     private void Start()
     {
         onHpChanged?.Invoke();
+        StartCoroutine(CoHpDown());
+    }
+
+    private IEnumerator CoHpDown()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(hpDownDuration);
+            PlayerTakeDamage(hpDownAmount, Vector2.zero, 0f, false);
+        }
     }
 
     public void ChangeState(PlayerStateType type)
@@ -153,6 +173,7 @@ public class Player : MonoBehaviour
     {
         inputVec.x = value.Get<float>();
         if (true == IsAttackState) return;
+        if (true == IsStunState) return;
 
         AddjustFlip();
     }
@@ -330,13 +351,18 @@ public class Player : MonoBehaviour
     {
         onHit?.Invoke();
         curHp -= damage;
-        rb.velocity = new Vector2(0f, rb.velocity.y);
-        //hitParticle.Play();
+
         if(hitTrigger == true)
         {
             anim.SetTrigger("Hit");
         }
-        rb.AddForce(knockback, ForceMode2D.Impulse);
+
+        if(knockback.sqrMagnitude > 0.1f)
+        {
+            rb.velocity = new Vector2(0f, rb.velocity.y);
+            rb.AddForce(knockback, ForceMode2D.Impulse);
+        }
+
         LastCombatTime = Time.time;
 
         onHpChanged?.Invoke();
@@ -348,16 +374,41 @@ public class Player : MonoBehaviour
             Die();
             return;
         }
+
+        else if(stunDuration > 0.01f)
+        {
+            StunEndTime = Time.time + stunDuration;
+            if(true == IsAttackState)
+            {
+                CurWeapon.ForceIdle();
+            }
+            ChangeState(PlayerStateType.Stun);
+        }
     }
 
-    public void PlayWalkParticle(bool var)
+    public void PlayWalkParticle(bool val)
     {
-        walkParticle.gameObject.SetActive(var);
+        walkParticle.gameObject.SetActive(val);
     }
 
     public void PlayJumpParticle()
     {
         jumpParticle.Play();
+    }
+
+    public void PlayStunParticle(bool val)
+    {
+        stunParticle.gameObject.SetActive(val);
+    }
+    
+    public void Heal(int amount)
+    {
+        curHp += amount;
+        if(curHp > maxHp)
+            curHp = maxHp;
+
+        onHpChanged?.Invoke();
+        healParticle.Play();
     }
 
     public Weapon AddWeapon(Weapon weaponPrefab)
@@ -410,8 +461,13 @@ public class Player : MonoBehaviour
         onMultiPurposeBarChanged?.Invoke(ratio);
     }
 
+    public void BlockUse()
+    {
+        onBlockUse?.Invoke();
+    }
+
     private void Die()
     {
-
+        StopAllCoroutines();
     }
 }

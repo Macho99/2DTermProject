@@ -68,7 +68,7 @@ public class BowCharge : StateBase<Bow.State, Bow>
                 attackStartTime = Time.time;
                 owner.Player.PlayAnim("ShotEnd");
                 Vector2 direction = Vector2.right * owner.Player.dir + Vector2.up * (chargeRatio * 0.3f);   
-                owner.ShotArrow(owner.Damage, direction, owner.Damage * 2f * chargeRatio, 1f);
+                owner.ShotArrow(owner.Damage, direction, owner.Damage * 2f * chargeRatio);
             }
             else
             {

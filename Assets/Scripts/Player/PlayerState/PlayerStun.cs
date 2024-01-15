@@ -13,7 +13,8 @@ public class PlayerStun : PlayerState
     public override void Enter()
     {
         player.PlayAnim("Stun");
-
+        player.PlayStunParticle(true);
+        player.IsStunState = true;
     }
 
     public override void Jump(InputValue value)
@@ -23,12 +24,16 @@ public class PlayerStun : PlayerState
 
     public override void Update()
     {
-
+        if(Time.time > player.StunEndTime)
+        {
+            player.IsStunState = false;
+            player.ChangeState(PlayerStateType.Idle);
+        }
     }
 
     public override void Exit()
     {
-
+        player.PlayStunParticle(false);
     }
 
 }

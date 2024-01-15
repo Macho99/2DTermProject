@@ -7,7 +7,6 @@ public class Rooster : Monster
     public enum State { Idle, LookAround, Detect, Turn, Walk, Trace, Attack, Stun, Die, Size};
     StateMachine<State, Rooster> stateMachine;
 
-    [SerializeField] float traceRange = 5f;
     [SerializeField] float attackDist;
     [SerializeField] float attackDuration;
     [SerializeField] float knockbackForce = 3f;
@@ -17,7 +16,6 @@ public class Rooster : Monster
     public float AttackDuration { get { return attackDuration; } }
     public float LastAttackTime {  get; set; }
     public float AttackDist { get { return attackDist; } }
-    public float TraceRange { get { return traceRange; } }
 
     protected override void Awake()
     {

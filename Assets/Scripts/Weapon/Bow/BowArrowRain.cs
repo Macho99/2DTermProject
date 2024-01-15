@@ -63,7 +63,7 @@ public class BowArrowRain : StateBase<Bow.State, Bow>
             owner.Player.PlayAnim("Shot");
             Vector2 direction = Vector2.right * owner.Player.dir;
             direction.y += Random.Range(0f, 0.2f);
-            owner.ShotArrow(owner.Damage / 5, direction, 10f, 0f);
+            owner.ShotArrow(owner.Damage / 5, direction, 10f);
             lastShotTime = Time.time;
             curShot++;
         }

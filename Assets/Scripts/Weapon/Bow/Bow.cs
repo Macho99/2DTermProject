@@ -45,7 +45,7 @@ public class Bow : Weapon
         stateMachine.SetUp(State.Idle);
     }
 
-    public void ShotArrow(int damage, Vector2 dir, float speed, float knockbackForce = 1f, float offTime = 10f)
+    public void ShotArrow(int damage, Vector2 dir, float speed, float knockbackForce = 3f, float offTime = 10f)
     {
         Arrow arrow = FieldObjPool.Instance.AllocateObj(ObjPoolType.Arrow).GetComponent<Arrow>();
         arrow.Init(damage, ShotPoint.position, dir, speed, knockbackForce, offTime);

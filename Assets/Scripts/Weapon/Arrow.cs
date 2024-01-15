@@ -65,7 +65,7 @@ public class Arrow : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Monster"))
         {
             Monster monster = collision.gameObject.GetComponent<Monster>();
-            monster.TakeDamage(damage, rb.velocity / 3);
+            monster.TakeDamage(damage, rb.velocity.normalized * knockbackForce);
             gameObject.transform.parent = monster.ArrowHolder;
             col.enabled = false;
             rb.velocity = Vector2.zero;

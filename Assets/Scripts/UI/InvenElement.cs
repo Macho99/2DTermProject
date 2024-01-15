@@ -25,6 +25,7 @@ public class InvenElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         normalColor = Color.white;
         image = transform.GetChild(0).GetComponent<Image>();
         text = GetComponentInChildren<TextMeshProUGUI>();
+
     }
 
     public void Set(Item item = null)

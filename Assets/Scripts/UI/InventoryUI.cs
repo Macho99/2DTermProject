@@ -35,6 +35,22 @@ public class InventoryUI : MonoBehaviour
             slots[i] = elem;
         }
         openInvenType = ItemType.Equip;
+        GameManager.Inven.onItemAmountChanged.AddListener(OnItemAmountChange);
+        GameManager.Inven.onItemDelete.AddListener(OnItemAmountChange);
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Inven.onItemAmountChanged.RemoveListener(OnItemAmountChange);
+        GameManager.Inven.onItemDelete.RemoveListener(OnItemAmountChange);
+    }
+
+    private void OnItemAmountChange(Item item)
+    {
+        if (item.Type == openInvenType)
+        {
+            Refresh();
+        }
     }
 
     private void Start()

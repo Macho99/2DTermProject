@@ -10,4 +10,9 @@ public class BidentItem : WeaponItem
     public BidentItem() : base(id)
     {
     }
+
+    public override object Clone()
+    {
+        return new BidentItem();
+    }
 }

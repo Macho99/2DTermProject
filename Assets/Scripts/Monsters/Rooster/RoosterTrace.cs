@@ -49,8 +49,8 @@ public class RoosterTrace : StateBase<Rooster.State, Rooster>
         Vector2 target = new Vector2(targetPos.x, targetPos.y + 0.4f);
         Vector2 current = new Vector2(ownerPos.x, ownerPos.y + 0.5f);
 
-        RaycastHit2D hit = Physics2D.Raycast(current, target - current, owner.TraceRange, layLayerMask);
-        Debug.DrawRay(current, (target - current).normalized * owner.TraceRange, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(current, target - current, owner.LookRange, layLayerMask);
+        Debug.DrawRay(current, (target - current).normalized * owner.LookRange, Color.red);
 
         if(null == hit.collider || false == hit.collider.gameObject.tag.Equals("Player"))
         {
@@ -63,7 +63,7 @@ public class RoosterTrace : StateBase<Rooster.State, Rooster>
 
     public override void Update()
     {
-        owner.HorizonMove(owner.dir * owner.RunSpeed);
+        owner.HorizonMove(owner.dir, owner.RunSpeed, Time.deltaTime);
         CheckDirection();
     }
 

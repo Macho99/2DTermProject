@@ -18,8 +18,8 @@ public class BowDoubleArrow : StateBase<Bow.State, Bow>
         enterTime = Time.time;
         owner.Player.PlayAnim("Shot"); 
         Vector2 direction = Vector2.right * owner.Player.dir;
-        owner.ShotArrow(owner.Damage, direction + Vector2.up * 0.15f, 10f, 0.5f);
-        owner.ShotArrow(owner.Damage, direction, 10f, 0.5f);
+        owner.ShotArrow(owner.Damage, direction + Vector2.up * 0.15f, 10f);
+        owner.ShotArrow(owner.Damage, direction, 10f);
     }
 
     public override void Exit()

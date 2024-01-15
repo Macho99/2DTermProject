@@ -10,9 +10,11 @@ public class SlotUI : MonoBehaviour
     public enum HoldSlotType { Slot1 = 1, Slot2 = 2 }
 
     [SerializeField] private HoldSlotType curHold;
-    public HoldSlotType CurHold { get { return curHold; }
+    public HoldSlotType CurHold { 
+        get { return curHold; }
         private set { curHold = value; }
     }
+
     [SerializeField] Color selectSlotColor;
     [SerializeField] Color unselectSlotColor;
     [SerializeField] InventoryUI inventoryUI;
@@ -25,7 +27,18 @@ public class SlotUI : MonoBehaviour
     [SerializeField] SlotElement[] invSlots;
     [SerializeField] SlotElement[] quickSlots;
 
+    [SerializeField] Image blockSlotMask;
+    [SerializeField] Image blockSlotMaskBackground;
+    [SerializeField] Color counterAttackColor;
+    [SerializeField] Color normalColor;
+
     private Item[] slotItems;
+    private Player player;
+
+    private void Awake()
+    {
+        player = FieldSceneFlowController.Player;
+    }
 
     private void Start()
     {
@@ -33,6 +46,9 @@ public class SlotUI : MonoBehaviour
         inventoryUI.onEquipMenuSelected.AddListener(OnEquipInvSelect);
         inventoryUI.onConsumpMenuSelected.AddListener(OnConsumpInvSelect);
         inventoryUI.onIngredientMenuSelected.AddListener(OnIngredientInvSelect);
+
+        player.onBlockUse.AddListener(BlockUIControl);
+
         slotItems = new Item[4];
 
         for(int i = 0; i < slotItems.Length; i++)
@@ -47,6 +63,7 @@ public class SlotUI : MonoBehaviour
     private void OnDestroy()
     {
         FieldSceneFlowController.Instance?.onNumPressed.RemoveListener(OnNumPressed);
+        player.onBlockUse?.RemoveListener(BlockUIControl);
     }
 
     private void OnNumPressed(int num)
@@ -62,11 +79,11 @@ public class SlotUI : MonoBehaviour
             CurHold = (HoldSlotType) (num);
             if (null == slotItems[num - 1])
             {
-                FieldSceneFlowController.Player.SetCurWeapon(null);
+                player.SetCurWeapon(null);
             }
             else
             {
-                FieldSceneFlowController.Player.SetCurWeapon(((WeaponItem)slotItems[num - 1]).weaponObj);
+                player.SetCurWeapon(((WeaponItem)slotItems[num - 1]).weaponObj);
             }
         }
 
@@ -144,9 +161,36 @@ public class SlotUI : MonoBehaviour
         if (idx + 1 == (int)CurHold)
         {
             if(item == null)
-                FieldSceneFlowController.Player.WeaponSlotChanged(null);
+                player.WeaponSlotChanged(null);
             else
-                FieldSceneFlowController.Player.WeaponSlotChanged(((WeaponItem)item).weaponObj);
+                player.WeaponSlotChanged(((WeaponItem)item).weaponObj);
         }
+    }
+
+    private void BlockUIControl()
+    {
+        StopAllCoroutines();
+        StartCoroutine(CoBlockUIControl());
+    }
+
+    private IEnumerator CoBlockUIControl()
+    {
+        float startTime = Time.time;
+
+        blockSlotMaskBackground.color = counterAttackColor;
+        while (true == player.IsBlockState && Time.time < startTime + Constants.CounterAttackDuration) {
+            yield return null;
+        }
+        blockSlotMaskBackground.color = normalColor;
+
+        while (Time.time < player.LastBlockTime + Constants.BlockCoolTime)
+        {
+            yield return null;
+            if (true == player.IsBlockState) continue;
+
+            float ratio = (Time.time - player.LastBlockTime) / Constants.BlockCoolTime;
+            blockSlotMask.fillAmount = ratio;
+        }
+        blockSlotMask.fillAmount = 1f;
     }
 }

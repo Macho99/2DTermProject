@@ -11,9 +11,14 @@ public abstract class MultipleItem : Item
         this.amount = amount;
     }
 
+    public void SetAmount(int amount) { 
+        this.amount = amount;
+    }
+
     public void AddAmount(int num)
     {
         amount += num;
+        GameManager.Inven.ItemAmountChanged(this);
     }
 
     public bool SubAmount(int num)
@@ -21,6 +26,7 @@ public abstract class MultipleItem : Item
         if (amount >= num)
         {
             amount -= num;
+            GameManager.Inven.ItemAmountChanged(this);
             return true;
         }
         return false;

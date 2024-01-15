@@ -23,13 +23,23 @@ public class SlotElement : MonoBehaviour, IDropHandler, IPointerClickHandler
         }
         slotUI = GetComponentInParent<SlotUI>();
         GameManager.Inven.onItemDelete.AddListener(OnItemDelete);
+        GameManager.Inven.onItemAmountChanged.AddListener(OnItemAmountChanged);
     }
 
 
 
     private void OnDestroy()
     {
-        GameManager.Inven.onItemDelete.AddListener(OnItemDelete);
+        GameManager.Inven.onItemDelete.RemoveListener(OnItemDelete);
+        GameManager.Inven.onItemAmountChanged.RemoveListener(OnItemAmountChanged);
+    }
+
+    private void OnItemAmountChanged(Item item)
+    {
+        if(item == curItem)
+        {
+            Set(item);
+        }
     }
 
     private void OnItemDelete(Item item)
