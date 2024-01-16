@@ -45,7 +45,7 @@ public class Rooster : Monster
         curState = stateMachine.GetCurStateStr();
     }
 
-    public override void DetectPlayer(Player player)
+    public override void DetectPlayer(FieldPlayer player)
     {
         if(target == null)
         {

@@ -7,7 +7,7 @@ public class MapLimiter : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         //∏  ≈ª√‚ πÊ¡ˆ
-        if(collision.TryGetComponent<Player>(out Player player))
+        if(collision.TryGetComponent<FieldPlayer>(out FieldPlayer player))
         {
             player.transform.position = Vector3.zero;
         }

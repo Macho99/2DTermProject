@@ -45,7 +45,7 @@ public class RoosterAttack : StateBase<Rooster.State, Rooster>
     {
         owner.LastAttackTime = Time.time;
         owner.AnimPlay("Attack");
-        owner.Target.GetComponent<Player>().TakeDamage(owner, owner.Damage, Vector2.right * owner.dir * owner.KnockbackForce);
+        owner.Target.GetComponent<FieldPlayer>().TakeDamage(owner, owner.Damage, Vector2.right * owner.dir * owner.KnockbackForce);
     }
 
     private bool CheckDist()

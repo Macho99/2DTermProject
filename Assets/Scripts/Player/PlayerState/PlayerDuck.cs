@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerDuck : PlayerState
 {
-    public PlayerDuck(Player player) : base(player)
+    public PlayerDuck(FieldPlayer player) : base(player)
     {
     }
 

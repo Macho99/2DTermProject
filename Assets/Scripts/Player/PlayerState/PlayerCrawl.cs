@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerCrawl : PlayerState
 {
-    public PlayerCrawl(Player player) : base(player)
+    public PlayerCrawl(FieldPlayer player) : base(player)
     {
     }
 

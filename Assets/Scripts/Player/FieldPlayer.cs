@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.U2D.Animation;
 using static UnityEngine.Rendering.DebugUI;
 
-public class Player : MonoBehaviour
+public class FieldPlayer : MonoBehaviour
 {
     [SerializeField] string curStateStr;
     [SerializeField] private float accelSpeed = 1000f;

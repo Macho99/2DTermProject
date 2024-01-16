@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerWalk : PlayerState
 {
 
-    public PlayerWalk(Player player) : base(player)
+    public PlayerWalk(FieldPlayer player) : base(player)
     {
     }
 

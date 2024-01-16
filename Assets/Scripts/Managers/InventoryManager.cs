@@ -52,7 +52,18 @@ public class InventoryManager : MonoBehaviour
         else if(item is EquipItem equipItem)
         {
             AddInv(equipInv, equipItem);
-            if(equipItem is WeaponItem weaponItem)
+            //if(equipItem is WeaponItem weaponItem)
+            //{
+            //    weaponItem.AddWeapon();
+            //}
+        }
+    }
+
+    public void PlayerAddWeapons()
+    {
+        foreach(var equip in equipInv)
+        {
+            if(equip is WeaponItem weaponItem)
             {
                 weaponItem.AddWeapon();
             }

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerOnAir : PlayerState
 {
     bool readyToLand;
-    public PlayerOnAir(Player player) : base(player)
+    public PlayerOnAir(FieldPlayer player) : base(player)
     {
 
     }

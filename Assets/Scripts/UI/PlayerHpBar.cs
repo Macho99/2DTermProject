@@ -14,7 +14,7 @@ public class PlayerHpBar : MonoBehaviour
     [SerializeField] Color minColor;
     Slider slider;
 
-    Player player;
+    FieldPlayer player;
 
     int curHp;
     int maxHp;

@@ -9,12 +9,12 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] protected string curState;
     [SerializeField] SpriteLibraryAsset spriteLibraryAsset;
 
-    public Player Player { get; private set; }
+    public FieldPlayer Player { get; private set; }
     public int Damage { get { return damage; } }
     public SpriteLibraryAsset SpriteLibraryAsset { get { return spriteLibraryAsset; } }
     protected virtual void Awake()
     {
-        Player = GetComponentInParent<Player>();
+        Player = GetComponentInParent<FieldPlayer>();
     }
 
     protected virtual void OnEnable()

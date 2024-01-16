@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerDoubleJump : PlayerState
 {
-    public PlayerDoubleJump(Player player) : base(player)
+    public PlayerDoubleJump(FieldPlayer player) : base(player)
     {
     }
 

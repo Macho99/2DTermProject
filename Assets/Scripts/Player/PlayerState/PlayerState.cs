@@ -23,8 +23,8 @@ public enum PlayerStateType
 
 public abstract class PlayerState
 {
-    protected Player player;
-    protected PlayerState(Player player)
+    protected FieldPlayer player;
+    protected PlayerState(FieldPlayer player)
     {
         this.player = player;
     }

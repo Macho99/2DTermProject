@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerAttack : PlayerState
 {
-    public PlayerAttack(Player player) : base(player)
+    public PlayerAttack(FieldPlayer player) : base(player)
     {
     }
 

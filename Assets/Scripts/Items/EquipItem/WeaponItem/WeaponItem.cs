@@ -9,7 +9,7 @@ public abstract class WeaponItem : EquipItem
 {
     Weapon weaponPrefab;
     public Weapon weaponObj { get; private set; }
-    Player player;
+    FieldPlayer player;
     public WeaponItem(ItemID id) : base(id)
     {
         weaponPrefab = GameManager.Resource.prefabDict[id.ToString()].GetComponent<Weapon>();

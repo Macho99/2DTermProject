@@ -11,7 +11,7 @@ using Debug = UnityEngine.Debug;
 
 public class PlayerJump : PlayerState
 {
-    public PlayerJump(Player player) : base(player)
+    public PlayerJump(FieldPlayer player) : base(player)
     {
 
     }

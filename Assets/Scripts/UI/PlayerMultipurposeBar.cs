@@ -8,11 +8,11 @@ public class PlayerBar : MonoBehaviour
     [SerializeField] Image background;
     [SerializeField] Image mask;
 
-    private Player owner;
+    private FieldPlayer owner;
 
     private void Awake()
     {
-        owner = transform.parent.parent.GetComponent<Player>();
+        owner = transform.parent.parent.GetComponent<FieldPlayer>();
     }
 
     private void OnEnable()

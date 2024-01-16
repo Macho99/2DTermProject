@@ -52,7 +52,7 @@ public class BuffaloCharge : StateBase<Buffalo.State, Buffalo>
 
         if (sqrMag < 1f)
         {
-            owner.Target.GetComponent<Player>().TakeDamage(owner, owner.Damage, Vector2.right * owner.dir * owner.KnockbackForce, 2f);
+            owner.Target.GetComponent<FieldPlayer>().TakeDamage(owner, owner.Damage, Vector2.right * owner.dir * owner.KnockbackForce, 2f);
             attacked = true;
         }
     }

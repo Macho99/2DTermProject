@@ -33,7 +33,7 @@ public class SlotUI : MonoBehaviour
     [SerializeField] Color normalColor;
 
     private Item[] slotItems;
-    private Player player;
+    private FieldPlayer player;
 
     private void Awake()
     {

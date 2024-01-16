@@ -11,7 +11,7 @@ public class PlayerBlock : PlayerState
     const float counterAttackStunDuration = 1.5f;
 
     float enterTime;
-    public PlayerBlock(Player player) : base(player)
+    public PlayerBlock(FieldPlayer player) : base(player)
     {
     }
 

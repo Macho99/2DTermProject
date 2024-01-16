@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerInteract : PlayerState
 {
-    public PlayerInteract(Player player) : base(player)
+    public PlayerInteract(FieldPlayer player) : base(player)
     {
     }
 

@@ -12,13 +12,13 @@ public class BackDetector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent<Player>(out Player player))
+        if(collision.TryGetComponent<FieldPlayer>(out FieldPlayer player))
         {
             _ = StartCoroutine(Notify(player));
         }
     }
 
-    private IEnumerator Notify(Player player)
+    private IEnumerator Notify(FieldPlayer player)
     {
         yield return new WaitForSeconds(0.5f);
         owner.DetectPlayer(player);

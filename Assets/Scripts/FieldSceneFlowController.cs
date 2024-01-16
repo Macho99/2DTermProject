@@ -7,17 +7,17 @@ using UnityEngine.InputSystem;
 public class FieldSceneFlowController : MonoBehaviour
 {
     private static FieldSceneFlowController instance;
-    private static Player player;
+    private static FieldPlayer player;
 
     private bool invenOpened;
     public UnityEvent onInvenOpen;
     public UnityEvent onInvenClose;
     public UnityEvent<int> onNumPressed;
 
-    public static Player Player { get {
+    public static FieldPlayer Player { get {
             if(player == null)
             {
-                player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+                player = GameObject.FindGameObjectWithTag("Player").GetComponent<FieldPlayer>();
             }
             return player;
         }}
@@ -37,6 +37,11 @@ public class FieldSceneFlowController : MonoBehaviour
         instance = this;
         invenOpened = false;
         onNumPressed = new UnityEvent<int>();
+    }
+
+    private void Start()
+    {
+        GameManager.Inven.PlayerAddWeapons();
     }
 
     private void OnDestroy()

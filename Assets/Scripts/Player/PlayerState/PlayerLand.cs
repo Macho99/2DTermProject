@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerLand : PlayerState
 {
-    public PlayerLand(Player player) : base(player)
+    public PlayerLand(FieldPlayer player) : base(player)
     {
     }
 

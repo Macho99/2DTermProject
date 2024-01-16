@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerStun : PlayerState
 {
-    public PlayerStun(Player player) : base(player)
+    public PlayerStun(FieldPlayer player) : base(player)
     {
 
     }

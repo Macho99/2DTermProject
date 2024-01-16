@@ -182,7 +182,7 @@ public abstract class Monster : MonoBehaviour
         return anim.GetCurrentAnimatorStateInfo(0).IsName(str);
     }
 
-    public abstract void DetectPlayer(Player player);
+    public abstract void DetectPlayer(FieldPlayer player);
 
     public void ArrowPullOut(int damagePerArrow)
     {

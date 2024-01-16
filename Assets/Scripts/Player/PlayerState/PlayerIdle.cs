@@ -8,7 +8,7 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 public class PlayerIdle : PlayerState
 {
     bool readyState;
-    public PlayerIdle(Player player) : base(player) { }
+    public PlayerIdle(FieldPlayer player) : base(player) { }
 
     public override void Enter()
     {
