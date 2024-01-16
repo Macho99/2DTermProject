@@ -45,11 +45,17 @@ public class DataManager : MonoBehaviour
 
         //-----------------------------------------------------------------------------
 
+        idx = (int)ItemID.ChickMeat;
+        items[idx] = null;
+        itemNames[idx] = "병아리 고기";
+        itemSummary[idx] = "요리 재료";
+        itemDetailDesc[idx] = "아직 어린 닭이지만 육질의 부드러움으로 인해 많은 인종들이 찾는 식재료이다.";
+
         idx = (int)ItemID.RoosterMeat;
         items[idx] = null;
         itemNames[idx] = "닭고기";
         itemSummary[idx] = "요리 재료";
-        itemDetailDesc[idx] = "이걸로 스튜, 구이 등을 만들 수 있을 것 같다";
+        itemDetailDesc[idx] = "튀겨도 맛있고, 구워도 맛있고, 국을 끓여도 맛있는 닭고기이다.";
 
         idx = (int)ItemID.DuckEgg;
         items[idx] = null;
@@ -57,6 +63,49 @@ public class DataManager : MonoBehaviour
         itemSummary[idx] = "요리 재료";
         itemDetailDesc[idx] = "프라이팬에 구워서 소금만 뿌려 먹어도 맛있을까? 직접 한번 해보자.";
 
+        idx = (int)ItemID.BuffaloMeat;
+        items[idx] = null;
+        itemNames[idx] = "버팔로 갈비살";
+        itemSummary[idx] = "요리 재료";
+        itemDetailDesc[idx] = "잡기 힘든만큼 요리로 만들었을 때의 보람은 값질 것이다.";
+
+        //-----------------------------------------------------------------------------
+
+        idx = (int)ItemID.BasicSoup;
+        items[idx] = new BasicSoupItem();
+        itemNames[idx] = "기본 수프";
+        itemSummary[idx] = "요리 메뉴";
+        itemDetailDesc[idx] = "재료가 아무것도 없을 때 나가는 기본 메뉴. 이걸로 배를 채운 손님은 다시 우리 가게를 찾지 않을 것 같다.";
+
+        idx = (int)ItemID.FriedEgg;
+        items[idx] = new FriedEggItem();
+        itemNames[idx] = "계란 프라이";
+        itemSummary[idx] = "요리 메뉴";
+        itemDetailDesc[idx] = "사실은 닭이 아니라 오리 알이지만 손님들은 모르지 않을까?";
+
+        idx = (int)ItemID.GrilledWholeChicken;
+        items[idx] = new GrilledWholeChickenItem();
+        itemNames[idx] = "통닭 구이";
+        itemSummary[idx] = "요리 메뉴";
+        itemDetailDesc[idx] = "부드러운 닭다리 살과 퍽퍽한 가슴살의 조화";
+
+        idx = (int)ItemID.GrilledSkewers;
+        items[idx] = new GrilledSkewersItem();
+        itemNames[idx] = "닭꼬치";
+        itemSummary[idx] = "요리 메뉴";
+        itemDetailDesc[idx] = "남녀노소 호불호 없이 좋아할 만한 맛이다.";
+
+        idx = (int)ItemID.ChickenSkewersAndBoiledEggs;
+        items[idx] = new ChickenSkewersAndBoiledEggsItem();
+        itemNames[idx] = "닭꼬치와 삶은 계란 정식";
+        itemSummary[idx] = "요리 메뉴";
+        itemDetailDesc[idx] = "닭꼬치에 삶은 계란과 야채를 더한 풍부한 맛이다.";
+
+        idx = (int)ItemID.BuffaloSteak;
+        items[idx] = new BuffaloSteakItem();
+        itemNames[idx] = "버팔로 스테이크";
+        itemSummary[idx] = "요리 메뉴";
+        itemDetailDesc[idx] = "최고급 식재료, 최고급 맛, 최고급 가격";
     }
 
     public Item GetItem(ItemID id, int amount = 1)
@@ -76,6 +125,12 @@ public class DataManager : MonoBehaviour
             newConsump.SetAmount(amount);
             return (Item) newConsump;
         }
+        else if(item is CuisineItem cuisine)
+        {
+            CuisineItem newCuisine = (CuisineItem) cuisine.Clone();
+            newCuisine.SetAmount(amount);
+            return (Item) newCuisine;
+        }
 
         return null;
     }
@@ -84,6 +139,7 @@ public class DataManager : MonoBehaviour
     {
         return itemNames[(int) id];
     }
+
     public string GetItemSummary(ItemID id)
     {
         return itemSummary[(int) id];

@@ -10,7 +10,6 @@ public class PlayerInteract : PlayerState
 
     public override void Enter()
     {
-        
         if (player.Interactor.InteractStart() == false)
         {
             player.ChangeState(PlayerStateType.Idle); 

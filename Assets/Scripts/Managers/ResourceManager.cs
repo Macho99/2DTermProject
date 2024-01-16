@@ -15,11 +15,11 @@ public class ResourceManager : MonoBehaviour
 
         foreach(var sprite in spriteResources)
         {
-            //파일 이름과 ItemType enum 이름 같아야함!!
-            ItemID type = (ItemID) Enum.Parse(typeof(ItemID), sprite.name);
+            //파일 이름과 ItemID enum 이름 같아야함!!
+            ItemID id = (ItemID) Enum.Parse(typeof(ItemID), sprite.name);
 
-            //type 개수만큼 sprite가 있는지 확인
-            itemSprites[(int)type] = sprite;
+            //id 개수만큼 sprite가 있는지 확인
+            itemSprites[(int)id] = sprite;
         }
 
         spriteDict = new Dictionary<string, Sprite>();

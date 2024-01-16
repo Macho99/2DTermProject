@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ConsumptionItem : MultipleItem, ICloneable
 {
-    private static ItemType type = ItemType.Consump;
+    private static readonly ItemType type = ItemType.Consump;
     public ConsumptionItem(ItemID id, int amount) : base(id, type, amount)
     {
     }

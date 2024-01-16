@@ -14,16 +14,24 @@ public enum ItemID
 
     RedPotion,
 
+    ChickMeat,
     RoosterMeat,
     DuckEgg,
+    BuffaloMeat,
 
+    BasicSoup,
+    FriedEgg,
+    GrilledWholeChicken,
+    GrilledSkewers,
+    ChickenSkewersAndBoiledEggs,
+    BuffaloSteak,
 
     // TODO: 아이템 추가하면 1. DataManager Awake() 추가, 2. Resource 폴더에 sprite 추가
     Size
 }
 
 [Serializable]
-public enum ItemType { Equip, Consump, Ingredient };
+public enum ItemType { Equip, Consump, Ingredient, Cuisine };
 
 [Serializable]
 public abstract class Item

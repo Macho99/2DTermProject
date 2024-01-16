@@ -1,20 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.U2D.Animation;
-using static UnityEngine.Rendering.DebugUI;
 
-public class FieldPlayer : MonoBehaviour
+public class FieldPlayer : MonoBehaviour, IInteract
 {
     [SerializeField] string curStateStr;
     [SerializeField] private float accelSpeed = 1000f;
     [SerializeField] private float maxSpeed = 3f;
     [SerializeField] private float airControlMultiple = 0.5f;
-    [SerializeField] private float jumpForce = 3f;
-    [SerializeField] private float doubleJumpForce = 5f;
+    [SerializeField] private float jumpForce = 12f;
+    [SerializeField] private float doubleJumpForce = 8f;
     [SerializeField] private float readyDuration = 3f;
     [SerializeField] private int curHp;
     [SerializeField] private int maxHp = 100;

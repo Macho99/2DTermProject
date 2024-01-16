@@ -6,7 +6,7 @@ public class Interactor : MonoBehaviour
 {
     BoxCollider2D col;
     List<Collider2D> contactCols;
-    FieldPlayer player;
+    IInteract player;
     IInteractable curInteractable;
 
     bool interacting;
@@ -14,7 +14,7 @@ public class Interactor : MonoBehaviour
     private void Awake()
     {
         curInteractable = null;
-        player = transform.parent.GetComponent<FieldPlayer>();
+        player = transform.parent.GetComponent<IInteract>();
         col = GetComponent<BoxCollider2D>();
         contactCols = new List<Collider2D>();
     }

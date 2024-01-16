@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public abstract class EquipItem : Item, ICloneable
 {
-    private static ItemType type = ItemType.Equip;
+    private static readonly ItemType type = ItemType.Equip;
     public EquipItem(ItemID id) : base(id, type)
     {
     }

@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
 public class ASNode
 {
-    public Point pos;
+    public Vector2Int pos;
     public int f;
     public int g;
     public int h;
-    public Point? parent;
-    public ASNode(Point point, int g, int h)
+    public Vector2Int? parent;
+    public ASNode(Vector2Int point, int g, int h)
     {
         this.g = g;
         this.h = h;
@@ -19,11 +18,12 @@ public class ASNode
         pos = point;
         parent = null;
     }
-    public void SetParent(Point p)
+    public void SetParent(Vector2Int p)
     {
         this.parent = p;
     }
 }
+
 public class AStar
 {
     const int diagWeight = 14;
@@ -31,30 +31,33 @@ public class AStar
     //상, 우, 하, 좌
     static int[] dy = { -1, 0, 1, 0 };
     static int[] dx = { 0, 1, 0, -1 };
-    private static bool isValid(bool[,] tileMap, int y, int x)
+
+    private static bool isValid(bool[,] tileMap, int x, int y)
     {
         if (y < 0 || x < 0) return false;
-        if (y >= tileMap.GetLength(0)) return false;
-        if (x >= tileMap.GetLength(1)) return false;
-        if (tileMap[y, x] == false) return false;
+        if (x >= tileMap.GetLength(0)) return false;
+        if (y >= tileMap.GetLength(1)) return false;
+        if (tileMap[x, y] == false) return false;
 
         return true;
     }
-    private static List<Point> GetPath(ASNode[,] map, Point start, Point end)
+
+    private static List<Vector2Int> GetPath(ASNode[,] map, Vector2Int start, Vector2Int end)
     {
-        List<Point> path = new List<Point>();
-        Point? parent = end;
+        List<Vector2Int> path = new List<Vector2Int>();
+        Vector2Int? parent = end;
         while (parent != null)
         {
-            path.Add((Point)parent);
-            int y = (int)(parent?.y);
+            path.Add((Vector2Int)parent);
             int x = (int)(parent?.x);
-            parent = map[y, x].parent;
+            int y = (int)(parent?.y);
+            parent = map[x, y].parent;
         }
         path.Reverse();
         return path;
     }
-    private static int getDistance(Point start, Point end)
+
+    private static int getDistance(Vector2Int start, Vector2Int end)
     {
         int diagonalDist = Math.Min(Math.Abs(start.x - end.x), Math.Abs(start.y - end.y));
         int straightDist = Math.Max(Math.Abs(start.x - end.x), Math.Abs(start.y - end.y))
@@ -62,8 +65,9 @@ public class AStar
 
         return diagonalDist * diagWeight + straightDist * straightWeight;
     }
-    public static void PathFinding(int[,] tileMap, Point start,
-        Point end, out List<Point> path)
+
+    public static void PathFinding(int[,] tileMap, Vector2Int start,
+        Vector2Int end, out List<Vector2Int> path)
     {
         bool[,] boolMap = new bool[tileMap.GetLength(0), tileMap.GetLength(1)];
         for (int i = 0; i < tileMap.GetLength(0); i++)
@@ -84,31 +88,32 @@ public class AStar
     }
 
     public static void PathFinding(bool[,] tileMap,
-        Point start, Point end, out List<Point> path)
+        Vector2Int start, Vector2Int end, out List<Vector2Int> path)
     {
-        int ySize = tileMap.GetLength(0);
-        int xSize = tileMap.GetLength(1);
-        bool[,] visit = new bool[ySize, xSize];
-        ASNode[,] asMap = new ASNode[ySize, xSize];
+        int xSize = tileMap.GetLength(0);
+        int ySize = tileMap.GetLength(1);
+
+        bool[,] visit = new bool[xSize, ySize];
+        ASNode[,] asMap = new ASNode[xSize, ySize];
 
         ASNode startNode = new ASNode(start, 0, getDistance(start, end));
-        Point? before = null;
-        PriorityQueue<ASNode, int> pq = new PriorityQueue<ASNode, int>();
-        pq.Enqueue(startNode, startNode.f);
+        Vector2Int? before = null;
+        PriorityQueue<ASNode> pq = new PriorityQueue<ASNode>((a, b) => (a.f < b.f) ? -1 : 1);
+        pq.Enqueue(startNode);
 
         while (pq.Count > 0)
         {
             ASNode node = pq.Dequeue();
-            int y = node.pos.y;
             int x = node.pos.x;
+            int y = node.pos.y;
 
-            if (visit[y, x]) continue;
+            if (visit[x, y]) continue;
 
             before = node.pos;
-            visit[y, x] = true;
-            asMap[y, x] = node;
+            visit[x, y] = true;
+            asMap[x, y] = node;
 
-            if (y == end.y && x == end.x)
+            if (x == end.x && y == end.y)
             {
                 path = GetPath(asMap, start, end);
                 return;
@@ -116,61 +121,25 @@ public class AStar
 
             for (int i = 0; i < 4; i++)
             {
-                int ny = y + dy[i];
                 int nx = x + dx[i];
+                int ny = y + dy[i];
 
-                if (!isValid(tileMap, ny, nx)) continue;
-                if (visit[ny, nx]) continue;
+                if (!isValid(tileMap, nx, ny)) continue;
+                if (visit[nx, ny]) continue;
 
-                Point p = new Point(ny, nx);
+                Vector2Int p = new Vector2Int(nx, ny);
                 int dist = getDistance(p, end);
 
-                if (asMap[ny, nx] != null && asMap[ny, nx].f <= dist) continue;
+                if (asMap[nx, ny] != null && asMap[nx, ny].f <= dist) continue;
 
                 //Console.WriteLine($"{ny}, {nx}, before: {before?.y}, {before?.x}");
                 ASNode newNode = new ASNode(p, node.g + 1, dist);
                 newNode.parent = before;
-                asMap[ny, nx] = newNode;
-                pq.Enqueue(newNode, newNode.f);
+                asMap[nx, ny] = newNode;
+                pq.Enqueue(newNode);
             }
         }
         path = null;
         return;
-    }
-}
-public struct Point
-{
-    public int x, y;
-    public Point(int y, int x)
-    {
-        this.x = x; this.y = y;
-    }
-    public float GetLength()
-    {
-        return (float)Math.Sqrt(x * x + y * y);
-    }
-    public static bool operator !=(Point a, Point b)
-    {
-        if (a.y != b.y) return true;
-        if (a.x != b.x) return true;
-        return false;
-    }
-    public static bool operator ==(Point a, Point b)
-    {
-        if (a.y == b.y)
-        {
-            if (a.x == b.x)
-                return true;
-        }
-
-        return false;
-    }
-    public static Point operator +(Point a, Point b)
-    {
-        return new Point(a.y + b.y, a.x + b.x);
-    }
-    public static Point operator -(Point a, Point b)
-    {
-        return new Point(a.y - b.y, a.x - b.x);
     }
 }

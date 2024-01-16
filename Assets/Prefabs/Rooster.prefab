@@ -575,6 +575,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1067930924263298022, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
+      propertyPath: dropAmount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1067930924263298022, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
+      propertyPath: dropItemType
+      value: 20000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1067930924263298022, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
+      propertyPath: maxInteractCount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1069460462658812937, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
       propertyPath: m_Name
       value: Rooster

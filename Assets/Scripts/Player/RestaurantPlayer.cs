@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class RestaurantPlayer : MonoBehaviour
+public class RestaurantPlayer : MonoBehaviour, IInteract
 {
-    [SerializeField] private float moveAccel = 1000f;
+    //[SerializeField] private float moveAccel = 1000f;
     [SerializeField] private float maxMoveSpeed = 3f;
 
     private Rigidbody2D rb;
@@ -32,6 +32,11 @@ public class RestaurantPlayer : MonoBehaviour
         }
     }
 
+    private void OnInteract(InputValue value)
+    {
+
+    }
+
     private void Update()
     {
         Move();
@@ -45,5 +50,10 @@ public class RestaurantPlayer : MonoBehaviour
     private void Move()
     {
         rb.velocity = inputVec * maxMoveSpeed;
+    }
+
+    public void ForceInteractStop()
+    {
+
     }
 }

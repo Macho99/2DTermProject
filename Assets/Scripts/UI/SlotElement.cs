@@ -27,7 +27,6 @@ public class SlotElement : MonoBehaviour, IDropHandler, IPointerClickHandler
     }
 
 
-
     private void OnDestroy()
     {
         GameManager.Inven.onItemDelete.RemoveListener(OnItemDelete);
@@ -78,7 +77,7 @@ public class SlotElement : MonoBehaviour, IDropHandler, IPointerClickHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        Item item = eventData.pointerDrag.GetComponent<InvenElement>().CurItem;
+        Item item = eventData.pointerDrag.GetComponent<InvenElement>()?.CurItem;
         if (item == null || slotType != item.Type)
         {
             return;

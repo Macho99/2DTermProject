@@ -10268,7 +10268,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 3
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -20550,7 +20550,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7575427804827452146, guid: 0ac3e4e83085b7a4b91a9678f9f44166, type: 3}
       propertyPath: dropItemType
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7576218304744762653, guid: 0ac3e4e83085b7a4b91a9678f9f44166, type: 3}
       propertyPath: m_Name
@@ -24181,8 +24181,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 570826461}
+  - component: {fileID: 570826468}
   - component: {fileID: 570826462}
-  - component: {fileID: 570826465}
   - component: {fileID: 570826464}
   - component: {fileID: 570826466}
   - component: {fileID: 570826467}
@@ -24264,62 +24264,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &570826465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 570826460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f908b2b977c9e1a44825d3c0d4ce3521, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  curStateStr: 
-  accelSpeed: 1000
-  maxSpeed: 4
-  airControlMultiple: 0.5
-  jumpForce: 12
-  doubleJumpForce: 8
-  readyDuration: 3
-  curHp: 0
-  maxHp: 200
-  hpDownDuration: 5
-  hpDownAmount: 2
-  weaponFolder: {fileID: 1225220095}
-  weaponLibrary: {fileID: 1068667077}
-  weaponList: []
-  curWeapon: {fileID: 0}
-  walkParticle: {fileID: 497492361}
-  jumpParticle: {fileID: 1366809586}
-  stunParticle: {fileID: 649803593}
-  healParticle: {fileID: 2059228536}
-  onHpChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  onAttackBtn1Pressed:
-    m_PersistentCalls:
-      m_Calls: []
-  onAttackBtn2Pressed:
-    m_PersistentCalls:
-      m_Calls: []
-  onAttackState:
-    m_PersistentCalls:
-      m_Calls: []
-  onHit:
-    m_PersistentCalls:
-      m_Calls: []
-  onBlockUse:
-    m_PersistentCalls:
-      m_Calls: []
-  onMultiPurposeBarChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  inputVec: {x: 0, y: 0}
-  isGround: 0
-  doubleJumped: 0
-  dir: 1
 --- !u!70 &570826466
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -24382,9 +24326,65 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: PlayerField
+  m_DefaultActionMap: FieldPlayer
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &570826468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570826460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbb3e98de4ca25b47ad5517d312d939e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curStateStr: 
+  accelSpeed: 1000
+  maxSpeed: 3
+  airControlMultiple: 0.5
+  jumpForce: 12
+  doubleJumpForce: 8
+  readyDuration: 3
+  curHp: 0
+  maxHp: 200
+  hpDownDuration: 5
+  hpDownAmount: 2
+  weaponFolder: {fileID: 1225220095}
+  weaponLibrary: {fileID: 1068667077}
+  weaponList: []
+  curWeapon: {fileID: 0}
+  walkParticle: {fileID: 497492361}
+  jumpParticle: {fileID: 1366809586}
+  stunParticle: {fileID: 649803593}
+  healParticle: {fileID: 2059228536}
+  onHpChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onAttackBtn1Pressed:
+    m_PersistentCalls:
+      m_Calls: []
+  onAttackBtn2Pressed:
+    m_PersistentCalls:
+      m_Calls: []
+  onAttackState:
+    m_PersistentCalls:
+      m_Calls: []
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onBlockUse:
+    m_PersistentCalls:
+      m_Calls: []
+  onMultiPurposeBarChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  inputVec: {x: 0, y: 0}
+  isGround: 0
+  doubleJumped: 0
+  dir: 1
 --- !u!1001 &571295918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24649,9 +24649,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6136250858402460040, guid: 39735d8136fe5da4497fe56379097277, type: 3}
+      propertyPath: dropAmount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6136250858402460040, guid: 39735d8136fe5da4497fe56379097277, type: 3}
+      propertyPath: dropItemType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6136250858402460040, guid: 39735d8136fe5da4497fe56379097277, type: 3}
+      propertyPath: maxInteractCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6137604470575963751, guid: 39735d8136fe5da4497fe56379097277, type: 3}
       propertyPath: m_Name
       value: Buffalo
+      objectReference: {fileID: 0}
+    - target: {fileID: 6137604470575963751, guid: 39735d8136fe5da4497fe56379097277, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -53931,11 +53947,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3074654995273118354, guid: 978f39a81aa072b49bba7ccf5bbfd651, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3075447779584531837, guid: 978f39a81aa072b49bba7ccf5bbfd651, type: 3}
+      propertyPath: dropAmount
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3075447779584531837, guid: 978f39a81aa072b49bba7ccf5bbfd651, type: 3}
       propertyPath: dropItemType
-      value: 0
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3075447779584531837, guid: 978f39a81aa072b49bba7ccf5bbfd651, type: 3}
+      propertyPath: maxInteractCount
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3115684169039436311, guid: 978f39a81aa072b49bba7ccf5bbfd651, type: 3}
       propertyPath: m_LocalPosition.x
@@ -85184,7 +85208,7 @@ MonoBehaviour:
   m_CategoryHash: 0.009161512
   m_labelHash: 0.00000040954276
   m_SpriteKey: 0
-  m_SpriteHash: 0
+  m_SpriteHash: 288431053
 --- !u!114 &1666812296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85248,7 +85272,7 @@ SpriteRenderer:
   m_Size: {x: 4, y: 4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1670334664 stripped
@@ -90936,11 +90960,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 985112496947677973, guid: 07c5b507650b3044d928f4e4b0b15464, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 985905152132736250, guid: 07c5b507650b3044d928f4e4b0b15464, type: 3}
+      propertyPath: dropAmount
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 985905152132736250, guid: 07c5b507650b3044d928f4e4b0b15464, type: 3}
       propertyPath: dropItemType
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 985905152132736250, guid: 07c5b507650b3044d928f4e4b0b15464, type: 3}
+      propertyPath: maxInteractCount
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
