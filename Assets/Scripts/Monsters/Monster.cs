@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public enum MonsterUIState { Detect, Miss }
+
 public abstract class Monster : MonoBehaviour
 {
     [SerializeField] protected int curHp;
@@ -18,7 +19,7 @@ public abstract class Monster : MonoBehaviour
     [SerializeField] Transform arrowHolder;
     [SerializeField] ParticleSystem hitParticle;
     [SerializeField] ParticleSystem stunParticle;
-    [SerializeField] protected float knockbackTime = 0.3f;
+    [SerializeField] protected float knockbackTime = 0.1f;
     [SerializeField] float lookRange = 10f;
 
     protected Rigidbody2D rb;

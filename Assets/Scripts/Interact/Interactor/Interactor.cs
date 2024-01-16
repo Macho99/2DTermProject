@@ -6,15 +6,15 @@ public class Interactor : MonoBehaviour
 {
     BoxCollider2D col;
     List<Collider2D> contactCols;
-    IInteract player;
-    IInteractable curInteractable;
+    protected IInteractorOwner player;
+    Interactable curInteractable;
 
     bool interacting;
 
     private void Awake()
     {
         curInteractable = null;
-        player = transform.parent.GetComponent<IInteract>();
+        player = GetComponentInParent<IInteractorOwner>();
         col = GetComponent<BoxCollider2D>();
         contactCols = new List<Collider2D>();
     }
@@ -60,7 +60,7 @@ public class Interactor : MonoBehaviour
         }
     }
 
-    public IInteractable GetClosestInteractable()
+    public Interactable GetClosestInteractable()
     {
         float minSqrDist = 99999f;
         Collider2D minCol = null;
@@ -73,7 +73,7 @@ public class Interactor : MonoBehaviour
                 minCol = contactCol;
             }
         }
-        IInteractable closestInter = minCol?.transform.parent.GetComponent<IInteractable>();
+        Interactable closestInter = minCol?.transform.parent.GetComponent<Interactable>();
         return closestInter;
     }
 
@@ -89,7 +89,7 @@ public class Interactor : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         contactCols.Remove(collision);
-        if(interacting == true &&  curInteractable == collision.transform.parent.GetComponent<IInteractable>())
+        if(interacting == true &&  curInteractable == collision.transform.parent.GetComponent<Interactable>())
         {
             player.ForceInteractStop();
         }
@@ -99,7 +99,7 @@ public class Interactor : MonoBehaviour
     {
         while(contactCols.Count > 0)
         {
-            IInteractable newInter = GetClosestInteractable();
+            Interactable newInter = GetClosestInteractable();
             newInter?.Selected();
 
             if (curInteractable != null && curInteractable != newInter)

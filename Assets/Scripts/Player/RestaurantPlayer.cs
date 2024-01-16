@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class RestaurantPlayer : MonoBehaviour, IInteract
+public class RestaurantPlayer : MonoBehaviour, IInteractorOwner
 {
     //[SerializeField] private float moveAccel = 1000f;
     [SerializeField] private float maxMoveSpeed = 3f;

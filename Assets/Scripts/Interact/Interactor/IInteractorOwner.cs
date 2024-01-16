@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public interface IInteract
+public interface IInteractorOwner
 {
     public void ForceInteractStop();
 }

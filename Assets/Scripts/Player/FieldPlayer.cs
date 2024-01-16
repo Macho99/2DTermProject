@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.U2D.Animation;
 
-public class FieldPlayer : MonoBehaviour, IInteract
+public class FieldPlayer : MonoBehaviour, IInteractorOwner
 {
     [SerializeField] string curStateStr;
     [SerializeField] private float accelSpeed = 1000f;

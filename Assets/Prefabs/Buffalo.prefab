@@ -5358,16 +5358,24 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1067930924263298022, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
+      propertyPath: dropAmount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1067930924263298022, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
       propertyPath: dropItemType
-      value: 20000
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1067930924263298022, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
       propertyPath: maxInteractCount
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1069460462658812937, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
       propertyPath: m_Name
       value: Buffalo
+      objectReference: {fileID: 0}
+    - target: {fileID: 1069460462658812937, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1099160660461180044, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5412,6 +5420,18 @@ PrefabInstance:
     - target: {fileID: 1162078661422742423, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 1.677
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770119864082942285, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
+      propertyPath: dropAmount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770119864082942285, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
+      propertyPath: dropItemType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770119864082942285, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
+      propertyPath: maxInteractCount
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3201903292232485403, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
       propertyPath: scalingMode
@@ -5475,7 +5495,7 @@ MonoBehaviour:
   arrowHolder: {fileID: 215640026682003118}
   hitParticle: {fileID: 8616837669876803701}
   stunParticle: {fileID: 1237757300452419715}
-  knockbackTime: 0.3
+  knockbackTime: 0
   lookRange: 10
   onHpChanged:
     m_PersistentCalls:

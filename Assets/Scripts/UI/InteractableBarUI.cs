@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MonsterDropInteractBar : MonoBehaviour
+public class InteractableBarUI : MonoBehaviour
 {
     [SerializeField] Color selectedColor;
     [SerializeField] Color unSelectedColor;
     [SerializeField] Image background;
     [SerializeField] Image mask;
 
-    MonsterDrop owner;
+    Interactable owner;
 
     private void Awake()
     {
-        owner= transform.parent.parent.GetComponent<MonsterDrop>();
+        owner= transform.parent.parent.GetComponent<Interactable>();
     }
 
     private void OnEnable()

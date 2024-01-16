@@ -556,7 +556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1067930924263298022, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
       propertyPath: dropItemType
-      value: 20000
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1067930924263298022, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
       propertyPath: maxInteractCount
@@ -608,6 +608,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1099160660461180044, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770119864082942285, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
+      propertyPath: dropItemType
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

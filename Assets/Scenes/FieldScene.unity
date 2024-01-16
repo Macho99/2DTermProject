@@ -20548,17 +20548,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7575427804827452146, guid: 0ac3e4e83085b7a4b91a9678f9f44166, type: 3}
-      propertyPath: dropItemType
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7576218304744762653, guid: 0ac3e4e83085b7a4b91a9678f9f44166, type: 3}
       propertyPath: m_Name
       value: Chick
-      objectReference: {fileID: 0}
-    - target: {fileID: 7576218304744762653, guid: 0ac3e4e83085b7a4b91a9678f9f44166, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -24609,6 +24601,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1926059106}
     m_Modifications:
+    - target: {fileID: 1835977537586562354, guid: 39735d8136fe5da4497fe56379097277, type: 3}
+      propertyPath: knockbackTime
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6105573691893135074, guid: 39735d8136fe5da4497fe56379097277, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.432
@@ -24650,16 +24646,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6136250858402460040, guid: 39735d8136fe5da4497fe56379097277, type: 3}
-      propertyPath: dropAmount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6136250858402460040, guid: 39735d8136fe5da4497fe56379097277, type: 3}
       propertyPath: dropItemType
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6136250858402460040, guid: 39735d8136fe5da4497fe56379097277, type: 3}
-      propertyPath: maxInteractCount
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6137604470575963751, guid: 39735d8136fe5da4497fe56379097277, type: 3}
       propertyPath: m_Name
@@ -24667,7 +24655,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6137604470575963751, guid: 39735d8136fe5da4497fe56379097277, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -53950,16 +53938,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3075447779584531837, guid: 978f39a81aa072b49bba7ccf5bbfd651, type: 3}
-      propertyPath: dropAmount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3075447779584531837, guid: 978f39a81aa072b49bba7ccf5bbfd651, type: 3}
       propertyPath: dropItemType
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 3075447779584531837, guid: 978f39a81aa072b49bba7ccf5bbfd651, type: 3}
-      propertyPath: maxInteractCount
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3115684169039436311, guid: 978f39a81aa072b49bba7ccf5bbfd651, type: 3}
       propertyPath: m_LocalPosition.x
@@ -90961,18 +90941,6 @@ PrefabInstance:
     - target: {fileID: 985112496947677973, guid: 07c5b507650b3044d928f4e4b0b15464, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 985905152132736250, guid: 07c5b507650b3044d928f4e4b0b15464, type: 3}
-      propertyPath: dropAmount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 985905152132736250, guid: 07c5b507650b3044d928f4e4b0b15464, type: 3}
-      propertyPath: dropItemType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 985905152132736250, guid: 07c5b507650b3044d928f4e4b0b15464, type: 3}
-      propertyPath: maxInteractCount
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

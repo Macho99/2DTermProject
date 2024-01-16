@@ -40,6 +40,7 @@ public class CustomerWait : StateBase<Customer.State, Customer>
     public override void Update()
     {
         float ratio = (Time.time - enterTime) / (transitionTime - enterTime);
-        owner.SetWaitMaskRatio(ratio);
+        if(ratio > 0.15f)
+            owner.SetWaitMaskRatio(ratio);
     }
 }

@@ -5026,7 +5026,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1099160660461180044}
-  - component: {fileID: 1067930924263298022}
+  - component: {fileID: 2770119864082942285}
   - component: {fileID: 1036274741590308446}
   - component: {fileID: 618021404987163814}
   m_Layer: 8
@@ -5056,7 +5056,7 @@ Transform:
   - {fileID: 8513287861533524226}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1067930924263298022
+--- !u!114 &2770119864082942285
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5065,15 +5065,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1069460462658812937}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3742b36c409550b45be549eece8ce48e, type: 3}
+  m_Script: {fileID: 11500000, guid: b5dea0c99f549bc4589c120cfad86a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropAmount: 5
-  dropItemType: 4
-  maxInteractCount: 2
-  curInteractCount: 0
-  interactDuration: 3
-  interactable: {fileID: 6192320044513404023}
   onInteractorEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -5090,6 +5084,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   progressRatio: 0
+  dropAmount: 1
+  dropItemType: 5
+  maxInteractCount: 1
+  curInteractCount: 0
+  interactDuration: 3
+  interactable: {fileID: 6192320044513404023}
 --- !u!50 &1036274741590308446
 Rigidbody2D:
   serializedVersion: 4
