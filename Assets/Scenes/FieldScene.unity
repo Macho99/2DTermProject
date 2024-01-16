@@ -24601,10 +24601,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1926059106}
     m_Modifications:
-    - target: {fileID: 1835977537586562354, guid: 39735d8136fe5da4497fe56379097277, type: 3}
-      propertyPath: knockbackTime
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6105573691893135074, guid: 39735d8136fe5da4497fe56379097277, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.432
@@ -24645,17 +24641,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6136250858402460040, guid: 39735d8136fe5da4497fe56379097277, type: 3}
-      propertyPath: dropItemType
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6137604470575963751, guid: 39735d8136fe5da4497fe56379097277, type: 3}
       propertyPath: m_Name
       value: Buffalo
       objectReference: {fileID: 0}
     - target: {fileID: 6137604470575963751, guid: 39735d8136fe5da4497fe56379097277, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -53933,14 +53925,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Duck
       objectReference: {fileID: 0}
-    - target: {fileID: 3074654995273118354, guid: 978f39a81aa072b49bba7ccf5bbfd651, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3075447779584531837, guid: 978f39a81aa072b49bba7ccf5bbfd651, type: 3}
-      propertyPath: dropItemType
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3115684169039436311, guid: 978f39a81aa072b49bba7ccf5bbfd651, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.49
@@ -58402,7 +58386,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1110763516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04ad045a1e9d0f84b9e2cebaa9ca123b, type: 3}
+  m_Script: {fileID: 11500000, guid: d7ef5833b5a8db949962324590dc5c0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1110936991 stripped
@@ -90940,7 +90924,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 985112496947677973, guid: 07c5b507650b3044d928f4e4b0b15464, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
