@@ -9,7 +9,7 @@ public class RestauSceneFlowController : MonoBehaviour
     [SerializeField] private Vector2Int entrance;
     [SerializeField] private Vector2Int[] tables;
     [SerializeField] private bool[] tableVisit;
-
+    [SerializeField] private Chief chief;
 
     private List<CuisineItem> allCuisineList;
     private List<CuisineItem> selectableCuisineList;
@@ -109,8 +109,9 @@ public class RestauSceneFlowController : MonoBehaviour
     public CuisineItem AllocateMenu()
     {
         int idx = Random.Range(0, selectableCuisineList.Count);
-        CuisineItem item = selectableCuisineList[idx];
+        CuisineItem item = (CuisineItem) selectableCuisineList[idx].Clone();
         selectableCuisineList.RemoveAt(idx);
+        chief.OrderEnqueue((CuisineItem) item.Clone());
         return item;
     }
 }

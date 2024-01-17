@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class RestaurantPlayer : MonoBehaviour, IInteractorOwner
     private Rigidbody2D rb;
     private Vector2 inputVec;
     private Animator anim;
+
+    private CuisineItem handedCuisine;
 
     private void Awake()
     {
@@ -55,5 +58,12 @@ public class RestaurantPlayer : MonoBehaviour, IInteractorOwner
     public void ForceInteractStop()
     {
 
+    }
+
+    public CuisineItem GetCuisine()
+    {
+        CuisineItem result = handedCuisine;
+        handedCuisine = null;
+        return result;
     }
 }

@@ -9,8 +9,10 @@ public class Chief : MonoBehaviour
     StateMachine<State, Chief> stateMachine;
 
     Queue<CuisineItem> orderQueue;
-    CuisineItem curCuisine;
     Queue<CuisineItem> finishedQueue;
+
+    public CuisineItem CurCuisine { get; set; }
+    public int OrderCount { get { return orderQueue.Count; } }
 
     [Space(20)]
     [Header("Debug")]
@@ -23,10 +25,12 @@ public class Chief : MonoBehaviour
         anim = GetComponent<Animator>();
 
         orderQueue = new Queue<CuisineItem>();
-        curCuisine = null;
+        CurCuisine = null;
         finishedQueue = new Queue<CuisineItem>();
 
         stateMachine = new StateMachine<State, Chief>(this);
+        stateMachine.AddState(State.Idle, new ChiefIdle(this, stateMachine));
+        stateMachine.AddState(State.Cook, new ChiefCook(this, stateMachine));
     }
 
     private void Start()
@@ -43,5 +47,25 @@ public class Chief : MonoBehaviour
     public void SetAnimFloat(string str, float val)
     {
         anim.SetFloat(str, val);
+    }
+
+    public void OrderEnqueue(CuisineItem cuisine)
+    {
+        orderQueue.Enqueue(cuisine);
+    }
+
+    public CuisineItem OrderDequeue()
+    {
+        return orderQueue.Dequeue();
+    }
+
+    public void FinishedEnqueue(CuisineItem cuisine)
+    {
+        finishedQueue.Enqueue(cuisine);
+    }
+
+    public CuisineItem FinishedDequeue()
+    {
+        return finishedQueue.Dequeue();
     }
 }

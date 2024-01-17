@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Customer : MonoBehaviour
@@ -22,6 +23,8 @@ public class Customer : MonoBehaviour
     [SerializeField] public int tableIdx;
     [SerializeField] string curState;
 
+    [HideInInspector] public UnityEvent<Interactor> onInteract;
+
     public CuisineItem SelectedMenu { get; set; }
 
     Rigidbody2D rb;
@@ -34,11 +37,13 @@ public class Customer : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
+        onInteract = new UnityEvent<Interactor>();
+
         stateMachine = new StateMachine<State, Customer>(this);
         stateMachine.AddState(State.Enter, new CustomerEnter(this, stateMachine));
         stateMachine.AddState(State.Choose, new CustomerChoose(this, stateMachine));
         stateMachine.AddState(State.Wait, new CustomerWait(this, stateMachine));
-
+        stateMachine.AddState(State.Eat, new CustomerEat(this, stateMachine));
 
         stateMachine.AddState(State.Exit, new CustomerExit(this, stateMachine));
     }
@@ -57,6 +62,11 @@ public class Customer : MonoBehaviour
     public void SetAnimFloat(string str, float val)
     {
         anim.SetFloat(str, val);
+    }
+
+    public void SetAnimBool(string str, bool val)
+    {
+        anim.SetBool(str, val);
     }
 
     public void SetVel(Vector2 vel)
@@ -94,5 +104,10 @@ public class Customer : MonoBehaviour
     public void SetWaitMaskRatio(float ratio)
     {
         mask.fillAmount = ratio;
+    }
+
+    public void Interact(Interactor interactor)
+    {
+        onInteract?.Invoke(interactor);
     }
 }

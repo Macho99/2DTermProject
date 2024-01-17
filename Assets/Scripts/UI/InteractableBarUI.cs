@@ -14,7 +14,7 @@ public class InteractableBarUI : MonoBehaviour
 
     private void Awake()
     {
-        owner= transform.parent.parent.GetComponent<Interactable>();
+        owner= GetComponentInParent<Interactable>();
     }
 
     private void OnEnable()

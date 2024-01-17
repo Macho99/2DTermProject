@@ -11,7 +11,7 @@ public class ChiefIdle : StateBase<Chief.State, Chief>
 
     public override void Enter()
     {
-
+        owner.transform.localScale = new Vector3(-1, 1, 1);
     }
 
     public override void Exit()
@@ -26,7 +26,11 @@ public class ChiefIdle : StateBase<Chief.State, Chief>
 
     public override void Transition()
     {
-
+        if(owner.OrderCount > 0)
+        {
+            owner.CurCuisine = owner.OrderDequeue();
+            stateMachine.ChangeState(Chief.State.Cook);
+        }
     }
 
     public override void Update()

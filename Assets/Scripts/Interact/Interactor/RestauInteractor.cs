@@ -8,8 +8,14 @@ public class RestauInteractor : Interactor
 {
     RestaurantPlayer restauPlayer;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         restauPlayer = GetComponentInParent<RestaurantPlayer>();
+    }
+
+    public CuisineItem GetCuisine()
+    {
+        return restauPlayer.GetCuisine();
     }
 }

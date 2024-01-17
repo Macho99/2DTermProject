@@ -11,7 +11,7 @@ public class Interactor : MonoBehaviour
 
     bool interacting;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         curInteractable = null;
         player = GetComponentInParent<IInteractorOwner>();

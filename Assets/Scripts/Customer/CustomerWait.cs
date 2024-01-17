@@ -17,11 +17,12 @@ public class CustomerWait : StateBase<Customer.State, Customer>
     {
         enterTime = Time.time;
         transitionTime = Time.time + Random.Range(minWaitTime, maxWaitTime);
+        owner.onInteract.AddListener(Interact);
     }
 
     public override void Exit()
     {
-
+        owner.onInteract.RemoveListener(Interact);
     }
 
     public override void Setup()
@@ -42,5 +43,16 @@ public class CustomerWait : StateBase<Customer.State, Customer>
         float ratio = (Time.time - enterTime) / (transitionTime - enterTime);
         if(ratio > 0.15f)
             owner.SetWaitMaskRatio(ratio);
+    }
+
+    private void Interact(Interactor interactor)
+    {
+        RestauInteractor restauInter = (RestauInteractor)interactor;
+
+        CuisineItem cuisine =  restauInter.GetCuisine();
+        if (cuisine.ID.Equals(owner.SelectedMenu))
+        {
+            stateMachine.ChangeState(Customer.State.Eat);
+        }
     }
 }
