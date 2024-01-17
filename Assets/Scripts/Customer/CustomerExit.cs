@@ -22,8 +22,8 @@ public class CustomerExit : StateBase<Customer.State, Customer>
         AStar.PathFinding(SFC.Map, Vector2Int.RoundToInt(owner.transform.position), entrancePos, out path);
 
         owner.SetWaitMaskRatio(0f);
-        owner.SetStateViewSprite(Customer.ViewerState.Angry);
-        owner.transform.localScale = new Vector3(-1, 1, 1);
+
+        owner.Flip(true);
     }
 
     public override void Exit()

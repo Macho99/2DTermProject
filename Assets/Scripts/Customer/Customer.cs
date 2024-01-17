@@ -25,10 +25,13 @@ public class Customer : MonoBehaviour
 
     [HideInInspector] public UnityEvent<Interactor> onInteract;
 
-    public CuisineItem SelectedMenu { get; set; }
 
     Rigidbody2D rb;
     Animator anim;
+    SpriteRenderer spRenderer;
+
+    public bool IsProperFood { get; set; }
+    public CuisineItem SelectedMenu { get; set; }
 
     public float MoveSpeed { get { return moveSpeed; } }
 
@@ -36,6 +39,7 @@ public class Customer : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        spRenderer = GetComponentInChildren<SpriteRenderer>();
 
         onInteract = new UnityEvent<Interactor>();
 
@@ -57,6 +61,11 @@ public class Customer : MonoBehaviour
     {
         stateMachine.Update();
         curState = stateMachine.GetCurStateStr();
+    }
+
+    public void Flip(bool val)
+    {
+        spRenderer.flipX = val;
     }
 
     public void SetAnimFloat(string str, float val)

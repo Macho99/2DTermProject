@@ -104,6 +104,7 @@ public class FieldPlayer : MonoBehaviour, IInteractorOwner
         states[idx++] = new PlayerBlock(this);
         states[idx++] = new PlayerAttack(this);
         states[idx++] = new PlayerInteract(this);
+        states[idx++] = new PlayerDie(this);
 
         curState = states[0];
         curState.Enter();
@@ -467,5 +468,6 @@ public class FieldPlayer : MonoBehaviour, IInteractorOwner
     private void Die()
     {
         StopAllCoroutines();
+        ChangeState(PlayerStateType.Die);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class CustomerEat : StateBase<Customer.State, Customer>
@@ -17,13 +18,28 @@ public class CustomerEat : StateBase<Customer.State, Customer>
     {
         enterTime = Time.time;
         transitionTime = Time.time + Random.Range(minEatTime, maxEatTime);
-        owner.SetStateViewSprite(Customer.ViewerState.Happy);
         owner.SetAnimBool("Interact", true);
+        if(true == owner.IsProperFood)
+        {
+            owner.SetStateViewSprite(Customer.ViewerState.Happy);
+        }
+        else
+        {
+            owner.SetStateViewSprite(Customer.ViewerState.Angry);
+        }
     }
 
     public override void Exit()
     {
         owner.SetAnimBool("Interact", false);
+        if (true == owner.IsProperFood)
+        {
+            GameManager.Inven.AddMoney(owner.SelectedMenu.price);
+        }
+        else
+        {
+            GameManager.Inven.AddMoney(owner.SelectedMenu.price / 2);
+        }
     }
 
     public override void Setup()

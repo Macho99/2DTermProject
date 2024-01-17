@@ -29,13 +29,14 @@ public class Interactor : MonoBehaviour
         if(curInteractable == null)
             return false;
 
-        curInteractable.InteractStart(this);
         interacting = true;
+
+        curInteractable.InteractStart(this);
 
         return true;
     }
 
-    public void InteractStop()
+    public void InteractStopByPlayer()
     {
         curInteractable?.InteractStop(this);
         curInteractable?.UnSelected();
@@ -46,6 +47,8 @@ public class Interactor : MonoBehaviour
     public void InteractResult(bool result)
     {
         player.ForceInteractStop();
+        curInteractable = null;
+        interacting = false;
     }
 
     public bool CanInteract()

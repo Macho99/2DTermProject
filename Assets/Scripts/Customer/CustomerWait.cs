@@ -5,8 +5,8 @@ using Random = UnityEngine.Random;
 
 public class CustomerWait : StateBase<Customer.State, Customer>
 {
-    const float minWaitTime = 20f;
-    const float maxWaitTime = 30f;
+    const float minWaitTime = 30f;
+    const float maxWaitTime = 40f;
     float transitionTime;
     float enterTime;
     public CustomerWait(Customer owner, StateMachine<Customer.State, Customer> stateMachine) : base(owner, stateMachine)
@@ -22,6 +22,7 @@ public class CustomerWait : StateBase<Customer.State, Customer>
 
     public override void Exit()
     {
+        owner.SetWaitMaskRatio(0f);
         owner.onInteract.RemoveListener(Interact);
     }
 
@@ -34,6 +35,7 @@ public class CustomerWait : StateBase<Customer.State, Customer>
     {
         if (Time.time > transitionTime)
         {
+            owner.SetStateViewSprite(Customer.ViewerState.Angry);
             stateMachine.ChangeState(Customer.State.Exit);
         }
     }
@@ -49,9 +51,17 @@ public class CustomerWait : StateBase<Customer.State, Customer>
     {
         RestauInteractor restauInter = (RestauInteractor)interactor;
 
-        CuisineItem cuisine =  restauInter.GetCuisine();
-        if (cuisine.ID.Equals(owner.SelectedMenu))
+        CuisineItem cuisine = restauInter.GiveCuisine();
+        if (cuisine == null) return;
+
+        if (cuisine.ID == owner.SelectedMenu.ID)
         {
+            owner.IsProperFood = true;
+            stateMachine.ChangeState(Customer.State.Eat);
+        }
+        else
+        {
+            owner.IsProperFood = false;
             stateMachine.ChangeState(Customer.State.Eat);
         }
     }

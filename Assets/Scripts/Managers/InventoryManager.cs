@@ -15,11 +15,14 @@ public class InventoryManager : MonoBehaviour
     [HideInInspector] public UnityEvent<Item> onItemGet;
     [HideInInspector] public UnityEvent<Item> onItemDelete;
     [HideInInspector] public UnityEvent<Item> onItemAmountChanged;
+    [HideInInspector] public UnityEvent onMoneyChanged;
 
+    public int Money { get; private set; }
     public int MaxInvenSize {  get { return maxInvenSize; } }
 
     private void Awake()
     {
+        onMoneyChanged = new UnityEvent();
         onItemGet = new UnityEvent<Item>();
         onItemDelete= new UnityEvent<Item>();
         onItemAmountChanged = new UnityEvent<Item>();
@@ -269,5 +272,11 @@ public class InventoryManager : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public void AddMoney(int amount)
+    {
+        Money += amount;
+        onMoneyChanged?.Invoke();
     }
 }

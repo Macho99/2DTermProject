@@ -20,7 +20,7 @@ public class PlayerInteract : PlayerState
 
     public override void Exit()
     {
-        player.Interactor.InteractStop();
+        player.Interactor.InteractStopByPlayer();
     }
 
     public override void Jump(InputValue value)

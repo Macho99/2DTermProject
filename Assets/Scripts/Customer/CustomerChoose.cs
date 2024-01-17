@@ -41,6 +41,6 @@ public class CustomerChoose : StateBase<Customer.State, Customer>
 
     public override void Update()
     {
-            
+
     }
 }

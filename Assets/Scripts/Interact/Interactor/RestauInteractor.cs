@@ -14,8 +14,13 @@ public class RestauInteractor : Interactor
         restauPlayer = GetComponentInParent<RestaurantPlayer>();
     }
 
-    public CuisineItem GetCuisine()
+    public CuisineItem GiveCuisine()
     {
-        return restauPlayer.GetCuisine();
+        return restauPlayer.GiveCuisine();
+    }
+
+    public void ReceiveCuisine(CuisineItem item)
+    {
+        restauPlayer.ReceiveCuisine(item);
     }
 }

@@ -11,7 +11,7 @@ public class ChiefIdle : StateBase<Chief.State, Chief>
 
     public override void Enter()
     {
-        owner.transform.localScale = new Vector3(-1, 1, 1);
+        owner.Flip(true);
     }
 
     public override void Exit()

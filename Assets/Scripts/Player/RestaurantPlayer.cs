@@ -8,10 +8,12 @@ public class RestaurantPlayer : MonoBehaviour, IInteractorOwner
 {
     //[SerializeField] private float moveAccel = 1000f;
     [SerializeField] private float maxMoveSpeed = 3f;
+    [SerializeField] private SpriteRenderer handRenderer;
 
     private Rigidbody2D rb;
     private Vector2 inputVec;
     private Animator anim;
+    private Interactor interactor;
 
     private CuisineItem handedCuisine;
 
@@ -19,6 +21,7 @@ public class RestaurantPlayer : MonoBehaviour, IInteractorOwner
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        interactor = GetComponentInChildren<Interactor>();
     }
 
     private void OnMove(InputValue value)
@@ -37,7 +40,10 @@ public class RestaurantPlayer : MonoBehaviour, IInteractorOwner
 
     private void OnInteract(InputValue value)
     {
-
+        if(value.isPressed == true)
+        {
+            interactor.InteractStart();
+        }
     }
 
     private void Update()
@@ -60,10 +66,17 @@ public class RestaurantPlayer : MonoBehaviour, IInteractorOwner
 
     }
 
-    public CuisineItem GetCuisine()
+    public CuisineItem GiveCuisine()
     {
         CuisineItem result = handedCuisine;
         handedCuisine = null;
+        handRenderer.sprite = null;
         return result;
+    }
+
+    public void ReceiveCuisine(CuisineItem item)
+    {
+        handedCuisine = item;
+        handRenderer.sprite = item.Sprite;
     }
 }

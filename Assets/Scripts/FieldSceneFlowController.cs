@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class FieldSceneFlowController : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class FieldSceneFlowController : MonoBehaviour
     private bool invenOpened;
     public UnityEvent onInvenOpen;
     public UnityEvent onInvenClose;
+    public UnityEvent onPlayerDie;
+    public UnityEvent onGameOver;
     public UnityEvent<int> onNumPressed;
 
     public static FieldPlayer Player { get {
@@ -76,7 +79,7 @@ public class FieldSceneFlowController : MonoBehaviour
     
     private void OnEscape(InputValue value)
     {
-
+        InvenToggle();
     }
 
     private void OnNum1(InputValue value)
@@ -94,5 +97,23 @@ public class FieldSceneFlowController : MonoBehaviour
     private void OnNum4(InputValue value)
     {
         onNumPressed?.Invoke(4);
+    }
+
+    public void PlayerDie()
+    {
+        StartCoroutine(CoPlayerDie());
+    }
+
+    IEnumerator CoPlayerDie()
+    {
+        onPlayerDie?.Invoke();
+        yield return new WaitForSeconds(2f);
+        GameOver();
+    }
+
+    public void GameOver()
+    {
+        onGameOver?.Invoke();
+        SceneManager.LoadScene("RestaurantScene");
     }
 }

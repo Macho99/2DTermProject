@@ -10,7 +10,7 @@ public class Buffalo : Monster
     [SerializeField] float attackDist = 5f;
     [SerializeField] float knockbackForce = 10f;
     [SerializeField] float chargeDuration = 3f;
-    [SerializeField] float chargeCoolTime = 3f;
+    [SerializeField] float chargeCoolTime = 2f;
     [SerializeField] ParticleSystem chargeParticle;
     [SerializeField] string curState;
 

@@ -10,12 +10,14 @@ public class RestauSceneFlowController : MonoBehaviour
     [SerializeField] private Vector2Int[] tables;
     [SerializeField] private bool[] tableVisit;
     [SerializeField] private Chief chief;
+    [SerializeField] private Customer customerPrefab;
 
     private List<CuisineItem> allCuisineList;
     private List<CuisineItem> selectableCuisineList;
 
     private static RestauSceneFlowController instance;
     private static RestaurantPlayer player;
+
     public Vector2Int Entrance { get { return entrance; } }
 
     private int[,] map;

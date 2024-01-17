@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
-public class CustomerInteractable : Interactable
+public class ChiefInteractable : Interactable
 {
-    Customer owner;
+    Chief owner;
 
     protected virtual void Awake()
     {
-        owner = GetComponentInParent<Customer>();
+        owner = GetComponentInParent<Chief>();
     }
 
     public override void InteractStart(Interactor interactor)

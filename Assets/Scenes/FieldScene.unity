@@ -915,6 +915,48 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onPlayerDie:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 570826467}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onGameOver:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 570826467}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 570826467}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onNumPressed:
     m_PersistentCalls:
       m_Calls: []
@@ -20508,6 +20550,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1926059106}
     m_Modifications:
+    - target: {fileID: 4720387729231124569, guid: 0ac3e4e83085b7a4b91a9678f9f44166, type: 3}
+      propertyPath: dropItemType
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7544195936329303448, guid: 0ac3e4e83085b7a4b91a9678f9f44166, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -24601,6 +24647,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1926059106}
     m_Modifications:
+    - target: {fileID: 1835977537586562354, guid: 39735d8136fe5da4497fe56379097277, type: 3}
+      propertyPath: chargeCoolTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6105573691893135074, guid: 39735d8136fe5da4497fe56379097277, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.432
@@ -24647,7 +24697,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6137604470575963751, guid: 39735d8136fe5da4497fe56379097277, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9046372064213543715, guid: 39735d8136fe5da4497fe56379097277, type: 3}
+      propertyPath: dropItemType
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -53921,6 +53975,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1926059106}
     m_Modifications:
+    - target: {fileID: 147866328790910934, guid: 978f39a81aa072b49bba7ccf5bbfd651, type: 3}
+      propertyPath: dropItemType
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3074654995273118354, guid: 978f39a81aa072b49bba7ccf5bbfd651, type: 3}
       propertyPath: m_Name
       value: Duck
