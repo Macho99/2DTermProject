@@ -40,6 +40,7 @@ public class CustomerEat : StateBase<Customer.State, Customer>
         {
             GameManager.Inven.AddMoney(owner.SelectedMenu.price / 2);
         }
+        owner.PlayerMoneyParticle();
     }
 
     public override void Setup()

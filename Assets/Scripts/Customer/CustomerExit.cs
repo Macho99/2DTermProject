@@ -24,6 +24,8 @@ public class CustomerExit : StateBase<Customer.State, Customer>
         owner.SetWaitMaskRatio(0f);
 
         owner.Flip(true);
+
+        SFC.ReturnTable(owner.tableIdx);
     }
 
     public override void Exit()
@@ -45,6 +47,7 @@ public class CustomerExit : StateBase<Customer.State, Customer>
     {
         if (curIdx >= path.Count)
         {
+            RestauSceneFlowController.Instance.CustomerExit();
             GameObject.Destroy(owner.gameObject);
             return;
         }

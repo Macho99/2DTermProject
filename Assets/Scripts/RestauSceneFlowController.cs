@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RestauSceneFlowController : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class RestauSceneFlowController : MonoBehaviour
 
     private static RestauSceneFlowController instance;
     private static RestaurantPlayer player;
+
+    private int maxCustomer;
+    private int curCustomer;
+    private int leftCustomer;
 
     public Vector2Int Entrance { get { return entrance; } }
 
@@ -78,6 +83,31 @@ public class RestauSceneFlowController : MonoBehaviour
         {
             selectableCuisineList.Add(item);
         }
+
+        maxCustomer = Random.Range(7, 12);
+        curCustomer = 0;
+        leftCustomer = maxCustomer;
+
+        _ = StartCoroutine(SaleStart());
+    }
+
+    private IEnumerator SaleStart()
+    {
+        while(curCustomer < maxCustomer)
+        {
+            yield return new WaitUntil(() =>
+            {
+                foreach (bool val in tableVisit)
+                {
+                    if (false == val)
+                        return true;
+                }
+                return false;
+            });
+            Instantiate(customerPrefab);
+            curCustomer++;
+            yield return new WaitForSeconds(Random.Range(3, 10));
+        }
     }
 
     public int AllocateTable()
@@ -112,8 +142,18 @@ public class RestauSceneFlowController : MonoBehaviour
     {
         int idx = Random.Range(0, selectableCuisineList.Count);
         CuisineItem item = (CuisineItem) selectableCuisineList[idx].Clone();
-        selectableCuisineList.RemoveAt(idx);
+        //selectableCuisineList.RemoveAt(idx);
         chief.OrderEnqueue((CuisineItem) item.Clone());
         return item;
+    }
+
+    public void CustomerExit()
+    {
+        leftCustomer--;
+        print($"남은 손님: {leftCustomer}");
+        if (0 == leftCustomer)
+        {
+            print("영업 종료");
+        }
     }
 }

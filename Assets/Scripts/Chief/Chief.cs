@@ -126,6 +126,10 @@ public class Chief : MonoBehaviour
 
     public void FinishedEnqueue(CuisineItem cuisine)
     {
+        if(finishQueue.Count >= 6)
+        {
+            _ = FinishedDequeue();
+        }
         finishQueue.Enqueue(cuisine);
 
         int idx = finishQueue.Count - 1;
@@ -147,7 +151,6 @@ public class Chief : MonoBehaviour
             finishRenderers[i].sprite = item.Sprite;
             i++;
         }
-
         return result;
     }
 
@@ -155,7 +158,7 @@ public class Chief : MonoBehaviour
     {
         if(finishQueue.Count == 0)
         {
-            print("요리 미완성");
+            //print("요리 미완성");
         }
         else
         {

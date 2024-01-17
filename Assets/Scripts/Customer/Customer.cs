@@ -17,6 +17,7 @@ public class Customer : MonoBehaviour
     [SerializeField] Sprite chooseSprite;
     [SerializeField] Sprite happySprite;
     [SerializeField] Sprite angrySprite;
+    [SerializeField] ParticleSystem moneyParticle;
 
     [Space(20)]
     [Header("Debug")]
@@ -118,5 +119,10 @@ public class Customer : MonoBehaviour
     public void Interact(Interactor interactor)
     {
         onInteract?.Invoke(interactor);
+    }
+
+    public void PlayerMoneyParticle()
+    {
+        moneyParticle.Play();
     }
 }
