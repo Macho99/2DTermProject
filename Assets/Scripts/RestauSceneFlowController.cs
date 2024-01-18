@@ -23,6 +23,11 @@ public class RestauSceneFlowController : MonoBehaviour
     private int curCustomer;
     private int leftCustomer;
 
+    private int happyCustomer;
+    private int wrongMenuCustomer;
+    private int angryCustomer;
+    private int startMoney;
+
     public Vector2Int Entrance { get { return entrance; } }
 
     private int[,] map;
@@ -55,6 +60,15 @@ public class RestauSceneFlowController : MonoBehaviour
         }
         instance = this;
 
+        maxCustomer = Random.Range(7, 12);
+        curCustomer = 0;
+        leftCustomer = maxCustomer;
+
+        happyCustomer = 0;
+        wrongMenuCustomer = 0;
+        angryCustomer = 0;
+        startMoney = GameManager.Inven.Money;
+
         map = new int[rightTop.x - leftBottom.x + 1, rightTop.y - leftBottom.y + 1];
 
         LayerMask platformLayer = LayerMask.GetMask("Platform");
@@ -83,10 +97,6 @@ public class RestauSceneFlowController : MonoBehaviour
         {
             selectableCuisineList.Add(item);
         }
-
-        maxCustomer = Random.Range(7, 12);
-        curCustomer = 0;
-        leftCustomer = maxCustomer;
 
         _ = StartCoroutine(SaleStart());
     }
@@ -155,5 +165,20 @@ public class RestauSceneFlowController : MonoBehaviour
         {
             print("영업 종료");
         }
+    }
+
+    public void HappyCntUp()
+    {
+        happyCustomer++;
+    }
+
+    public void WrongCntUp()
+    {
+        wrongMenuCustomer++;
+    }
+
+    public void AngryCntUp()
+    {
+        angryCustomer++;
     }
 }

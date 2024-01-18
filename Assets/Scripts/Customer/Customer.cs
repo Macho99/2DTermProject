@@ -33,7 +33,7 @@ public class Customer : MonoBehaviour
 
     public bool IsProperFood { get; set; }
     public CuisineItem SelectedMenu { get; set; }
-
+    public CuisineItem ReceivedMenu { get; set; }
     public float MoveSpeed { get { return moveSpeed; } }
 
     private void Awake()

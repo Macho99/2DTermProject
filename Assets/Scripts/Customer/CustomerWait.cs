@@ -35,6 +35,7 @@ public class CustomerWait : StateBase<Customer.State, Customer>
     {
         if (Time.time > transitionTime)
         {
+            RestauSceneFlowController.Instance.AngryCntUp();
             owner.SetStateViewSprite(Customer.ViewerState.Angry);
             stateMachine.ChangeState(Customer.State.Exit);
         }
@@ -54,15 +55,18 @@ public class CustomerWait : StateBase<Customer.State, Customer>
         CuisineItem cuisine = restauInter.GiveCuisine();
         if (cuisine == null) return;
 
+        owner.ReceivedMenu = cuisine;
         if (cuisine.ID == owner.SelectedMenu.ID)
         {
             owner.IsProperFood = true;
             stateMachine.ChangeState(Customer.State.Eat);
+            RestauSceneFlowController.Instance.HappyCntUp();
         }
         else
         {
             owner.IsProperFood = false;
             stateMachine.ChangeState(Customer.State.Eat);
+            RestauSceneFlowController.Instance.WrongCntUp();
         }
     }
 }

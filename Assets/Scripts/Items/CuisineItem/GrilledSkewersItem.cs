@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 public class GrilledSkewersItem : CuisineItem
 {
     private static readonly ItemID id = ItemID.GrilledSkewers;
-    private static new readonly int price = 2;
+    private static new readonly int price = 200;
     public GrilledSkewersItem(int amount = 1) : base(id, amount, price)
     {
         requireList.Add(Tuple.Create(ItemID.ChickMeat, 2));

@@ -10,6 +10,9 @@ public class CustomerEat : StateBase<Customer.State, Customer>
     const float maxEatTime = 8f;
     float transitionTime;
     float enterTime;
+
+    SpriteRenderer food;
+
     public CustomerEat(Customer owner, StateMachine<Customer.State, Customer> stateMachine) : base(owner, stateMachine)
     {
     }
@@ -19,7 +22,12 @@ public class CustomerEat : StateBase<Customer.State, Customer>
         enterTime = Time.time;
         transitionTime = Time.time + Random.Range(minEatTime, maxEatTime);
         owner.SetAnimBool("Interact", true);
-        if(true == owner.IsProperFood)
+        food = new GameObject("Food").AddComponent<SpriteRenderer>();
+        food.transform.position = owner.transform.position;
+        food.transform.Translate(new Vector3(1.05f, 0.3f, -1f));
+        food.transform.rotation = Quaternion.Euler(-45f, 0f, 0f);
+
+        if (true == owner.IsProperFood)
         {
             owner.SetStateViewSprite(Customer.ViewerState.Happy);
         }
@@ -27,10 +35,12 @@ public class CustomerEat : StateBase<Customer.State, Customer>
         {
             owner.SetStateViewSprite(Customer.ViewerState.Angry);
         }
+        food.sprite = owner.ReceivedMenu.Sprite;
     }
 
     public override void Exit()
     {
+        GameObject.Destroy(food.gameObject);
         owner.SetAnimBool("Interact", false);
         if (true == owner.IsProperFood)
         {

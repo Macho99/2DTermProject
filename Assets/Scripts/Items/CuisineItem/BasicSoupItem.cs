@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 public class BasicSoupItem : CuisineItem
 {
     private static readonly ItemID id = ItemID.BasicSoup;
-    private static new readonly int price = 1;
+    private static new readonly int price = 100;
     public BasicSoupItem(int amount = 1) : base(id, amount, price)
     {
     }
