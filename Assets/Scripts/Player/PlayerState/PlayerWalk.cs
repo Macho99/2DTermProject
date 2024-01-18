@@ -35,7 +35,7 @@ public class PlayerWalk : PlayerState
             return;
         }
 
-        if (false == player.isGround)
+        if (false == player.IsGround)
         {
             player.ChangeState(PlayerStateType.OnAir);
         }

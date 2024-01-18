@@ -15,7 +15,6 @@ public class PlayerLand : PlayerState
     public override void Enter()
     {
         player.PlayAnim("Land");
-        player.doubleJumped = false;
     }
 
     public override void Exit()

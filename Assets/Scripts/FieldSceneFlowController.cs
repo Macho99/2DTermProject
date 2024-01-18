@@ -12,6 +12,7 @@ public class FieldSceneFlowController : MonoBehaviour
     private static FieldSceneFlowController instance;
     private static FieldPlayer player;
 
+    [SerializeField] Vector2 originPoint;
     [SerializeField] GameObject monsterFolder;
     [SerializeField] float spawnStartX;
     [SerializeField] float snowX;
@@ -30,6 +31,8 @@ public class FieldSceneFlowController : MonoBehaviour
     public UnityEvent onPlayerDie;
     public UnityEvent onGameOver;
     public UnityEvent<int> onNumPressed;
+    public UnityEvent onTitleStart;
+    public UnityEvent onTitleEnd;
 
     private int killCnt;
 
@@ -60,7 +63,33 @@ public class FieldSceneFlowController : MonoBehaviour
         onNumPressed = new UnityEvent<int>();
         platformLayer = LayerMask.GetMask("Platform");
         killCnt = 0;
+
+        if(GameManager.Data.TitlePlayed == false)
+        {
+            GameManager.Data.TitlePlayed = true;
+            onTitleStart?.Invoke();
+            _ = StartCoroutine(CoTitle());
+        }
+        else
+        {
+            SpawnMonster();
+            player.PlayerStart();
+        }
+    }
+
+    IEnumerator CoTitle()
+    {
+        while (true)
+        {
+            if(true == Input.anyKeyDown)
+            {
+                break;
+            }
+            yield return null;
+        }
         SpawnMonster();
+        player.PlayerStart();
+        onTitleEnd?.Invoke();
     }
 
     private void SpawnMonster()
@@ -151,18 +180,29 @@ public class FieldSceneFlowController : MonoBehaviour
     IEnumerator CoPlayerDie()
     {
         onPlayerDie?.Invoke();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
         GameOver();
     }
 
     public void GameOver()
     {
         onGameOver?.Invoke();
-        SceneManager.LoadScene("RestaurantScene");
     }
 
     public void AddKillCnt()
     {
         killCnt++;
     }
+
+    public void GoToRestaurant()
+    {
+        SceneManager.LoadScene("RestaurantScene");
+    }
+
+    public void PlayerRespawn()
+    {
+        player.transform.position = originPoint;
+    }
+
+    
 }

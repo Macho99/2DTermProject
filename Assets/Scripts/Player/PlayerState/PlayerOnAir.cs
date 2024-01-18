@@ -13,12 +13,12 @@ public class PlayerOnAir : PlayerState
     public override void Enter()
     {
         player.PlayAnim("OnAir");
-        readyToLand = !(player.isGround);
+        readyToLand = !(player.IsGround);
     }
 
     public override void Jump(InputValue value)
     {
-        if(false == player.doubleJumped)
+        if(false == player.DoubleJumped)
         {
             player.ChangeState(PlayerStateType.DoubleJump);
         }
@@ -30,14 +30,14 @@ public class PlayerOnAir : PlayerState
 
         if (readyToLand)
         {
-            if (true == player.isGround)
+            if (true == player.IsGround)
             {
                 player.ChangeState(PlayerStateType.Land);
             }
         }
         else
         {
-            if(false == player.isGround)
+            if(false == player.IsGround)
             {
                 readyToLand = true;
             }

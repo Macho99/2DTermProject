@@ -28,7 +28,7 @@ public class PlayerCrawl : PlayerState
 
     public override void Update()
     {
-        if (false == player.isGround)
+        if (false == player.IsGround)
         {
             player.ChangeState(PlayerStateType.OnAir);
         }

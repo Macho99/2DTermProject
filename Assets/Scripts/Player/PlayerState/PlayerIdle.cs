@@ -14,7 +14,7 @@ public class PlayerIdle : PlayerState
     {
         float curTime = Time.time;
 
-        if(false == player.isGround)
+        if(false == player.IsGround)
         {
             player.ChangeState(PlayerStateType.OnAir); 
             return;
@@ -104,7 +104,7 @@ public class PlayerIdle : PlayerState
             return true;
         }
 
-        if (false == player.isGround)
+        if (false == player.IsGround)
         {
             player.ChangeState(PlayerStateType.OnAir);
             return true;

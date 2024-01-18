@@ -10,6 +10,8 @@ public class DataManager : MonoBehaviour
     private string[] itemSummary;
     private string[] itemDetailDesc;
 
+    public bool TitlePlayed { get; set; }
+
     private void Awake()
     {
         items = new Item[(int) ItemID.Size];

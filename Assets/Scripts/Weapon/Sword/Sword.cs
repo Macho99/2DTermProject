@@ -5,7 +5,7 @@ using UnityEngine;
 public class Sword : Weapon
 {
     [SerializeField] ParticleSystem chargeParticle;
-    Transform CrackTrans;
+    Transform crackTrans;
     public enum State { Idle, Slash, Jab, Sting ,Charge};
     StateMachine<State, Sword> stateMachine;
 
@@ -19,9 +19,9 @@ public class Sword : Weapon
         stateMachine.AddState(State.Sting, new SwordSting(this, stateMachine));
         stateMachine.AddState(State.Charge, new SwordCharge(this, stateMachine));
         
-        CrackTrans = new GameObject("CrackPoint").transform;
-        CrackTrans.parent = transform;
-        CrackTrans.localPosition = new Vector2(0.953f, 0.04f);
+        crackTrans = new GameObject("CrackPoint").transform;
+        crackTrans.parent = transform;
+        crackTrans.localPosition = new Vector2(0.953f, 0.04f);
     }
 
     public override void ForceIdle()
@@ -62,7 +62,7 @@ public class Sword : Weapon
         scale = Mathf.Min(scale, 0.8f);
 
         GameObject particle = FieldObjPool.Instance.AllocateObj(ObjPoolType.GroundCrackParticle);
-        particle.transform.position = CrackTrans.position;
+        particle.transform.position = crackTrans.position;
         particle.transform.localScale = Vector3.one * scale;
     }
 }

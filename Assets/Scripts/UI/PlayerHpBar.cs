@@ -25,6 +25,11 @@ public class PlayerHpBar : MonoBehaviour
         slider = GetComponent<Slider>();
     }
 
+    private void Start()
+    {
+        UIUpdate();
+    }
+
     private void OnEnable()
     {
         player.onHpChanged.AddListener(UIUpdate);

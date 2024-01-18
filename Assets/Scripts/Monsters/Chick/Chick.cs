@@ -60,6 +60,7 @@ public class Chick : Monster
 
     protected override void HittedDetect()
     {
+        base.HittedDetect();
         stateMachine.ChangeState(State.Detect);
     }
 }

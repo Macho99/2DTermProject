@@ -17,6 +17,8 @@ public class FieldResultUI : MonoBehaviour
         IngredientItem[] items = GameManager.Inven.GetIngredientInv();
         for (int i = 0; i < items.Length; i++)
         {
+            if (items[i] == null) continue;
+
             GameObject panel = Instantiate(panelPrefab, content.transform).gameObject;
             Image image = panel.GetComponentInChildren<Image>();
             Text text = panel.GetComponentInChildren<Text>();

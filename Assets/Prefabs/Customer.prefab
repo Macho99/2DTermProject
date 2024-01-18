@@ -6214,6 +6214,19 @@ MonoBehaviour:
   happySprite: {fileID: 21300000, guid: 945445a338f29407f86e6bc94896764f, type: 3}
   angrySprite: {fileID: 21300000, guid: 4927b991b45954b3dbefe5eb845ac30b, type: 3}
   moneyParticle: {fileID: 5941890098754513960}
+  spriteLibrary: {fileID: 9212065623747179348}
+  libraryAssets:
+  - {fileID: 11400000, guid: 0b7d425d4fd856a42a4ad327edbb2c6f, type: 2}
+  - {fileID: 11400000, guid: e7986d2637c207d47a31ba10c25eb10a, type: 2}
+  - {fileID: 11400000, guid: 194b40cd950a6274fb45c65bbe44424e, type: 2}
+  - {fileID: 11400000, guid: 2fbcdf5cfa0c17f4ba54547779ac134b, type: 2}
+  - {fileID: 11400000, guid: 335ee23e2f48a334c9a25c12878216fd, type: 2}
+  - {fileID: 11400000, guid: ce2347fbe13b4f648b8ed5e9f6a442be, type: 2}
+  - {fileID: 11400000, guid: f6e03556446ff664da129d6606450dfa, type: 2}
+  - {fileID: 11400000, guid: 93da199cd099cc34d8ede2f95d17347c, type: 2}
+  - {fileID: 11400000, guid: 0a91619c01f16324697b1d267d7593cc, type: 2}
+  - {fileID: 11400000, guid: 8458efba5e8dc624d8328c39627bc5dd, type: 2}
+  - {fileID: 11400000, guid: bcc85722bac24b4458dcad03e67dc165, type: 2}
   tableIdx: 0
   curState: 
   onInteract:

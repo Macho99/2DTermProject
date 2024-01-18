@@ -56,7 +56,7 @@ public class DuckFlyAway : StateBase<Duck.State, Duck>
 
     public override void Update()
     {
-        owner.FlyMove(owner.dir, owner.RunSpeed, Time.deltaTime);
+        owner.FlyMove(owner.RunSpeed, Time.deltaTime);
         CheckDirection();
     }
 

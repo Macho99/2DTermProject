@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
 
 public class Customer : MonoBehaviour
@@ -18,6 +19,8 @@ public class Customer : MonoBehaviour
     [SerializeField] Sprite happySprite;
     [SerializeField] Sprite angrySprite;
     [SerializeField] ParticleSystem moneyParticle;
+    [SerializeField] SpriteLibrary spriteLibrary;
+    [SerializeField] SpriteLibraryAsset[] libraryAssets;
 
     [Space(20)]
     [Header("Debug")]
@@ -51,6 +54,8 @@ public class Customer : MonoBehaviour
         stateMachine.AddState(State.Eat, new CustomerEat(this, stateMachine));
 
         stateMachine.AddState(State.Exit, new CustomerExit(this, stateMachine));
+
+        spriteLibrary.spriteLibraryAsset = libraryAssets[Random.Range(0, libraryAssets.Length)];
     }
 
     private void Start()

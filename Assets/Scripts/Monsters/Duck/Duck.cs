@@ -60,6 +60,7 @@ public class Duck : Monster
 
     protected override void HittedDetect()
     {
+        base.HittedDetect();
         stateMachine.ChangeState(State.Detect);
     }
 
@@ -77,18 +78,39 @@ public class Duck : Monster
         rb.velocity = vel;
     }
 
-    public void FlyMove(float direction, float maxSpeed, float time)
+    public void FlyMove(float maxSpeed, float time)
     {
+        IsGround = false;
         if (Time.time < lastHitTime + knockbackTime)
         {
             return;
         }
 
-        if (rb.velocity.sqrMagnitude > maxSpeed * maxSpeed)
-        {
-            return;
-        }
+        //if (rb.velocity.sqrMagnitude > maxSpeed * maxSpeed)
+        //{
+        //    return;
+        //}
 
-        rb.AddForce(Vector2.right * direction * accelSpeed * time + Vector2.up * 2f, ForceMode2D.Force);
+        //rb.AddForce(Vector2.right * direction * accelSpeed * time + Vector2.up * 2f, ForceMode2D.Force);
+
+        Vector2 origin = transform.position;
+        origin.y += ColRadius;
+        RaycastHit2D upHit = Physics2D.Raycast(origin, Vector2.up, 1f, PlatformMask);
+        RaycastHit2D dirHit = Physics2D.Raycast(origin, Vector2.right * dir, 1f, PlatformMask);
+
+        Vector2 direction;
+        if(upHit.collider == null && dirHit.collider == null)
+        {
+            direction = (Vector2.up + 2 * Vector2.right * dir).normalized;
+        }
+        else if(upHit.collider == null)
+        {
+            direction = Vector2.up;
+        }
+        else
+        {
+            direction = Vector2.right * dir;
+        }
+        rb.velocity = direction * maxSpeed;
     }
 }

@@ -34,12 +34,10 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
-        PlayerGetItem(GameManager.Data.GetItem(ItemID.RoosterMeat, 2));
-        PlayerGetItem(GameManager.Data.GetItem(ItemID.DuckEgg, 4));
         PlayerGetItem(GameManager.Data.GetItem(ItemID.Sword));
         PlayerGetItem(GameManager.Data.GetItem(ItemID.Bident));
         PlayerGetItem(GameManager.Data.GetItem(ItemID.Bow));
-        PlayerGetItem(GameManager.Data.GetItem(ItemID.RedPotion, 10));
+        PlayerGetItem(GameManager.Data.GetItem(ItemID.RedPotion, 30));
     }
 
     public void PlayerGetItem(Item item)

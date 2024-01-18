@@ -10,9 +10,9 @@ public class DuckLanding : StateBase<Duck.State, Duck>
 
     public override void Enter()
     {
-        owner.SetGravityScale(0.1f);
+        owner.SetGravityScale(0f);
     }
-
+        
     public override void Exit()
     {
     }
@@ -33,5 +33,6 @@ public class DuckLanding : StateBase<Duck.State, Duck>
     public override void Update()
     {
         owner.HorizonMove(owner.dir, owner.MoveSpeed, Time.deltaTime);
+        owner.SetVel(Vector2.down);
     }
 }

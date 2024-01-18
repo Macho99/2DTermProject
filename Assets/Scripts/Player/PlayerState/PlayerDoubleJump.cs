@@ -15,7 +15,7 @@ public class PlayerDoubleJump : PlayerState
         player.PlayAnim("OnAir");
         player.DoubleJump();
         player.PlayJumpParticle();
-        player.doubleJumped = true;
+        player.DoubleJumped = true;
     }
 
     public override void Jump(InputValue value)
@@ -26,7 +26,7 @@ public class PlayerDoubleJump : PlayerState
     public override void Update()
     {
         player.HorizonMove(TimeExtension.UnscaledDeltaTime, player.AirControlMultiple);
-        if (true == player.isGround)
+        if (true == player.IsGround)
         {
             player.ChangeState(PlayerStateType.Land);
         }

@@ -57,8 +57,8 @@ public class FieldPlayer : MonoBehaviour, IInteractorOwner
     public bool InteractInput { get; private set; }
     public bool IsAttackState { get; set; }
     public bool IsStunState { get; set; }
-    public bool isGround = false;
-    public bool doubleJumped = false;
+    public bool IsGround { get; set; }
+    public bool DoubleJumped { get; set; }
     public int dir = 1; // 1이면 오른쪽, -1이면 왼쪽
     public float LastCombatTime { get; set; }
     public float ReadyDuration { get { return readyDuration; } }
@@ -112,7 +112,7 @@ public class FieldPlayer : MonoBehaviour, IInteractorOwner
         curStateStr = curState.ToString();
     }
 
-    private void Start()
+    public void PlayerStart()
     {
         onHpChanged?.Invoke();
         StartCoroutine(CoHpDown());
@@ -283,7 +283,7 @@ public class FieldPlayer : MonoBehaviour, IInteractorOwner
     public bool CheckTop()
     {
         RaycastHit2D hit;
-        hit = Physics2D.BoxCast(transform.position + Vector3.up, new Vector2(0.5f, 0.2f), 0f, Vector2.zero, 0f, LayerMask.GetMask("Platform"));
+        hit = Physics2D.BoxCast(transform.position + Vector3.up, new Vector2(0.5f, 0.2f), 0f, Vector2.up, 0.1f, LayerMask.GetMask("Platform"));
 
         return hit.collider == null ? false : true;
     }
@@ -291,7 +291,7 @@ public class FieldPlayer : MonoBehaviour, IInteractorOwner
     public bool CheckGround()
     {
         RaycastHit2D hit;
-        hit = Physics2D.BoxCast(transform.position, new Vector2(0.2f, 0.2f), 0f, Vector2.zero, 0f, LayerMask.GetMask("Platform"));
+        hit = Physics2D.BoxCast(transform.position, new Vector2(0.2f, 0.2f), 0f, Vector2.down, 0.1f, LayerMask.GetMask("Platform"));
 
         return hit.collider == null ? false : true;
     }
@@ -325,7 +325,8 @@ public class FieldPlayer : MonoBehaviour, IInteractorOwner
         {
             if(CheckGround() == true)
             {
-                isGround = true;
+                DoubleJumped = false;
+                IsGround = true;
             }
         }
     }
@@ -337,7 +338,7 @@ public class FieldPlayer : MonoBehaviour, IInteractorOwner
         {
             if (CheckGround() == false)
             {
-                isGround = false;
+                IsGround = false;
             }
         }
     }

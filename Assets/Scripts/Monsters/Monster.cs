@@ -31,7 +31,7 @@ public abstract class Monster : MonoBehaviour
     protected CircleCollider2D col;
     protected Transform target;
 
-    public bool IsGround { get; private set; }
+    public bool IsGround { get; protected set; }
 
     [HideInInspector] public UnityEvent onHpChanged;
     public MonsterUIState curUIState;
@@ -39,6 +39,8 @@ public abstract class Monster : MonoBehaviour
 
     private LayerMask platformMask; 
 
+    public LayerMask PlatformMask { get { return platformMask; } }
+    public float ColRadius { get { return colRadius; } }
     public float LastWatchTime { get; set; }
     public float WatchDuration { get { return watchDuration; } }
     public float LookRange { get { return lookRange; } }
@@ -139,7 +141,10 @@ public abstract class Monster : MonoBehaviour
 
     protected abstract void Die();
     protected abstract void Stun();
-    protected abstract void HittedDetect();
+    protected virtual void HittedDetect()
+    {
+        LastWatchTime = Time.time;
+    }
 
     public void TakeDamage(int damage, Vector2 knockback, float stunDuration = 0f)
     {

@@ -15,6 +15,7 @@ public class RestauSceneFlowController : MonoBehaviour
     [SerializeField] private Customer customerPrefab;
 
     public UnityEvent onGameOver;
+    public UnityEvent onGameStart;
 
     private List<CuisineItem> allCuisineList;
     private List<CuisineItem> selectableCuisineList;
@@ -100,8 +101,15 @@ public class RestauSceneFlowController : MonoBehaviour
         {
             selectableCuisineList.Add(item);
         }
+    }
 
-        _ = StartCoroutine(SaleStart());
+    private void OnDestroy()
+    {
+        if (instance == this)
+        {
+            instance = null;
+            player = null;
+        }
     }
 
     private IEnumerator SaleStart()
@@ -164,7 +172,6 @@ public class RestauSceneFlowController : MonoBehaviour
     public void CustomerExit()
     {
         leftCustomer--;
-        print($"³²Àº ¼Õ´Ô: {leftCustomer}");
         if (0 == leftCustomer)
         {
             onGameOver?.Invoke();
@@ -212,5 +219,11 @@ public class RestauSceneFlowController : MonoBehaviour
     public void GoNextScene()
     {
         SceneManager.LoadScene("FieldScene");
+    }
+
+    public void GameStart()
+    {
+        onGameStart?.Invoke();
+        _ = StartCoroutine(SaleStart());
     }
 }
