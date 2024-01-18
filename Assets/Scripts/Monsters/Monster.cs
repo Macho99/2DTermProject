@@ -21,16 +21,26 @@ public abstract class Monster : MonoBehaviour
     [SerializeField] ParticleSystem stunParticle;
     [SerializeField] protected float knockbackTime = 0.1f;
     [SerializeField] float lookRange = 10f;
+    [SerializeField] float watchDuration = 2f;
+
+    float jumpForce = 9f;
+    float colRadius;
 
     protected Rigidbody2D rb;
     protected Animator anim;
-    protected BoxCollider2D col;
+    protected CircleCollider2D col;
     protected Transform target;
+
+    public bool IsGround { get; private set; }
 
     [HideInInspector] public UnityEvent onHpChanged;
     public MonsterUIState curUIState;
     [HideInInspector] public UnityEvent onUIStateChanged;
 
+    private LayerMask platformMask; 
+
+    public float LastWatchTime { get; set; }
+    public float WatchDuration { get { return watchDuration; } }
     public float LookRange { get { return lookRange; } }
     public int Damage { get {  return damage; } }
     public float CurHp { get { return curHp; } }
@@ -49,9 +59,11 @@ public abstract class Monster : MonoBehaviour
         StunEndTime = -10f;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
-        col = GetComponent<BoxCollider2D>();
+        col = GetComponent<CircleCollider2D>();
         dir = 1;
 
+        platformMask = LayerMask.GetMask("Platform");
+        colRadius = col.radius;
         curHp = maxHp;
     }
 
@@ -104,6 +116,15 @@ public abstract class Monster : MonoBehaviour
         {
             return;
         }
+        Vector2 rayOrigin = transform.position;
+        rayOrigin.y += colRadius;
+        rayOrigin.x += colRadius * dir;
+        RaycastHit2D dirHit = Physics2D.Raycast(rayOrigin, Vector2.right * dir, 0.3f, platformMask);
+        if(dirHit.collider != null && IsGround == true)
+        {
+            IsGround = false;
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
         rb.AddForce(Vector2.right * direction * accelSpeed * time, ForceMode2D.Force);
     }
 
@@ -151,6 +172,7 @@ public abstract class Monster : MonoBehaviour
                 dieKnockback = knockback.normalized * 7f;
             }
             gameObject.layer = LayerMask.NameToLayer("DeadBody");
+            FieldSceneFlowController.Instance.AddKillCnt();
             rb.AddForce(dieKnockback, ForceMode2D.Impulse);
             curHp = 0;
             Die();
@@ -169,11 +191,6 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
-    public void HitPlayer(int damage, Vector2 knockBack, float stunDuration = 0f)
-    {
-        //TODO : ±¸Çö
-    }
-
     public void AnimPlay(string name)
     {
         anim.Play(name);
@@ -183,9 +200,12 @@ public abstract class Monster : MonoBehaviour
         return anim.GetCurrentAnimatorStateInfo(0).IsName(str);
     }
 
-    public abstract void DetectPlayer(FieldPlayer player);
+    public virtual void DetectPlayer(FieldPlayer player)
+    {
+        LastWatchTime = Time.time;
+    }
 
-    public void ArrowPullOut(int damagePerArrow)
+    public bool ArrowPullOut(int damagePerArrow)
     {
         int cnt = 0;
         foreach(Transform arrow in arrowHolder)
@@ -193,8 +213,9 @@ public abstract class Monster : MonoBehaviour
             cnt++;
             _ = StartCoroutine(CoPullOut(arrow.GetComponent<Arrow>()));
         }
-        if (0 == cnt) return;
+        if (0 == cnt) return false;
         TakeDamage(damagePerArrow * cnt, Vector2.right * -dir);
+        return true;
     }
 
     private IEnumerator CoPullOut(Arrow arrow)
@@ -212,5 +233,14 @@ public abstract class Monster : MonoBehaviour
             yield return null;
         }
         arrow.ObjReturn();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        RaycastHit2D downHit = Physics2D.Raycast(transform.position, Vector2.down, 0.1f, platformMask);
+        if (downHit.collider != null)
+        {
+            IsGround = true;
+        }
     }
 }

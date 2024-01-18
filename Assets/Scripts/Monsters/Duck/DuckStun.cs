@@ -9,6 +9,7 @@ public class DuckStun : StateBase<Duck.State, Duck>
 
     public override void Enter()
     {
+        owner.SetGravityScale(1.0f);
         owner.AnimPlay("Stun");
         owner.PlayStunParticle(true);
     }

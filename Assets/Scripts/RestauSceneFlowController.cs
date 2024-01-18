@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class RestauSceneFlowController : MonoBehaviour
@@ -12,6 +13,8 @@ public class RestauSceneFlowController : MonoBehaviour
     [SerializeField] private bool[] tableVisit;
     [SerializeField] private Chief chief;
     [SerializeField] private Customer customerPrefab;
+
+    public UnityEvent onGameOver;
 
     private List<CuisineItem> allCuisineList;
     private List<CuisineItem> selectableCuisineList;
@@ -103,7 +106,8 @@ public class RestauSceneFlowController : MonoBehaviour
 
     private IEnumerator SaleStart()
     {
-        while(curCustomer < maxCustomer)
+        yield return new WaitForSeconds(Random.Range(3f, 5f));
+        while (curCustomer < maxCustomer)
         {
             yield return new WaitUntil(() =>
             {
@@ -116,7 +120,7 @@ public class RestauSceneFlowController : MonoBehaviour
             });
             Instantiate(customerPrefab);
             curCustomer++;
-            yield return new WaitForSeconds(Random.Range(3, 10));
+            yield return new WaitForSeconds(Random.Range(3f, 10f));
         }
     }
 
@@ -163,7 +167,7 @@ public class RestauSceneFlowController : MonoBehaviour
         print($"남은 손님: {leftCustomer}");
         if (0 == leftCustomer)
         {
-            print("영업 종료");
+            onGameOver?.Invoke();
         }
     }
 
@@ -180,5 +184,33 @@ public class RestauSceneFlowController : MonoBehaviour
     public void AngryCntUp()
     {
         angryCustomer++;
+    }
+
+    public void GetResult(out int maxCus, out int happyCus, out int wrongCus, 
+        out int angryCus, out int earnMoney, out int stars)
+    {
+        maxCus = maxCustomer;
+        happyCus = happyCustomer;
+        wrongCus = wrongMenuCustomer;
+        angryCus = angryCustomer;
+        earnMoney = GameManager.Inven.Money - startMoney;
+
+        if(happyCus == maxCus)
+        {
+            stars = 3;
+        }
+        else if(happyCus > (maxCus / 2))
+        {
+            stars = 2;
+        }
+        else
+        {
+            stars = 1;
+        }
+    }
+
+    public void GoNextScene()
+    {
+        SceneManager.LoadScene("FieldScene");
     }
 }

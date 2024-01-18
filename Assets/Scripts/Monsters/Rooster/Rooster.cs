@@ -47,7 +47,8 @@ public class Rooster : Monster
 
     public override void DetectPlayer(FieldPlayer player)
     {
-        if(target == null)
+        base.DetectPlayer(player);
+        if (target == null)
         {
             target = player.transform;
             if(StunEndTime < Time.time)

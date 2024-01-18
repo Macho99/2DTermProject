@@ -37,6 +37,7 @@ public class Chick : Monster
 
     public override void DetectPlayer(FieldPlayer player)
     {
+        base.DetectPlayer(player);
         if (target == null)
         {
             target = player.transform;

@@ -40,7 +40,12 @@ public class DuckFlyAway : StateBase<Duck.State, Duck>
         RaycastHit2D hit = Physics2D.Raycast(current, target - current, owner.LookRange, layLayerMask);
         Debug.DrawRay(current, (target - current).normalized * owner.LookRange, Color.red);
 
-        if (null == hit.collider || false == hit.collider.gameObject.tag.Equals("Player"))
+        if (null != hit.collider && true == hit.collider.gameObject.tag.Equals("Player"))
+        {
+            owner.LastWatchTime = Time.time;
+        }
+
+        if (Time.time > owner.LastWatchTime + owner.WatchDuration)
         {
             owner.Target = null;
             stateMachine.ChangeState(Duck.State.Landing);

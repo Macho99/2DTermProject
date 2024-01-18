@@ -39,7 +39,12 @@ public class BuffaloTrace : StateBase<Buffalo.State, Buffalo>
         RaycastHit2D hit = Physics2D.Raycast(current, target - current, owner.LookRange, layLayerMask);
         Debug.DrawRay(current, (target - current).normalized * owner.LookRange, Color.red);
 
-        if (null == hit.collider || false == hit.collider.gameObject.tag.Equals("Player"))
+        if (null != hit.collider && true == hit.collider.gameObject.tag.Equals("Player"))
+        {
+            owner.LastWatchTime = Time.time;
+        }
+
+        if (Time.time > owner.LastWatchTime + owner.WatchDuration)
         {
             owner.Target = null;
             stateMachine.ChangeState(Buffalo.State.Walk);
@@ -65,6 +70,8 @@ public class BuffaloTrace : StateBase<Buffalo.State, Buffalo>
 
     private bool CheckDirection()
     {
+        if (Mathf.Abs(owner.transform.position.x - owner.Target.transform.position.x) < 0.1f) { return false; }
+
         //타겟이 왼쪽에 있고
         if (owner.Target.position.x < owner.transform.position.x)
         {

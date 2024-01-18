@@ -5,11 +5,24 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class FieldSceneFlowController : MonoBehaviour
 {
     private static FieldSceneFlowController instance;
     private static FieldPlayer player;
+
+    [SerializeField] GameObject monsterFolder;
+    [SerializeField] float spawnStartX;
+    [SerializeField] float snowX;
+    [SerializeField] float spawnEndX;
+    [SerializeField] float topY;
+
+    [Header("약한 순서대로 둘 것")]
+    [SerializeField] Monster[] monsterPrefabs;
+    [SerializeField] int[] spawnAmounts;
+
+    private LayerMask platformLayer;
 
     private bool invenOpened;
     public UnityEvent onInvenOpen;
@@ -17,6 +30,10 @@ public class FieldSceneFlowController : MonoBehaviour
     public UnityEvent onPlayerDie;
     public UnityEvent onGameOver;
     public UnityEvent<int> onNumPressed;
+
+    private int killCnt;
+
+    public int KillCnt { get { return killCnt; } }
 
     public static FieldPlayer Player { get {
             if(player == null)
@@ -41,6 +58,32 @@ public class FieldSceneFlowController : MonoBehaviour
         instance = this;
         invenOpened = false;
         onNumPressed = new UnityEvent<int>();
+        platformLayer = LayerMask.GetMask("Platform");
+        killCnt = 0;
+        SpawnMonster();
+    }
+
+    private void SpawnMonster()
+    {
+        float offsetX = 40;
+        for (int i = 0; i < monsterPrefabs.Length; i++)
+        {
+            float middleX = spawnStartX + ((spawnEndX - spawnStartX) / (monsterPrefabs.Length)) * i;
+            for (int j= 0; j < spawnAmounts[i]; j++)
+            {
+                float xPos = Random.Range(middleX - offsetX, middleX + offsetX);
+                RaycastHit2D hit = Physics2D.Raycast(new Vector2(xPos, topY), Vector2.down, topY, platformLayer);
+
+                if (hit.collider == null) 
+                {
+                    Debug.LogError("topY에서 지면까지 닿지 않음");
+                    return;
+                }
+                float yPos = topY - hit.distance;
+                Monster monster = Instantiate(monsterPrefabs[i], monsterFolder.transform);
+                monster.transform.position = new Vector2(xPos, yPos);
+            }
+        }
     }
 
     private void Start()
@@ -116,5 +159,10 @@ public class FieldSceneFlowController : MonoBehaviour
     {
         onGameOver?.Invoke();
         SceneManager.LoadScene("RestaurantScene");
+    }
+
+    public void AddKillCnt()
+    {
+        killCnt++;
     }
 }

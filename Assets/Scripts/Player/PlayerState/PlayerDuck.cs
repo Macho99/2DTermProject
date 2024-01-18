@@ -13,10 +13,10 @@ public class PlayerDuck : PlayerState
     {
         player.PlayAnim("Duck");
         player.SetColliderSize(false);
+        player.IsDuckState = true;
     }
     public override void Exit()
     {
-
     }
 
     public override void Jump(InputValue value)
@@ -24,6 +24,7 @@ public class PlayerDuck : PlayerState
         if (player.CheckTop() == false)
         {
             player.SetColliderSize(true);
+            player.IsDuckState = false;
             player.ChangeState(PlayerStateType.Jump);
         }
     }
@@ -36,6 +37,7 @@ public class PlayerDuck : PlayerState
             if (player.CheckTop() == false)
             {
                 player.ChangeState(PlayerStateType.Idle);
+                player.IsDuckState = false;
                 player.SetColliderSize(true);
                 return;
             }

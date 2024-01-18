@@ -8,7 +8,6 @@ public class Duck : Monster
     StateMachine<State, Duck> stateMachine;
 
     [SerializeField] string curState;
-    public bool IsGround { get; private set; }
 
     protected override void Awake()
     {
@@ -38,6 +37,7 @@ public class Duck : Monster
 
     public override void DetectPlayer(FieldPlayer player)
     {
+        base.DetectPlayer(player);
         if (target == null)
         {
             target = player.transform;
@@ -90,15 +90,5 @@ public class Duck : Monster
         }
 
         rb.AddForce(Vector2.right * direction * accelSpeed * time + Vector2.up * 2f, ForceMode2D.Force);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        IsGround = true;
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        IsGround = false;
     }
 }

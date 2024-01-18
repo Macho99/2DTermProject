@@ -9,7 +9,7 @@ public class SwordSlash : StateBase<Sword.State, Sword>
 {
     float attackDelay = 0.2f;
     float stingPossibleDelay = 0.2f;
-    float endDelay = 0.7f;
+    float endDelay = 0.5f;
     float enterTime;
     public SwordSlash(Sword owner, StateMachine<Sword.State, Sword> stateMachine) : base(owner, stateMachine)
     {

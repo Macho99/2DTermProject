@@ -5427,7 +5427,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2770119864082942285, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
       propertyPath: dropItemType
-      value: 0
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2770119864082942285, guid: 7864cbe115b25b34b93fe0084ff1cc52, type: 3}
       propertyPath: maxInteractCount
@@ -5507,7 +5507,7 @@ MonoBehaviour:
   attackDist: 5
   knockbackForce: 10
   chargeDuration: 1
-  chargeCoolTime: 3
+  chargeCoolTime: 1
   chargeParticle: {fileID: 3098495893429150240}
   curState: 
 --- !u!198 &8616837669876803701 stripped

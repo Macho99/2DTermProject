@@ -50,7 +50,7 @@ public class BuffaloCharge : StateBase<Buffalo.State, Buffalo>
         Vector2 ownerPos = owner.transform.position;
         float sqrMag = (targetPos - ownerPos).sqrMagnitude;
 
-        if (sqrMag < 1f)
+        if (sqrMag < 1.5f * 1.5f)
         {
             owner.Target.GetComponent<FieldPlayer>().TakeDamage(owner, owner.Damage, Vector2.right * owner.dir * owner.KnockbackForce, 2f);
             attacked = true;

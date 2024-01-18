@@ -21,7 +21,7 @@ public class Sword : Weapon
         
         CrackTrans = new GameObject("CrackPoint").transform;
         CrackTrans.parent = transform;
-        CrackTrans.localPosition = new Vector2(0.953f, 0f);
+        CrackTrans.localPosition = new Vector2(0.953f, 0.04f);
     }
 
     public override void ForceIdle()

@@ -20,7 +20,7 @@ public class DataManager : MonoBehaviour
         int idx = (int)ItemID.Sword;
         items[idx] = new SwordItem();
         itemNames[idx] = "강철 칼";
-        itemSummary[idx] = "공격력 : 10\n공격 속도: 보통\n사거리 : 1";
+        itemSummary[idx] = "공격력 : 15\n공격 속도: 보통\n사거리 : 1";
         itemDetailDesc[idx] = "A -> S -> A(차지): 다수의 적들에게 강력한 데미지를 주고, 최대 5초까지 기절시킨다.";
 
         idx = (int)ItemID.Bident;

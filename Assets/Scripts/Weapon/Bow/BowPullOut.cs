@@ -25,7 +25,9 @@ public class BowPullOut : StateBase<Bow.State, Bow>
 
         foreach(RaycastHit2D hit in hits)
         {
-            hit.collider.GetComponent<Monster>().ArrowPullOut(owner.Damage / 2);
+            bool result = hit.collider.GetComponent<Monster>().ArrowPullOut(owner.Damage / 2);
+            if (false == result) continue;
+
             GameObject effect = FieldObjPool.Instance.AllocateObj(ObjPoolType.BloodExplosionParticle);
             effect.transform.position = hit.transform.position;
         }

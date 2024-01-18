@@ -20,6 +20,12 @@ public class PlayerIdle : PlayerState
             return;
         }
 
+        if(true == player.IsDuckState)
+        {
+            player.ChangeState(PlayerStateType.Duck);
+            return;
+        }
+
         if(curTime < player.LastCombatTime + player.ReadyDuration)
         {
             player.PlayAnim("Ready");

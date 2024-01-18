@@ -66,6 +66,7 @@ public class FieldPlayer : MonoBehaviour, IInteractorOwner
     public Interactor Interactor { get; private set; }
     public float LastBlockTime { get; set; }
     public bool IsBlockState { get; set; }
+    public bool IsDuckState { get; set; }
     public float StunEndTime { get; private set; }
 
     PlayerState curState;
@@ -307,13 +308,13 @@ public class FieldPlayer : MonoBehaviour, IInteractorOwner
     {
         if(isBig == true)
         {
-            col.offset = new Vector2(0f, 0.5f);
-            col.size = new Vector2(0.5f, 1f);
+            col.offset = new Vector2(0f, 0.6f);
+            col.size = new Vector2(0.6f, 1.2f);
         }
         else if(isBig == false)
         {
             col.offset = new Vector2(0f, 0.3f);
-            col.size = new Vector2(0.5f, 0.6f);
+            col.size = new Vector2(0.6f, 0.6f);
         }
     }
 
@@ -348,6 +349,11 @@ public class FieldPlayer : MonoBehaviour, IInteractorOwner
 
     public void PlayerTakeDamage(int damage, Vector2 knockback, float stunDuration, bool hitTrigger = true)
     {
+        if(curHp == 0)
+        {
+            return;
+        }
+
         onHit?.Invoke();
         curHp -= damage;
 
